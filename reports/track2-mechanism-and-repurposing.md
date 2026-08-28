@@ -70,21 +70,91 @@ Two further clinical notes fall out of the mechanism. First, in a chromosomal-in
 
 Stating contraindications is not a hedge — a repurposing screen that cannot say what to avoid has not characterised the mechanism it claims to be reasoning from. This list is also a concrete, falsifiable prediction that the knowledge-graph model can be scored against: TxGNN emits contraindication probabilities as well as indications, and the checkpoint inhibitors above should rank high on the contraindication side.
 
-## 5. Knowledge-graph layer — method
+## 5. Knowledge-graph layer — TxGNN zero-shot
 
-*In progress. Recorded here so the reasoning is auditable rather than retrofitted.*
+The three hypotheses above are a **literature prior**, reached by mechanism and written down before any model was run. The graph layer was then run independently, so agreement between the two means something.
 
-The three hypotheses above are a **literature prior** — reached by mechanism, before any model was run. The graph layer is deliberately run second and independently, so agreement between the two means something.
+### 5.1 MVA really is a zero-shot case
 
-1. **Proxy-phenotype mapping.** MVA1 is thinly represented in any biomedical knowledge graph — that is the defining problem for a disease with no approved treatment. Map MONDO MVA1 onto proxy disease nodes in PrimeKG and OptimusKG: chromosomal-instability syndromes, other aneuploidy disorders, cohesinopathies, and the CIN-high cancers.
-2. **TxGNN zero-shot.** Indication *and* contraindication prediction on the mapped nodes. Zero-shot inference on a treatment-less orphan disease is the case TxGNN was designed for. Pretrained on PrimeKG (129k nodes / 4.05M edges).
-3. **TxGNN Explain (GraphMask).** Multi-hop subgraph per surviving candidate, so every recommendation ships with the edges that produced it rather than a bare score.
-4. **OptimusKG as the evidence layer.** 192,813 nodes / 21,834,669 edges over 65 resources, grounded in 18 ontologies via BioCypher/Biolink — roughly 5× PrimeKG's edge count with type-specific metadata. TxGNN's pretrained weights resolve PrimeKG node ids, so PrimeKG carries the model and OptimusKG carries corroboration and graph-RAG retrieval. Retraining TxGNN on OptimusKG is the stretch goal and the honest answer to the Scalability criterion.
-5. **Corroboration.** ChEMBL/DrugBank/Open Targets for tractability; DepMap for aneuploidy-selective dependencies.
+In PrimeKG the node `mosaic variegated aneuploidy syndrome` (index 28004, a MONDO_grouped node over MONDO 13582 / 9759 / 54736 / 141) carries:
 
-**Scoring.** Repurposing Feasibility = mechanistic support × evidence strength × paediatric safety record × availability. Reported as a table with each factor separately visible, so a reader can disagree with one weight without discarding the analysis.
+- 214 `disease_phenotype_positive` edges
+- 10 `disease_protein` edges — **BUB1, BUB1B, BUB3, CEP57, TRIP13**
+- 6 `disease_disease` edges — *chromosomal anomaly*, *neoplastic syndrome*, *polymalformative genetic syndrome with increased risk of developing cancer*
+- **zero drug edges of any kind**
 
-**The interesting outcome is disagreement.** If TxGNN nominates a class that mechanism reasoning missed, that is the model earning its place. If it misses all three hypotheses above, that is a finding about knowledge-graph coverage of ultra-rare disease — which is itself worth reporting.
+Every one of the 7,957 drug labels is 0. There is nothing to memorise, so the ranking is genuine zero-shot inference. Pretrained TxGNN (`full_graph` split 1, n_hid 512, prototype module on) run on CPU; both `indication` and `contraindication` in about 3 seconds each once the graph is loaded.
+
+### 5.2 A correction that changes the answer
+
+TxGNN scores all 7,957 DrugBank nodes in PrimeKG. Most of those are PDB ligands and experimental fragments with a node degree of 2 — and on a disease with no drug edges the model scores **exactly those highest**, because it has learned almost nothing about them. Ranked on the raw 7,957, the top recommendations for this child are *Casimiroin*, *Dithioerythritol* and a run of unnamed crystallographic fragments, and the score correlates *negatively* with degree (Spearman ρ = −0.51).
+
+TxGNN's own `Ranked List` is restricted to the **1,801 drugs that carry indication or contraindication edges** somewhere in PrimeKG. That is the only set a therapeutic recommendation can honestly be drawn from. Within it the degree artefact disappears: ρ = **+0.054** for indication, +0.115 for contraindication. The ranking is not a popularity prior.
+
+Reported because it is the kind of error that produces a confident, publishable, meaningless answer.
+
+### 5.3 What the model returns
+
+Top of the indication ranking for MVA:
+
+| Rank | Drug | Score |
+|---|---|---|
+| 1 | Nifurtimox | +2.56 |
+| 2 | Trifarotene | +2.03 |
+| 3 | Methotrexate | +1.72 |
+| 4 | Formestane | +1.45 |
+| 5 | Imatinib | +1.25 |
+| 6 | Fluorouracil | +1.25 |
+| 7 | **Paclitaxel** | +1.14 |
+
+Read the graph neighbourhood and this is unsurprising: MVA's disease-disease edges say *neoplastic syndrome* and *cancer-predisposition syndrome*, so the model retrieves antineoplastics. It is answering "what treats a childhood cancer syndrome", not "what corrects a spindle assembly checkpoint hypomorph".
+
+### 5.4 The prior probes — stated before the run, scored after
+
+Percentile within the 1,801 clinically annotated drugs, indication direction:
+
+| Hypothesis | Drug | Rank | Percentile |
+|---|---|---|---|
+| **H3** aneuploidy-selective | **Hydroxychloroquine** | 50 | **2.8%** |
+| **H3** | **Chloroquine** | 51 | **2.8%** |
+| **H2** senolytic | **Dasatinib** | 69 | **3.8%** |
+| H1 NAD⁺ | Niacin | 218 | 12.1% |
+| H1 | Nicotinamide | 569 | 31.6% |
+| H3 | Metformin | 1543 | 85.7% |
+
+**Two independent convergences.** Chloroquine is one of the three compounds Amon's screen identified as aneuploidy-selective, and the graph puts chloroquine and its hydroxy analogue in the top 3% — reached from a completely different direction, with no aneuploidy-biology input. Dasatinib is the approved half of the dasatinib+quercetin senolytic pair whose founding experiment was run in the BubR1 mouse, and the graph puts it in the top 4%. Neither was fitted after the fact.
+
+**H1 cannot be evaluated here, and that is a coverage finding rather than a refutation.** Nicotinamide riboside, nicotinamide mononucleotide and NADH are absent from PrimeKG's clinically annotated drug set entirely — they carry no indication edges, because they are supplements. The single best-supported, most allele-specific hypothesis in this report is invisible to the knowledge graph. Any KG-only repurposing pipeline would have missed it.
+
+Metformin at 85.7% is a fair miss: it was always a weak substitution for AICAR, which is not in PrimeKG at all.
+
+### 5.5 Where the model and the mechanism disagree — and who is right
+
+The contraindication prediction stated in §4 **failed**, and failed informatively.
+
+| Drug | Indication rank | Percentile |
+|---|---|---|
+| Paclitaxel | 7 | 0.4% |
+| Vinblastine | 17 | 0.9% |
+| Eribulin | 19 | 1.1% |
+| Vincristine | 87 | 4.8% |
+| Docetaxel | 98 | 5.4% |
+
+Every microtubule-targeting agent sits near the **top of the indications**, not the contraindications. The contraindication ranking meanwhile is led by methoxsalen, mycophenolate and tacrolimus — immunosuppressant and photosensitiser signal, unrelated to mitosis.
+
+The graph knows MVA is a cancer-predisposition syndrome and retrieves sarcoma chemotherapy. It does not know that the spindle assembly checkpoint in this child is *already* hypomorphic, because that fact lives in the variant, not in the disease node. The mechanism is right and the model is wrong, and the disagreement is the most clinically consequential statement in this report: a knowledge-graph repurposing pipeline run on this case without mechanism reasoning would rank checkpoint-dependent chemotherapeutics as the leading recommendations.
+
+### 5.6 Explanations
+
+`03_txgnn_explain.py` reconstructs graph-backed rationales from the released GraphMask gates — a 7,695,474-row edge table with per-layer importance for the indication task. TxGNN's shipped `paths.csv` covers only a curated demo set and does not contain MVA, so paths are found by bidirectional beam search, two hops from the disease and two from the drug, joined at the meeting node and scored as the length-normalised product of edge importances.
+
+### 5.7 What is still to run
+
+OptimusKG (192,813 nodes / 21,834,669 edges over 65 resources, ~5x PrimeKG's edges) as an independent evidence layer, with the specific question of whether it covers the NAD⁺ precursors PrimeKG cannot see. Retraining TxGNN on OptimusKG is the stretch goal and the honest answer to the Scalability criterion. DepMap for aneuploidy-selective dependencies; ChEMBL/Open Targets for tractability.
+
+### 5.8 Scoring
+
+Repurposing Feasibility = mechanistic support × evidence strength × paediatric safety record × availability, with each factor reported separately so a reader can disagree with one weight without discarding the analysis.
 
 ## 6. References
 

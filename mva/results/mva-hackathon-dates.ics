@@ -61,4 +61,32 @@ ACTION:DISPLAY
 DESCRIPTION:Delete MVA challenge data now and email MVAHackathon2026@synapse.org
 END:VALARM
 END:VEVENT
+BEGIN:VEVENT
+UID:mva-2026-record-video@tfius
+DTSTAMP:20260829T003000Z
+DTSTART:20261010T100000Z
+DTEND:20261010T120000Z
+SUMMARY:Record MVA Hackathon Track 2 pitch video
+DESCRIPTION:The real deadline\, two weeks before submissions close.\n\nTrack 2 accepts
+  ONE submission and the pitch-video URL is hard-validated — no public video\, no
+  submission\, no second attempt.\n\nScript: reports/track2-video-script.md in
+  github.com/tfius/mva-hackathon-2026 — 486 spoken words\, 3:02 at 160 wpm\, with
+  per-section word budgets.\n\nThen upload to YouTube or Vimeo (must be publicly
+  viewable) and submit with:\n  Team name: texdata\n  GitHub:
+  https://github.com/tfius/mva-hackathon-2026\n  Report:
+  reports/track2-mechanism-and-repurposing.md\n  Video URL: the link\n  Notes
+  (optional\, but use it): Track 1 scored a confirmed full match at rank 1\, so the
+  mechanism chain reasons from a verified genotype.
+LOCATION:https://sagebio-rare-disease-real-kid-mva-hackathon-2026.hf.space/
+BEGIN:VALARM
+TRIGGER:-P7D
+ACTION:DISPLAY
+DESCRIPTION:One week until the pitch-video recording slot
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow: record the MVA Track 2 pitch video
+END:VALARM
+END:VEVENT
 END:VCALENDAR

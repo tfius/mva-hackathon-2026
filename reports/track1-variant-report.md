@@ -70,6 +70,26 @@ Rank 2 is the compound-heterozygous pair, both alleles flagged as contributing, 
 
 **On Exomiser's own ACMG call for allele B.** It classifies `p.Asn1002Lys` as VUS, applying **BP1** — "missense variant in a gene for which primarily truncating variants cause disease". For *BUB1B* and MVA1 that rule is misapplied, and the reason is mechanistic: biallelic truncating *BUB1B* is not viable, so surviving MVA1 patients essentially always carry a missense or otherwise hypomorphic allele in trans with a null. The genotype that BP1 treats as evidence against pathogenicity is the genotype the disease requires. Removing BP1 and the classification moves to Likely pathogenic on PM2_Supporting + PP4_Moderate + PP3 (AlphaMissense 0.923, MVP 0.852) with PM3 available once phase is established.
 
+**S7 · Orthogonal validation from our own alignment.** Everything to this point rests on the VCF the organisers supplied — one aligner, one caller. The re-aligned BAM allows the call to be re-derived independently: bwa-mem2 instead of Sentieon's aligner, `bcftools mpileup`/`call` instead of Sentieon Haplotyper.
+
+Calling the BUB1B gene body from scratch returns five variants, and both alleles are among them at the same allele balance:
+
+| | Sentieon (supplied VCF) | bcftools on our bwa-mem2 BAM |
+|---|---|---|
+| `chr15:40209701 T>G` | 0/1, AD 21,25, DP 46 | 0/1, AD 21,26, DP 47 |
+| `chr15:40220612 T>G` | 0/1, AD 15,13, DP 28 | 0/1, AD 15,12, DP 27 |
+
+Read-level evidence at both sites is as clean as it gets:
+
+| | reads | fwd / rev | MAPQ 60 | min MAPQ | alt strand balance | VAF |
+|---|---|---|---|---|---|---|
+| `chr15:40209701` | 52 | 29 / 23 | **100%** | 60 | 14 fwd, 12 rev | 0.55 |
+| `chr15:40220612` | 32 | 11 / 21 | **100%** | 60 | 4 fwd, 8 rev | 0.44 |
+
+Every read at both positions carries the maximum mapping quality of 60, so neither call sits in a region where paralogy or mismapping could manufacture a heterozygote. Alternate alleles appear on both strands, and the variant allele fractions of 0.55 and 0.44 are what a true germline heterozygote looks like. Duplicates were marked and are few (4 and 3 respectively).
+
+Two aligners, two callers, one answer.
+
 ## 4. Mosaic aneuploidy tested directly from the reads
 
 MVA is defined cytogenetically. That makes a prediction the sequencing data can be asked about without any karyotype, and without realignment (`04_mosaic_aneuploidy.py`).

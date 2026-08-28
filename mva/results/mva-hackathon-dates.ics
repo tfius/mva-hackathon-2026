@@ -1,0 +1,64 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MVA Hackathon 2026//texdata//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:mva-2026-submissions-close@tfius
+DTSTAMP:20260829T001500Z
+DTSTART:20261024T210000Z
+DTEND:20261024T235900Z
+SUMMARY:MVA Hackathon — submissions close 23:59 UTC
+DESCRIPTION:Track 1 leaderboard freezes. Track 2 accepts ONE submission only and
+  requires a public pitch-video URL\, which is hard-validated — no video\, no
+  submission\, no second attempt.\n\nStatus at time of writing: Track 1 submitted
+  and scored 100.0/100 (full match at rank 1). Track 2 report and script are
+  ready at github.com/tfius/mva-hackathon-2026 — only the video recording and the
+  submission itself remain.
+LOCATION:https://sagebio-rare-disease-real-kid-mva-hackathon-2026.hf.space/
+BEGIN:VALARM
+TRIGGER:-P14D
+ACTION:DISPLAY
+DESCRIPTION:MVA Hackathon closes in 2 weeks — record and upload the Track 2 pitch video
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P3D
+ACTION:DISPLAY
+DESCRIPTION:MVA Hackathon closes in 3 days — Track 2 is one attempt only
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:mva-2026-winners@tfius
+DTSTAMP:20260829T001500Z
+DTSTART;VALUE=DATE:20261125
+DTEND;VALUE=DATE:20261126
+SUMMARY:MVA Hackathon — winners announced
+DESCRIPTION:End of the judging window. Track 2 expert panel results.
+END:VEVENT
+BEGIN:VEVENT
+UID:mva-2026-data-deletion@tfius
+DTSTAMP:20260829T001500Z
+DTSTART;VALUE=DATE:20261126
+DTEND;VALUE=DATE:20261127
+SUMMARY:MVA Hackathon — DELETE challenge data and notify Sage Bionetworks
+DESCRIPTION:Obligation accepted when requesting dataset access\, not a suggestion.\n\n
+  1. Delete the challenge data:\n     rm -rf /mnt/data/mva-hackathon-2026/data\n
+  2. Delete derived files containing patient sequence:\n     rm -rf /mnt/data/mva-hackathon-2026/work/align\n
+  3. Email MVAHackathon2026@synapse.org confirming deletion from all personal
+  compute environments.\n\nKeep: code\, reports and journals — those are the
+  research output\, released CC BY 4.0. Delete: FASTQ\, VCF\, BAM\, the clinical
+  phenotype document\, and anything derived that carries the sequence itself.\n\n
+  Roughly 85 GB of challenge data plus ~150 GB of derived BAM and reference under
+  /mnt/data/mva-hackathon-2026/.
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow: delete MVA challenge data and email MVAHackathon2026@synapse.org
+END:VALARM
+BEGIN:VALARM
+TRIGGER:PT9H
+ACTION:DISPLAY
+DESCRIPTION:Delete MVA challenge data now and email MVAHackathon2026@synapse.org
+END:VALARM
+END:VEVENT
+END:VCALENDAR

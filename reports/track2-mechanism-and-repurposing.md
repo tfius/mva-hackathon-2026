@@ -144,9 +144,48 @@ Every microtubule-targeting agent sits near the **top of the indications**, not 
 
 The graph knows MVA is a cancer-predisposition syndrome and retrieves sarcoma chemotherapy. It does not know that the spindle assembly checkpoint in this child is *already* hypomorphic, because that fact lives in the variant, not in the disease node. The mechanism is right and the model is wrong, and the disagreement is the most clinically consequential statement in this report: a knowledge-graph repurposing pipeline run on this case without mechanism reasoning would rank checkpoint-dependent chemotherapeutics as the leading recommendations.
 
-### 5.6 Explanations
+### 5.6 Explanations — and why they cannot be mechanistic here
 
-`03_txgnn_explain.py` reconstructs graph-backed rationales from the released GraphMask gates — a 7,695,474-row edge table with per-layer importance for the indication task. TxGNN's shipped `paths.csv` covers only a curated demo set and does not contain MVA, so paths are found by bidirectional beam search, two hops from the disease and two from the drug, joined at the meeting node and scored as the length-normalised product of edge importances.
+`03_txgnn_explain.py` reconstructs graph-backed rationales from the released GraphMask gates: a 7,695,474-row edge table with per-layer importance for the indication task. TxGNN's shipped `paths.csv` covers a curated demo set and has no MVA node, so paths are found by bidirectional beam search, two hops from the disease and two from the drug, joined at the meeting node and scored as the length-normalised product of edge importances.
+
+**Run on raw gate importance, the result is an artefact, and an instructive one.** Every top path, for every drug, was:
+
+```
+MVA <- Colon cancer -> Pimecrolimus <- CYP3A4 -> <drug>
+```
+
+with scores of 0.5159 for dasatinib, 0.5152 for hydroxychloroquine, 0.5123 for chloroquine and 0.5074 for paclitaxel. Four chemically unrelated drugs, four near-identical scores, one shared hepatic enzyme. The drug-independence is the tell: this is a statement about metabolism, not about why any of them might help. Anything presented as a "graph-backed medical rationale" without that check would be presenting a CYP3A4 lookup as a mechanism.
+
+Three corrections were applied: `drug_effect` edges excluded (side effects are not therapeutic rationale), intermediate nodes down-weighted by 1/log₁₀(degree), and 658 ADME hub proteins (CYP, ABC, SLC, UGT, ALB and relatives) removed outright, since degree down-weighting alone was not enough to stop CYP3A4 winning on gate value.
+
+**The deeper reason is structural, and it is checkable.** Counting edges in PrimeKG directly:
+
+| Gene | Total edges | Drug edges |
+|---|---|---|
+| BUB1B | 464 | **0** |
+| BUB1 | 492 | **0** |
+| BUB3 | 468 | **0** |
+| CEP57 | 426 | **0** |
+| TRIP13 | 516 | **0** |
+| CDC20 | 500 | **0** |
+| MAD2L1 | 580 | **0** |
+| AURKB | 762 | 10 — AT9283, Enzastaurin, Reversine … |
+| PLK1 | 962 | 12 |
+| TTK | 288 | 6 — BOS172722 … |
+| CENPE | 404 | 2 — GSK-923295 |
+
+**Every gene the MVA node connects to has zero drug edges.** The path `MVA → BUB1B → drug` does not exist, because its last edge does not exist. No knowledge-graph method can produce a mechanistically direct explanation for this disease — not TxGNN, not any other — and the hub detour is what remains when the direct route is absent. That is a property of the graph, not a failure of the model.
+
+And the sharper half: the spindle-checkpoint proteins that *are* druggable in PrimeKG — AURKB, PLK1, TTK, CENPE — are precisely the ones that must not be inhibited in a child whose checkpoint is already hypomorphic. One of the AURKB ligands, **reversine**, is a tool compound used in the laboratory to *induce* aneuploidy. A pipeline that reasoned "find the disease's pathway, find drugs against it" would nominate the contraindicated class with high confidence and a clean-looking subgraph behind it.
+
+With the ADME hubs removed, the best surviving paths do run through MVA's own genes, for example:
+
+```
+MVA <-[disease_protein]- TRIP13 -[disease_protein]-> germ cell tumor
+    -[disease_disease]-> testicular teratoma <-[off-label use]- Paclitaxel
+```
+
+Readable and traceable — but note what it is actually saying: *an MVA gene is implicated in a cancer, and this drug is used off-label in that cancer.* It is a cancer-treatment rationale, which is what the graph has to offer, not a rationale about checkpoint dose.
 
 ### 5.7 What is still to run
 

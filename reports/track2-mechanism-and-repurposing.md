@@ -345,16 +345,43 @@ The first three all aim at the same target — **more BubR1** — from three ind
 
 | # | Candidate | Mechanism | Spec. | Evid. | Safety | Access | Where it breaks |
 |---|---|---|---|---|---|---|---|
-| 1 | **Nicotinamide riboside / NMN** | Raise NAD⁺ → SIRT2 keeps K668 deacetylated → BubR1 stabilised. **K668 is deleted on the null allele but intact on p.Asn1002Lys**, so there is a substrate to act on | **5** | 3 | 4 | **5** | No human MVA data; mouse lifespan is not child healthspan; SIRT2 has context-dependent roles in cancer |
+| 1 | **Nicotinamide riboside / NMN** | Raise NAD⁺ → SIRT2 keeps K668 deacetylated → BubR1 stabilised. **K668 is deleted on the null allele but intact on p.Asn1002Lys**, so there is a substrate to act on | **5** | **4** | 4 | **5** | No human MVA data; mouse lifespan is not child healthspan; SIRT2 has context-dependent roles in cancer |
 | 2 | **CBP/p300 inhibitor** (A-485, CCS1477/inobrodib) | Inhibit the *writer* of the K668 mark and BubR1 should rise. The one case where an available inhibitor points the right way | **5** | 2 | **1** | 3 | **Direction unproven** — acetylation at K250 is reported to *stabilise* BubR1 via APC/C-Cdh1, so this could cut both ways. Strongly pleiotropic anticancer agents, no paediatric data |
-| 3 | **PTC readthrough** (ELX-02, aminoglycosides; ataluren) ± NMD inhibition | Attacks the *other* allele. `c.2210T>G` creates **TGA** — the most readthrough-permissive stop codon — so restoring even partial full-length protein raises total BubR1 above what the missense allele alone gives | 4 | **1** | 3 | **2** | **The one readthrough agent that reached market was withdrawn.** The EU did not renew ataluren's authorisation on 28 March 2025 after CHMP concluded effectiveness was not confirmed across four reviews; it survives only in the UK. NMD also destroys the transcript before a ribosome reaches the PTC, and the +4 base here is A, an intermediate context |
+| 3 | **PTC readthrough** ± NMD inhibition | Attacks the *other* allele. `c.2210T>G` creates **TGA** — the most readthrough-permissive stop codon — so restoring even partial full-length protein raises total BubR1 above what the missense allele alone gives | 4 | **1** | see below | see below | NMD destroys the transcript before a ribosome reaches the PTC (gated by **E6a**); the +4 base is A, an intermediate context; and the agents differ so widely on access and safety that a single score for the row would be meaningless |
 | 4 | **Hydroxychloroquine** | Autophagy inhibition; chloroquine is one of three compounds identified as aneuploidy-selective. Aneuploid cells lean on autophagy to clear proteotoxic load | 3 | 3 | **5** | 4 | Constitutional cells are aneuploid too, so "selective" is degree not kind; retinal toxicity is dose-limiting |
-| 5 | **Dasatinib (+ quercetin)** | Senolytic clearance of p16^Ink4a-positive cells, which rescued skeletal muscle and adipose **in the BubR1 progeroid mouse** — the tissues this child is symptomatic in | 4 | 4 | 3 | 3 | BubR1^H/H mice are progeroid and a child is not; senescent burden may be low at this age; needs oncology sign-off given cancer predisposition |
+| 5 | **Dasatinib (+ quercetin)** | Senolytic clearance of p16^Ink4a-positive cells, which rescued skeletal muscle and adipose **in the BubR1 progeroid mouse** — the tissues this child is symptomatic in | 4 | **3** | 3 | 3 | BubR1^H/H mice are progeroid and a child is not; senescent burden may be low at this age; needs oncology sign-off given cancer predisposition |
 | — | *HDAC inhibitors* | Reachable from BUB1B via HDAC1–4, and BubR1 abundance is acetylation-controlled | 2 | 1 | 3 | 3 | **Direction unresolved** — SIRT2 is class III and is not inhibited by these agents. A question, not a candidate |
+
+**A stated criterion for the evidence column, and two scores it changes.** "Strength of published support" is too loose to be checkable, so it is resolved here into one question: **was the proposed modality itself tested, or only a genetic proxy for it?** An experiment that administers the actual class of intervention and measures the actual molecular outcome is worth more than one that establishes the principle by genetic means and leaves the drug as an inference.
+
+Applying it moves two scores in opposite directions.
+
+- **Candidate 1 rises from 3 to 4.** In `BubR1^H/H` mice, **NMN was administered and BubR1 was stabilised in vivo** — the proposed modality, in the correct gene's model, with the molecular outcome this report is trying to produce, and the SIRT2 arm supplies the genetic confirmation alongside it. Very few repurposing hypotheses have that.
+- **Candidate 5 falls from 4 to 3.** The founding senolytics experiment cleared p16^Ink4a-positive cells with the **INK-ATTAC transgene** and a dimerizer — genetic ablation. Dasatinib and quercetin were never given to a `BubR1^H/H` mouse. The tissue rescue is real and it is in the right gene, but the step from "removing senescent cells helps" to "these two drugs will remove them here" is an inference, not a result.
+
+Neither is a criticism of the underlying work. It is a statement about how far each result travels toward *this* patient, which is what the column is supposed to measure.
 
 **Why the order.** Candidates 1–3 are ranked above the aneuploidy-stress and senolytic routes because they treat the lesion rather than its consequences, and each is allele-specific in a way that would not transfer to a different MVA1 patient: candidate 1 needs an intact K668 on a full-length allele, candidate 3 needs a premature termination codon. A patient with two truncating alleles gets nothing from 1 or 2; a patient with two missense alleles gets nothing from 3. That specificity is the point.
 
 Candidate 2 carries the worst safety score in the table and is still ranked second, because it is the only route where a **clinically existing drug class points the right way at the right protein**. Its position reflects mechanistic value, not readiness.
+
+Candidate 1 now leads on both specificity and evidence, which is unusual and worth saying plainly: it is the only entry here where the exact intervention class was administered in the exact gene's animal model and produced the exact molecular effect being sought, *and* where the mechanism depends on a residue that this child's particular pair of alleles happens to preserve.
+
+**Candidate 3's agents do not share an access profile, so they are scored separately.** Collapsing them into one number was hiding a factor-of-five spread.
+
+| Agent | Regulatory status | Access | Safety | Note |
+|---|---|---|---|---|
+| **Ataluren** (Translarna) | EU authorisation **not renewed, 28 Mar 2025**; never approved in the US, where it remains investigational; retained in the UK | **1** | 3 | Expanded-access or compassionate-use route only. Not an off-the-shelf option in any sense |
+| **ELX-02** | Investigational, clinical development | **1** | ? | Trial enrolment only |
+| **Gentamicin / aminoglycosides** | Approved worldwide, stocked in every hospital pharmacy | **5** | **2** | Access is not the constraint. Toxicity is — and it is patient-specific here, see below |
+
+**Two patient-specific findings change the aminoglycoside assessment, and both come out of the challenge data.**
+
+*Against.* This child has **nephrocalcinosis** (`HP:0000121`), present since birth. Aminoglycosides are characteristically nephrotoxic, and the likeliest cause of the nephrocalcinosis — loop diuretics in a 32-week neonate, as §2 of the Track 1 report argues — is itself a class that potentiates both aminoglycoside nephrotoxicity and ototoxicity. Proposing a nephrotoxic drug to a child with pre-existing renal calcification is not a generic "requires therapeutic drug monitoring" caveat. It is a specific reason this agent may be the wrong one for this patient regardless of how well readthrough works.
+
+*In favour, and it is a real result.* Aminoglycoside-induced hearing loss is strongly modified by mitochondrial *MT-RNR1* variants, principally **m.1555A>G** and **m.1494C>T**, which convert an ordinary dose into a deafening one. The WGS answers this directly. Both positions are **reference** in this child, at **4,497×** and **4,152×** coverage respectively — deep enough to bound heteroplasmy below roughly 0.1%. The only *MT-RNR1* variant called is m.1438A>G, a common haplogroup marker with no ototoxicity association.
+
+So the single largest *genetic* risk multiplier for aminoglycoside ototoxicity is excluded in this patient, with the sequencing depth to say so confidently. Baseline oto- and nephrotoxicity remain, and the nephrocalcinosis concern stands on its own. But this is the kind of question the challenge data can actually answer, and it is worth noting that it required nothing beyond the VCF and one query — a pharmacogenomic read-out obtained for free alongside the diagnostic one.
 
 **On candidate 3 and the ataluren withdrawal.** This was scored 2/3 on evidence and access in an earlier draft, before checking the drug's regulatory status. The European Commission declined to renew Translarna's conditional authorisation on **28 March 2025**, following CHMP opinions in January 2024, June 2024, October 2024 and March 2025 that effectiveness had not been confirmed. That is considerably worse than "contested", and both scores are lowered accordingly.
 

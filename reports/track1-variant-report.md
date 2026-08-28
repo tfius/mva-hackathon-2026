@@ -93,6 +93,29 @@ Every read at both positions carries the maximum mapping quality of 60, so neith
 
 Two aligners, two callers, one answer.
 
+### 3.1 Structural variants — the completeness check
+
+The supplied VCF is SNV/indel only, so a structural variant anywhere in the panel would have been invisible to every analysis before the realignment. §S4 argued against one in BUB1B from depth and heterozygosity, which is an absence-of-evidence argument. `delly sr` on the re-aligned BAM, intersected with the panel by `09_sv_panel_intersect.py`, is the direct test.
+
+**In BUB1B ±50 kb, delly emits four records and exactly one passes filter:**
+
+| Position | Type | Size | FILTER | PE / SR | GT |
+|---|---|---|---|---|---|
+| `chr15:40113056` | INS | 39 bp | **PASS** | 0 / 12 | 1/1 |
+| chr15:24,767,504–60,516,119 | DUP | 35.7 Mb | LowQual | 2 / – | 0/0 |
+| chr15:38,016,169–74,552,325 | INV | 36.5 Mb | LowQual | 5 / – | 0/0 |
+| chr15:40,131,925–40,132,744 | DEL | 819 bp | LowQual | 2 / – | 0/0 |
+
+The single PASS call is a homozygous 39 bp insertion **48 kb upstream** of the gene — and it is not a missed event at all: the supplied VCF already carries it, as `chr15:40113056 C>CGTGTGGGG…` at 1/1. Everything else in the window is LowQual with two to five read pairs, no split reads, and a reference genotype.
+
+**No structural variant lies in BUB1B, and neither confirmed allele sits inside any called SV.** The compound heterozygote is two genuine SNVs, not a mis-called structural event.
+
+**On the rest of delly's output, a caution rather than a result.** Genome-wide it emits 52,245 records, 17,233 of them PASS, and 305 PASS calls with ≥3 read pairs touch a panel gene. Most are not credible: the list is led by a 223 Mb duplication of chr1, a 34.7 Mb inversion on chr15 and a 48.8 Mb deletion on chr6, all with substantial paired-end support, **no split reads**, and in many cases a `0/0` genotype. These are mismapping in repeat and segmental-duplication structure, not rearrangements.
+
+Requiring split-read support *and* a non-reference genotype leaves 14 of 305 — and several of those are still implausibly large. The small ones that survive both filters (an *APC* 2.6 kb deletion, *KCNJ1* 693 bp, *SMARCB1* 2.6 kb homozygous, *ZWILCH* 768 bp) are the size and zygosity of common structural polymorphism, and none is followed up here.
+
+So the claim this section supports is deliberately narrow: **nothing structural was missed in BUB1B.** A genome-wide SV survey from a single short-read sample with no control panel cannot honestly support more than that, and the filtering above is why.
+
 ## 4. Mosaic aneuploidy tested directly from the reads
 
 MVA is defined cytogenetically. That makes a prediction the sequencing data can be asked about without any karyotype, and without realignment (`04_mosaic_aneuploidy.py`).

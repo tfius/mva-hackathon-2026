@@ -17,7 +17,7 @@ Team `texdata` · GRCh38 · 28 August 2026
 | Consequence | stop_gained, exon 17/23 | missense, exon 23/23 |
 | Genotype | 0/1 · AD 21,25 · DP 46 · GQ 99 | 0/1 · AD 15,13 · DP 28 · GQ 99 |
 | Population frequency | gnomAD genomes 3.29 × 10⁻⁵ (rs759242053) | **1 allele in 1,461,878** gnomAD v4 exomes (AF 6.8 × 10⁻⁷); absent from gnomAD genomes and from dbSNP |
-| In silico | PTC 748 nt upstream of the final exon junction → NMD predicted | AlphaMissense 0.923, MVP 0.852, REVEL 0.472 |
+| In silico | PTC 746 nt upstream of the final exon–exon junction → NMD predicted | AlphaMissense 0.923, MVP 0.852, REVEL 0.472 |
 | Exomiser ACMG | **PATHOGENIC** — PVS1, PM2_Supporting, PP4_Moderate, PP5_Strong | **UNCERTAIN_SIGNIFICANCE** — PM2_Supporting, PP4_Moderate, BP1 |
 | ClinVar | **Pathogenic/Likely_pathogenic**, "Mosaic variegated aneuploidy syndrome 1" | novel nucleotide; `c.3006T>A`, the *same* p.Asn1002Lys substitution, is a ClinVar VUS |
 
@@ -27,7 +27,7 @@ This is the configuration MVA1 is known for: one null allele paired with one hyp
 
 BUB1B encodes BubR1, the pseudokinase core of the mitotic spindle assembly checkpoint. UniProt O60566: 1050 aa, BUB1 N-terminal domain 62–226, protein kinase domain **766–1050**, catalytic proton acceptor D882.
 
-- **`p.Leu737Ter`** truncates at residue 737 — **29 residues before the kinase domain even begins**. The premature termination codon sits at c.2210, and the final exon–exon junction is at c.2958, so the PTC is 748 nt upstream of it and comfortably past the 50-nt boundary: nonsense-mediated decay is predicted, and the allele is a true null. Even on transcript that escaped NMD, the product would lack the entire kinase domain.
+- **`p.Leu737Ter`** stops the product after residue 736 — **30 residues short of the kinase domain**, which is lost entirely. The premature termination codon sits at c.2209–2211, and the final exon–exon junction is at c.2957/c.2958, so the PTC is 746 nt upstream of it and far past the 50–55 nt boundary: nonsense-mediated decay is predicted, and the allele is a true null. Even on transcript that escaped NMD, the product would lack the entire kinase domain.
 - **`p.Asn1002Lys`** sits *inside* the kinase domain, 120 residues C-terminal to the active site, and swaps a neutral amide for a positive charge. AlphaMissense 0.923 and MVP 0.852, though REVEL is only 0.472 — the predictors do not agree, and that disagreement is reported rather than averaged away. It appears **once** in 1,461,878 gnomAD v4 exome alleles and not at all in gnomAD genomes: essentially private. The identical amino-acid substitution reached by a different nucleotide (`c.3006T>A`) is already in ClinVar as a VUS — independent evidence that the residue is under clinical scrutiny — while `c.3006T>C`, which is synonymous, is classified Likely benign. The classification tracks the protein change, not the position.
 
 Phenotype fit: rhabdomyosarcoma is the MVA1-defining malignancy (with Wilms tumour), and intrauterine growth restriction, short stature and failure to thrive are core MVA1 features. Parental recurrent pregnancy loss is on-mechanism for carrier parents of a chromosome-segregation disorder, not incidental history.

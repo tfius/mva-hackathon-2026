@@ -8,7 +8,7 @@ Draft for recording. Timings are speaking-pace estimates at ~150 wpm. Nothing he
 
 A child with rhabdomyosarcoma, growth restriction, low muscle mass, born at 32 weeks weighing about a kilogram — and a family history of recurrent miscarriage.
 
-The genome gives biallelic *BUB1B*: a nonsense allele, `p.Leu737Ter`, that truncates 29 residues before the kinase domain even starts and is predicted to be destroyed by nonsense-mediated decay — and in trans, `p.Asn1002Lys`, a missense inside the kinase domain seen once in one and a half million gnomAD alleles.
+The genome gives biallelic *BUB1B*: a nonsense allele, `p.Leu737Ter`, that stops 30 residues short of the kinase domain, losing it entirely and is predicted to be destroyed by nonsense-mediated decay — and in trans, `p.Asn1002Lys`, a missense inside the kinase domain seen once in one and a half million gnomAD alleles.
 
 One null. One partly-working copy. That is not an incidental detail — it is the whole basis of what follows, because complete BubR1 loss is embryonic lethal. Every child with this syndrome has residual protein.
 

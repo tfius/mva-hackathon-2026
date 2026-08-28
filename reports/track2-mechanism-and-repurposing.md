@@ -13,7 +13,7 @@ Track 1 calls biallelic *BUB1B*: `c.2210T>G p.Leu737Ter` (null) in trans with `c
 
 *BUB1B* encodes **BubR1**, 1050 aa (UniProt O60566): BUB1 N-terminal domain 62–226, protein kinase domain 766–1050, catalytic proton acceptor D882.
 
-- The **null allele** terminates at residue 737 — 29 residues *before* the kinase domain begins — with the premature termination codon 748 nt upstream of the final exon junction, so nonsense-mediated decay is predicted. This allele contributes nothing.
+- The **null allele** stops the product after residue 736 — 30 residues short of the kinase domain, which is lost entirely — with the premature termination codon 746 nt upstream of the final exon–exon junction (c.2957/c.2958), so nonsense-mediated decay is predicted. This allele contributes nothing.
 - The **missense allele** produces full-length protein carrying N1002K inside the kinase domain.
 
 The genotype is therefore **not a null**: it is a hypomorph carrying roughly half-dose, partly-impaired BubR1. That distinction is the whole basis of what follows. Complete BubR1 loss is embryonic lethal; every therapeutic hypothesis worth having here operates on residual protein that exists.

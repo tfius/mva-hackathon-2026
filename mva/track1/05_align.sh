@@ -28,6 +28,7 @@ REF="$REFS/GRCh38_no_alt.fa.gz"
 SAMPLE=WGS_EX2312012
 FLOWCELL=HGWCNDSX7
 mkdir -p "$WORK"
+cd "$WORK"   # so any tool that ignores -T still writes here, not into the repo
 
 # --- bwa-mem2 index. Peak RSS during construction is roughly 80 GB for GRCh38,
 #     so this deliberately runs on its own rather than alongside anything else.
@@ -51,11 +52,15 @@ done
 MERGED="$WORK/$SAMPLE.markdup.bam"
 if [[ ! -s "$MERGED" ]]; then
   echo "[$(date +%T)] merging, fixmate and marking duplicates"
+  # Every stage gets an explicit temp prefix under $WORK. Without -T, samtools
+  # sort spills tens of gigabytes into the current working directory, which for
+  # a backgrounded run is wherever it happened to be launched from - in this
+  # case the git repository.
   samtools merge -@ "$THREADS" -o - "$WORK/$SAMPLE".L00[1-4].bam \
     | samtools collate -@ "$SORT_THREADS" -O - "$WORK/collate.tmp" \
     | samtools fixmate -@ "$SORT_THREADS" -m - - \
-    | samtools sort -@ "$SORT_THREADS" -m "$SORT_MEM" - \
-    | samtools markdup -@ "$SORT_THREADS" - "$MERGED.tmp"
+    | samtools sort -@ "$SORT_THREADS" -m "$SORT_MEM" -T "$WORK/sort.tmp" - \
+    | samtools markdup -@ "$SORT_THREADS" -T "$WORK/markdup.tmp" - "$MERGED.tmp"
   mv "$MERGED.tmp" "$MERGED"
   samtools index -@ "$THREADS" "$MERGED"
 fi

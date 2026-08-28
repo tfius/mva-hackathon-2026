@@ -58,17 +58,11 @@ Repurposing candidates: metformin and other AMPK activators (extensive paediatri
 
 **Where it could fail.** The constitutional cells are aneuploid too, so "selective" is a matter of degree, not kind. 17-AAG's clinical record is mixed. AICAR itself is not a practical oral drug; metformin is a much weaker AMPK activator and the substitution is an assumption, not a result.
 
-## 4. What is contraindicated — the negative result that matters
+## 4. A prediction, stated before the model was run
 
-A weakened spindle assembly checkpoint is already the lesion. Any agent that weakens it further is not a candidate, it is a hazard:
+A hypomorphic spindle assembly checkpoint **is** the lesion, so agents that weaken it further — MPS1/TTK, Aurora B, PLK1, KIF11 inhibitors — are hazards rather than candidates. The full contraindication list and its clinical consequences are in §7.
 
-- **MPS1/TTK inhibitors** — directly target checkpoint signalling
-- **Aurora B inhibitors** — impair error correction at kinetochores
-- **KIF11/Eg5 and PLK1 inhibitors** — mitotic-arrest-dependent mechanisms that presuppose an intact checkpoint
-
-Two further clinical notes fall out of the mechanism. First, in a chromosomal-instability syndrome the standing question of **radiosensitivity and genotoxic-chemotherapy tolerance** should be treated as open rather than assumed. Second, drugs whose antitumour mechanism *requires* a functional checkpoint will underperform here on principle.
-
-Stating contraindications is not a hedge — a repurposing screen that cannot say what to avoid has not characterised the mechanism it claims to be reasoning from. This list is also a concrete, falsifiable prediction that the knowledge-graph model can be scored against: TxGNN emits contraindication probabilities as well as indications, and the checkpoint inhibitors above should rank high on the contraindication side.
+It is recorded here, before §5, because it is a falsifiable prediction about the knowledge-graph model: TxGNN emits contraindication probabilities as well as indications, so those agents should surface on the contraindication side. §5.5 reports what actually happened.
 
 ## 5. Knowledge-graph layer — TxGNN zero-shot
 
@@ -213,15 +207,43 @@ So `05_mechanism_anchored.py` asks the narrower question directly: starting from
 
 This is a reachability set, not a ranking, and its interpretation is bounded by that. But it recovers the mechanism the drug-level model could not, from the same graph.
 
-### 5.7 What is still to run
+### 5.9 What is still to run
 
 OptimusKG (192,813 nodes / 21,834,669 edges over 65 resources, ~5x PrimeKG's edges) as an independent evidence layer, with the specific question of whether it covers the NAD⁺ precursors PrimeKG cannot see. Retraining TxGNN on OptimusKG is the stretch goal and the honest answer to the Scalability criterion. DepMap for aneuploidy-selective dependencies; ChEMBL/Open Targets for tractability.
 
-### 5.8 Scoring
+## 6. Candidates
 
-Repurposing Feasibility = mechanistic support × evidence strength × paediatric safety record × availability, with each factor reported separately so a reader can disagree with one weight without discarding the analysis.
+> Restating what §0 said, because this is the section that will be read out of context: **these are hypotheses for follow-up, not evidence that a medicine works.** None has been tested in anyone with MVA1. Each would need mechanism confirmation in a model system, then a clinician, before it meant anything for a patient. The child in this case has an oncology team; nothing here is a substitute for it.
 
-## 6. References
+Feasibility is reported as four separate factors on a 1–5 scale rather than one number, so a reader can disagree with a weight without discarding the analysis. **Specificity** is how tightly the candidate follows from *this* genotype rather than from the disease category. **Evidence** is the strength and proximity of the published support. **Safety** is the paediatric record. **Access** is how readily it could actually be tried.
+
+| # | Candidate | Mechanism | Spec. | Evid. | Safety | Access | Where it breaks |
+|---|---|---|---|---|---|---|---|
+| 1 | **Nicotinamide riboside / NMN** | SIRT2 deacetylates BubR1 at K668, setting its abundance; NMN stabilised BubR1 in vivo. K668 is deleted on the null allele but **intact on p.Asn1002Lys**, so there is a substrate to stabilise | **5** | 3 | 4 | **5** | No human MVA data at all; mouse lifespan is not child healthspan; SIRT2 has context-dependent roles in cancer |
+| 2 | **Hydroxychloroquine** | Autophagy inhibition; chloroquine is one of three compounds identified as aneuploidy-selective. Aneuploid cells lean on autophagy to clear proteotoxic load | 3 | 3 | **5** | 4 | Constitutional cells are aneuploid too, so "selective" is degree not kind; retinal toxicity is dose-limiting |
+| 3 | **Dasatinib (+ quercetin)** | Senolytic clearance of p16^Ink4a-positive cells, which rescued skeletal muscle and adipose **in the BubR1 progeroid mouse** — the tissues this child is symptomatic in | 4 | 4 | 3 | 3 | BubR1^H/H mice are progeroid and a child is not; senescent burden may be low at this age; needs oncology sign-off given cancer predisposition |
+| 4 | **17-AAG / HSP90 inhibitors** | Proteotoxic stress in aneuploid cells; strongest in combination with AMPK activation | 3 | 3 | 2 | 2 | Tumour-directed only; mixed clinical record; little paediatric data |
+| 5 | *HDAC inhibitors* | Reachable from BUB1B via HDAC1–4, and BubR1 abundance is acetylation-controlled | 2 | 1 | 3 | 3 | **Direction of effect unresolved** — SIRT2 is class III and is not inhibited by these agents. Listed as a question, not a candidate |
+
+**Ranking, and why.** Candidate 1 is first on mechanistic specificity: it is the only hypothesis here that follows from the *particular alleles* rather than from "MVA is a chromosomal instability syndrome", and the only one that would not apply to a patient with two truncating alleles. Candidate 2 is first on safety and is the only one with two independent lines of support — Amon's aneuploidy screen and a top-3% TxGNN ranking reached with no aneuploidy input. Candidate 3 has the strongest published anchor of any of them, in the right gene and the right tissues, and the weakest age match.
+
+Candidates 1 and 2 are also the two that could be investigated without exposing anyone to anything: both are testable in patient-derived cells for BubR1 protein level and micronucleus rate before any clinical question arises. That is the next step this report actually recommends.
+
+## 7. Contraindications
+
+Stated as strongly as the candidates, because a repurposing analysis that cannot say what to avoid has not characterised its mechanism.
+
+A hypomorphic spindle assembly checkpoint **is** the lesion. Agents that weaken it further are hazards, not candidates:
+
+- **MPS1/TTK inhibitors** — target checkpoint signalling directly
+- **Aurora B inhibitors** — impair kinetochore error correction
+- **PLK1 and KIF11/Eg5 inhibitors** — mitotic-arrest-dependent mechanisms that presuppose an intact checkpoint
+
+This is not hypothetical caution. In PrimeKG the *only* spindle-checkpoint proteins carrying drug edges are AURKB, PLK1, TTK and CENPE — this list — while BUB1B and every other MVA gene carry none. One of the AURKB ligands in the graph is **reversine**, a tool compound used in the laboratory to induce aneuploidy. A knowledge-graph pipeline reasoning "find the pathway, find drugs against it" produces the contraindication list as its answer, with a clean subgraph behind it.
+
+Two clinical notes follow from the same mechanism. In a chromosomal-instability syndrome, **radiosensitivity and genotoxic-chemotherapy tolerance should be treated as open questions** rather than assumed. And any antitumour agent whose mechanism *requires* a functional checkpoint will underperform here on principle — which is worth knowing, because TxGNN ranks several of them in the top 1% of indications.
+
+## 8. References
 
 - North BJ, Rosenberg MA, Jeganathan KB, et al. SIRT2 induces the checkpoint kinase BubR1 to increase lifespan. *EMBO J* 33(13):1438–1453, 2014. [PMC4194088](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4194088/)
 - Baker DJ, Wijshake T, Tchkonia T, et al. Clearance of p16Ink4a-positive senescent cells delays ageing-associated disorders. *Nature* 479:232–236, 2011. [doi:10.1038/nature10600](https://www.nature.com/articles/nature10600)

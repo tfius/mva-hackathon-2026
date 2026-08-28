@@ -307,7 +307,7 @@ SA-β-galactosidase and p16^INK4a in patient fibroblasts, with and without dasat
 
 None of this requires a trial, an IND, or a decision about treating anyone.
 
-## 8. References
+## 9. References
 
 - North BJ, Rosenberg MA, Jeganathan KB, et al. SIRT2 induces the checkpoint kinase BubR1 to increase lifespan. *EMBO J* 33(13):1438–1453, 2014. [PMC4194088](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4194088/)
 - Baker DJ, Wijshake T, Tchkonia T, et al. Clearance of p16Ink4a-positive senescent cells delays ageing-associated disorders. *Nature* 479:232–236, 2011. [doi:10.1038/nature10600](https://www.nature.com/articles/nature10600)

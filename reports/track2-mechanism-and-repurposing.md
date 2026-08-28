@@ -347,7 +347,7 @@ The first three all aim at the same target — **more BubR1** — from three ind
 |---|---|---|---|---|---|---|---|
 | 1 | **Nicotinamide riboside / NMN** | Raise NAD⁺ → SIRT2 keeps K668 deacetylated → BubR1 stabilised. **K668 is deleted on the null allele but intact on p.Asn1002Lys**, so there is a substrate to act on | **5** | 3 | 4 | **5** | No human MVA data; mouse lifespan is not child healthspan; SIRT2 has context-dependent roles in cancer |
 | 2 | **CBP/p300 inhibitor** (A-485, CCS1477/inobrodib) | Inhibit the *writer* of the K668 mark and BubR1 should rise. The one case where an available inhibitor points the right way | **5** | 2 | **1** | 3 | **Direction unproven** — acetylation at K250 is reported to *stabilise* BubR1 via APC/C-Cdh1, so this could cut both ways. Strongly pleiotropic anticancer agents, no paediatric data |
-| 3 | **PTC readthrough** (ataluren, ELX-02) ± NMD inhibition | Attacks the *other* allele. `c.2210T>G` creates **TGA** — the most readthrough-permissive stop codon — so restoring even partial full-length protein raises total BubR1 above what the missense allele alone gives | 4 | 2 | 3 | 3 | NMD destroys the transcript before a ribosome reaches the PTC, so readthrough alone may have little substrate; ataluren's efficacy is contested; the +4 base here is A, an intermediate context |
+| 3 | **PTC readthrough** (ELX-02, aminoglycosides; ataluren) ± NMD inhibition | Attacks the *other* allele. `c.2210T>G` creates **TGA** — the most readthrough-permissive stop codon — so restoring even partial full-length protein raises total BubR1 above what the missense allele alone gives | 4 | **1** | 3 | **2** | **The one readthrough agent that reached market was withdrawn.** The EU did not renew ataluren's authorisation on 28 March 2025 after CHMP concluded effectiveness was not confirmed across four reviews; it survives only in the UK. NMD also destroys the transcript before a ribosome reaches the PTC, and the +4 base here is A, an intermediate context |
 | 4 | **Hydroxychloroquine** | Autophagy inhibition; chloroquine is one of three compounds identified as aneuploidy-selective. Aneuploid cells lean on autophagy to clear proteotoxic load | 3 | 3 | **5** | 4 | Constitutional cells are aneuploid too, so "selective" is degree not kind; retinal toxicity is dose-limiting |
 | 5 | **Dasatinib (+ quercetin)** | Senolytic clearance of p16^Ink4a-positive cells, which rescued skeletal muscle and adipose **in the BubR1 progeroid mouse** — the tissues this child is symptomatic in | 4 | 4 | 3 | 3 | BubR1^H/H mice are progeroid and a child is not; senescent burden may be low at this age; needs oncology sign-off given cancer predisposition |
 | — | *HDAC inhibitors* | Reachable from BUB1B via HDAC1–4, and BubR1 abundance is acetylation-controlled | 2 | 1 | 3 | 3 | **Direction unresolved** — SIRT2 is class III and is not inhibited by these agents. A question, not a candidate |
@@ -355,6 +355,12 @@ The first three all aim at the same target — **more BubR1** — from three ind
 **Why the order.** Candidates 1–3 are ranked above the aneuploidy-stress and senolytic routes because they treat the lesion rather than its consequences, and each is allele-specific in a way that would not transfer to a different MVA1 patient: candidate 1 needs an intact K668 on a full-length allele, candidate 3 needs a premature termination codon. A patient with two truncating alleles gets nothing from 1 or 2; a patient with two missense alleles gets nothing from 3. That specificity is the point.
 
 Candidate 2 carries the worst safety score in the table and is still ranked second, because it is the only route where a **clinically existing drug class points the right way at the right protein**. Its position reflects mechanistic value, not readiness.
+
+**On candidate 3 and the ataluren withdrawal.** This was scored 2/3 on evidence and access in an earlier draft, before checking the drug's regulatory status. The European Commission declined to renew Translarna's conditional authorisation on **28 March 2025**, following CHMP opinions in January 2024, June 2024, October 2024 and March 2025 that effectiveness had not been confirmed. That is considerably worse than "contested", and both scores are lowered accordingly.
+
+It does not, however, kill the mechanism. The failure was in Duchenne muscular dystrophy, where readthrough must restore **dystrophin** — a 427 kDa protein — in skeletal muscle, which is close to the hardest possible test. Readthrough of a UGA codon is well documented in vitro, ELX-02 and later agents continue in development, and BubR1 is a far smaller protein where a modest percentage restored could matter, because the deficit here is one of *dose* rather than complete absence.
+
+What the withdrawal really changes is the order of operations: it makes the cheap in vitro readthrough assay (**E6**, §8) the gate, rather than something to run after deciding the candidate is promising. Nobody should pursue this clinically without first knowing the readthrough efficiency at *this* stop codon in *this* context.
 
 **Candidates 1 and 3 are also the two that could be investigated without exposing anyone to anything** — both are testable in patient-derived cells for BubR1 protein level and micronucleus rate before any clinical question arises. That is the next step this report actually recommends.
 
@@ -374,7 +380,11 @@ This is not hypothetical caution. In PrimeKG the *only* spindle-checkpoint prote
 
 An earlier draft of this report listed **17-AAG / tanespimycin** as candidate 4, on the strength of Amon's aneuploidy-selective screen. That was wrong for *this* patient, and the review that caught it is worth showing rather than quietly fixing.
 
-HSP90 inhibition by 17-AAG causes **delocalisation of BUB1 and BUBR1 from kinetochores**, along with CENP-H, CENP-I, CENP-E and HEC1. In a child already carrying roughly half the normal BubR1 dose, a systemic HSP90 inhibitor attacks the very protein every other hypothesis in this report is trying to preserve. It belongs with the checkpoint inhibitors above.
+HSP90 inhibition by 17-AAG causes **delocalisation of BUB1 and BUBR1 from kinetochores**, together with CENP-H, CENP-I, CENP-E and HEC1. The relevant detail is *where* in the pathway this acts: HSP90, with its co-chaperone SGT1, is required for kinetochore **assembly** — it is upstream of checkpoint signalling, not part of it. So the effect is not a partial dampening of a signal but a failure to build the structure that generates it, and it hits BubR1 alongside the centromeric and outer-kinetochore proteins it must be recruited by.
+
+In a child already carrying roughly half the normal BubR1 dose, that attacks the very protein every other hypothesis in this report is trying to preserve, at the step before BubR1 can act. It belongs with the checkpoint inhibitors above.
+
+**Stated at the strength the evidence supports**: this is cell-biology evidence of kinetochore delocalisation, not clinical outcome data in MVA patients, of which there is none. It is sufficient to remove HSP90 inhibitors from a candidate list for this genotype. It is not a claim that any patient has been harmed, and it should not be quoted as one.
 
 The tension was visible in our own data and we did not connect it at first: §5.10 found **44 HSP90 ligands, all inhibitors**, and noted they point the wrong way for a folding-impaired client — while §3 was still proposing one as a therapy. Two sections of the same report disagreeing is exactly what a review pass is for.
 
@@ -405,7 +415,27 @@ Viability of patient versus control cells across a hydroxychloroquine and an AMP
 **E5 — Is there a senescent burden to clear?** *(tests H2, and the most likely to fail)*
 SA-β-galactosidase and p16^INK4a in patient fibroblasts, with and without dasatinib plus quercetin. `BubR1^H/H` mice are progeroid and a young child is not, so a low baseline senescent fraction would say the mouse result does not transfer at this age — which is worth knowing early, given that H2 otherwise has the strongest published anchor of the three.
 
-**Order and cost.** E1 and E2 are inexpensive, take weeks, and gate everything else: if the protein is not reduced or the checkpoint is not failing, nothing downstream is worth running. E3 is the highest-value experiment because it tests the hypothesis the knowledge graph could not even see. E5 is the cheapest way to retire a hypothesis that might not apply to a patient this young.
+**E6 — Is there anything left to read through?** *(gates candidate 3, and should run before anything else about it)*
+
+Candidate 3 has two independent failure points, and the cheaper one comes first.
+
+*E6a — allele-specific expression.* Amplify *BUB1B* across `c.2210` from both genomic DNA and cDNA in patient cells, and compare the allele ratio. gDNA gives 50:50 by definition. In cDNA, the fraction carrying the `T>G` nonsense allele **is** the fraction of nonsense transcript that survived nonsense-mediated decay. If it is near zero, readthrough agents have no substrate and candidate 3 collapses to "NMD inhibition first, then readthrough" — a much harder proposition. If a meaningful fraction survives, readthrough has something to act on. One PCR and one sequencing reaction decides this, and it decides it without any drug.
+
+*E6b — readthrough efficiency at this exact codon.* A dual-luciferase reporter, Renilla upstream and Firefly downstream of a stop cassette carrying the **patient's own context**, which GRCh38 gives as:
+
+```
+   …C A G A G   T G A   A G T G C C T C T G…
+              ▲  stop   ▲ +4 = A
+   wild type:   T T A  (Leu737)
+```
+
+Firefly/Renilla is readthrough efficiency. Three constructs are needed, not one: the patient's TGA cassette, a TAA cassette as the least-permissive comparator, and a no-stop construct for the 100% ceiling. Test against **G418/geneticin** as the field-standard positive control, then the agents actually of interest.
+
+Two things make this worth doing despite the ataluren withdrawal. The stop codon here is **TGA, the most permissive of the three**, which is a favourable starting point that a DMD trial result says nothing about. And the reporter isolates codon context from every confound — transcript stability, protein folding, cell type — so a negative result is clean and a positive one tells you the ceiling before anyone considers a patient.
+
+**On dosing, deliberately not specified.** Concentration ranges for aminoglycosides or ELX-02 in a child with a cancer-predisposition syndrome are a prescribing decision, not a hackathon output, and putting numbers in this document would invite exactly the misreading its opening paragraph warns against. E6b establishes *whether* readthrough occurs at this codon and at what ceiling; dose-finding belongs to whoever takes it further, with a clinician. What this report can legitimately assess under "Access" is regulatory status and availability — which is why candidate 3's access score moved from 3 to 2 once the ataluren withdrawal was checked.
+
+**Order and cost.** E1 and E2 gate everything: if the protein is not reduced or the checkpoint is not failing, nothing downstream is worth running. **E6a is the cheapest experiment in the list** — one PCR, one sequencing reaction, no drug — and it alone decides whether candidate 3 is viable or needs NMD inhibition bolted on first, so it should run alongside E1. E3 is the highest-value experiment, because it tests the hypothesis the knowledge graph could not see and reads the mechanism directly rather than only the outcome. E5 is the cheapest way to retire the hypothesis with the strongest published anchor, if a child this young simply has no senescent burden to clear.
 
 None of this requires a trial, an IND, or a decision about treating anyone.
 
@@ -420,4 +450,5 @@ None of this requires a trial, an IND, or a decision about treating anyone.
 - Niikura Y, et al. 17-AAG causes delocalisation of central and outer kinetochore proteins and spindle-checkpoint components including BUB1 and BUBR1. (HSP90 inhibition and kinetochore assembly.)
 - Davies FE, et al. / Bordeleau M-E, et al. Premature-termination-codon readthrough: ataluren and ELX-02. UGA is the most readthrough-permissive stop codon.
 - Lasko M, et al. CBP/p300 catalytic inhibition: A-485; CCS1477 (inobrodib), clinical stage.
+- European Commission, 28 March 2025: marketing authorisation for Translarna (ataluren) not renewed, following CHMP opinions of January 2024, June 2024, October 2024 and March 2025 that effectiveness was not confirmed. Remains available in the UK.
 - UniProt O60566 (BUB1B_HUMAN). Codon 737 is TTA in GRCh38; `c.2210T>G` yields TGA.

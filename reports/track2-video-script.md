@@ -1,6 +1,6 @@
 # Track 2 — three-minute pitch script
 
-Total 486 spoken words. Section timings are derived from the word counts at 160 wpm, landing at 3:02; at a relaxed 150 wpm it runs 3:14, so keep the pace up. Nothing here is said that the report does not support.
+Total 492 spoken words. Section timings are derived from those counts at 160 wpm, landing at 3:04; at a relaxed 150 wpm it runs 3:16, so keep the pace up. Nothing here is said that the report does not support.
 
 ---
 
@@ -38,17 +38,19 @@ And the checkpoint proteins that *are* druggable — Aurora B, PLK1, TTK — are
 
 Find the pathway, find drugs against it, and you get the contraindication list.
 
-**[1:52–2:31] What we propose instead** · 103 words · 39s
+**[1:52–2:33] What we propose instead** · 109 words · 41s
 
 Reach the protein indirectly.
 
-BubR1's abundance is set by acetylation at lysine 668 — written by CBP, erased by the NAD-dependent deacetylase SIRT2. In BubR1 mice, boosting NAD stabilised BubR1 in vivo, and SIRT2 overexpression raised median lifespan 58 percent.
+BubR1's abundance is set by acetylation at lysine 668 — written by CBP, erased by the NAD-dependent deacetylase SIRT2. So there are two ways up.
 
-Why that matters for *this* child: K668 is deleted on the null allele and intact on the missense one. There is a substrate to stabilise. A patient with two truncating alleles gets nothing from this. This one might.
+Raise NAD, and SIRT2 keeps the mark off — in BubR1 mice that stabilised BubR1 in vivo. Or inhibit the writer: CBP/p300 inhibitors exist and are in trials. An inhibitor pointed the right way.
 
-PrimeKG contains BUB1B–SIRT2 and BUB1B–CBP. It encodes the mechanism, and lacks only the drug edge, because nicotinamide riboside is a supplement. One edge away, and blind.
+Why this child specifically — K668 is deleted on the null allele and intact on the missense one. There is a substrate to stabilise. Two truncating alleles would get nothing from this.
 
-**[2:31–3:02] How we would be proven wrong** · 83 words · 31s
+And PrimeKG already knows CBP touches BubR1. It cannot say which direction helps. That is the gap.
+
+**[2:33–3:04] How we would be proven wrong** · 83 words · 31s
 
 None of this is a treatment recommendation. They are hypotheses, each falsifiable in patient cells within weeks.
 

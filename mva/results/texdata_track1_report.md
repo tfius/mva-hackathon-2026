@@ -7,6 +7,9 @@ Team `texdata` · GRCh38 · 28 August 2026
 
 ## 1. The call
 
+> **Result: submitted 28 August 2026 and scored against the clinically confirmed answer key — rank points 100.0/100, F-max 1.000, full match at rank 1.** The key is a two-variant pair and it is this pair; the hedge rows in §6 never came into play, and the F-max threshold landed at 0.95, the rank-1 row.
+
+
 **Biallelic *BUB1B* (15q15.1) — mosaic variegated aneuploidy syndrome 1 (MVA1, MIM 257300), autosomal recessive, compound heterozygous.**
 
 | | Allele A | Allele B |

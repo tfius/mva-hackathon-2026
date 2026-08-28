@@ -207,9 +207,46 @@ So `05_mechanism_anchored.py` asks the narrower question directly: starting from
 
 This is a reachability set, not a ranking, and its interpretation is bounded by that. But it recovers the mechanism the drug-level model could not, from the same graph.
 
-### 5.9 What is still to run
+### 5.9 OptimusKG — does a bigger graph close either gap?
 
-OptimusKG (192,813 nodes / 21,834,669 edges over 65 resources, ~5x PrimeKG's edges) as an independent evidence layer, with the specific question of whether it covers the NAD⁺ precursors PrimeKG cannot see. Retraining TxGNN on OptimusKG is the stretch goal and the honest answer to the Scalability criterion. DepMap for aneuploidy-selective dependencies; ChEMBL/Open Targets for tractability.
+OptimusKG (Zitnik lab, April 2026) is the newer graph: 190,531 nodes and 21,813,816 edges over 65 sources grounded in 18 ontologies, against PrimeKG's 129k / 4.05M. `04_optimuskg_coverage.py` asks the only two questions worth asking of it here. Both are answerable by counting, without retraining anything.
+
+*Access note: the Harvard Dataverse endpoint returns 403 to the default `python-requests` User-Agent while serving the identical URL to curl. Nothing is restricted — the UA string is on a block list — and the script patches it rather than the installed package.*
+
+**Gap 1 — BUB1B's missing drug edges: not closed, and that is the finding.**
+
+| Gene | PrimeKG edges | OptimusKG edges | OptimusKG drug edges |
+|---|---|---|---|
+| BUB1B | 464 | **1,975** | **0** |
+| BUB1 | 492 | 1,585 | **0** |
+| BUB3 | 468 | 809 | **0** |
+| CEP57 | 426 | 790 | **0** |
+| TRIP13 | 516 | 1,287 | **0** |
+| AURKB | 762 | 1,663 | 4 — enzastaurin, fostamatinib, hesperidin, **reversine** |
+| PLK1 | 962 | 1,911 | 4 — wortmannin, fostamatinib … |
+| TTK | 288 | 1,212 | 3 |
+
+A graph four times denser around BUB1B, assembled from 65 independent sources, still has **no drug edge on it** — and still has the contraindicated checkpoint proteins as the druggable ones, reversine included. This is no longer a PrimeKG idiosyncrasy that a better graph might fix. **BubR1 is undrugged, and the pharmacology of the spindle checkpoint points the wrong way for this patient.** Any repurposing approach here has to reach the protein indirectly — which is exactly what hypotheses H1 and H2 do, and exactly what a target-centric pipeline cannot.
+
+**Gap 2 — the NAD⁺ precursors: closed, and more besides.**
+
+| Compound | PrimeKG | OptimusKG |
+|---|---|---|
+| Nicotinamide riboside | absent | **CHEMBL438497** |
+| Acadesine (AICAR) | absent | **CHEMBL1551724** |
+| Tanespimycin (17-AAG) | absent | CHEMBL109480 |
+| Navitoclax, fisetin, quercetin | absent | present |
+| Nicotinamide mononucleotide, NADH | absent | absent |
+
+OptimusKG carries the chemical space PrimeKG could not evaluate — including **acadesine, the actual compound from Amon's aneuploidy screen**, for which metformin was a weak substitute in the PrimeKG run. Retraining TxGNN on OptimusKG would let H1 and H3 be scored properly rather than declared untestable. That is now an evidence-backed Scalability argument rather than an aspirational one.
+
+**And one sharp negative.** SIRT2 does have a drug edge in OptimusKG, to **cambinol** — a SIRT1/2 *inhibitor*, the opposite of what H1 needs. There is no SIRT2 activator anywhere in the graph. So H1 cannot be pursued as a direct-target intervention at all; it has to work at the substrate level, by raising NAD⁺ supply. The graph did not nominate that hypothesis, but it does constrain how the hypothesis can be executed — which is a fair description of what a knowledge graph is actually good for on a disease like this one.
+
+MVA maps to `MONDO_0000141` in OptimusKG, so a retrained model has a disease node to query.
+
+### 5.10 What is still to run
+
+DepMap for aneuploidy-selective genetic dependencies; ChEMBL and Open Targets for tractability on the reachable set; and a TxGNN retrained on OptimusKG, which §5.9 shows is now worth the compute rather than merely bigger.
 
 ## 6. Candidates
 

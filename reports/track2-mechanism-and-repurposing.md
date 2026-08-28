@@ -391,6 +391,49 @@ What the withdrawal really changes is the order of operations: it makes the chea
 
 **Candidates 1 and 3 are also the two that could be investigated without exposing anyone to anything** — both are testable in patient-derived cells for BubR1 protein level and micronucleus rate before any clinical question arises. That is the next step this report actually recommends.
 
+### 6.1 A pharmacogenomic screen, because the genome was already sequenced
+
+The *MT-RNR1* check above was one locus pair chosen because it bore on a candidate. Running it properly costs one more query, and the justification is not the repurposing hypotheses at all — **this child is receiving oncology care now**: cytotoxics, anaesthesia, antifungal and antibacterial cover through neutropenia. Every one of those has a CPIC-level guideline, and the genotype needed to apply it is already in the diagnostic VCF.
+
+`08_pharmacogenomics.py` screens 17 loci across DPYD, TPMT, NUDT15, G6PD, CYP2C19, CYP3A5, SLCO1B1, F5 and F2, with **read depth checked at every position** — because a locus with no coverage produces no call, exactly like a homozygous-reference locus, and reporting the two identically is how a screen lies.
+
+| Gene | Result | Depth | Bearing on this child |
+|---|---|---|---|
+| **F5 Leiden** (rs6025) | **heterozygous** C>T, AD 27,27 | 59× | **Actionable.** Central venous access plus chemotherapy is a strongly prothrombotic setting |
+| CYP2C19 | ***2/*17** diplotype (*2 het, *17 het, *3 ref) | 44–50× | Intermediate metaboliser. Informative, **not** actionable for voriconazole — that concern sits at the poor-metaboliser end, which this child is not |
+| CYP3A5 | ***3/*3** homozygous | 50× | Non-expressor. Common (~85% in Europeans); matters only if tacrolimus is ever used |
+| **DPYD** (*2A, *13, c.2846A>T, HapB3) | all reference | 42–53× | **No fluoropyrimidine toxicity risk allele.** Directly relevant: TxGNN ranked fluorouracil 6th |
+| TPMT (*2, *3B, *3C), NUDT15 *3 | all reference | 34–65× | No thiopurine risk allele |
+| G6PD (A− 202A, A 376G) | reference | 24–29× | No haemolysis risk with rasburicase for tumour lysis |
+| **MT-RNR1** m.1555A>G, m.1494C>T | reference | **4,497× / 4,152×** | No mitochondrial predisposition to aminoglycoside deafness |
+| F2 20210G>A, SLCO1B1 *5 | reference | 37–38× | — |
+
+**Named as not assessable rather than silently omitted:** CYP2D6 star alleles (structural variation and CYP2D7 gene conversion), UGT1A1*28 (a promoter TA repeat — and irinotecan is in the VIT regimen used for rhabdomyosarcoma, so this is a real gap, not a trivial one), and HLA-B typing. Short-read WGS cannot do these honestly without dedicated tools.
+
+#### 6.1.1 The methodological finding: `drug_response` is invisible to a standard filter
+
+Factor V Leiden **was in the Track 1 ClinVar output the whole time.** It was excluded because that scan filtered on `CLNSIG ~ Pathogenic|Likely_pathogenic`, and ClinVar classifies Factor V Leiden as:
+
+```
+ID=642   CLNSIG=drug_response   CLNREVSTAT=reviewed_by_expert_panel
+CLNDN=Thrombophilia_due_to_activated_protein_C_resistance | Budd-Chiari_syndrome |
+      Ischemic_stroke | Pregnancy_loss,_recurrent,_susceptibility_to,_1 | …
+```
+
+Reviewed by expert panel — the highest ClinVar review status — and carrying thrombophilia and recurrent pregnancy loss as its disease terms, yet **not** matched by the Pathogenic/Likely_pathogenic filter that essentially every secondary-findings pipeline uses, this one included.
+
+So a standard clinical filter silently discards the entire `drug_response` and `risk_factor` classes: every pharmacogenomic variant, and risk alleles like this one. That is a generalisable defect, it cost us a real finding in Track 1, and the fix is one character of regex. It is reported here rather than quietly corrected because the failure is more useful than the correction.
+
+#### 6.1.2 A second explanation for the family's reproductive history — stated carefully
+
+The Track 1 report reads the parents' recurrent miscarriage as on-mechanism for a recessive chromosome-segregation disorder: carrier parents, aneuploid conceptuses. That reading stands.
+
+But Factor V Leiden is heterozygous in this child, so **at least one parent carries it**, and `Pregnancy_loss,_recurrent,_susceptibility_to,_1` is among its ClinVar disease terms. The two explanations are not mutually exclusive, and if the carrier parent is the mother, the second one is separately manageable in a way the first is not.
+
+**The honest strength of this claim is "worth testing", not "explains".** The association between Factor V Leiden and recurrent pregnancy loss is real but modest and contested, meta-analyses disagree, and major obstetric guidelines do not universally recommend thrombophilia screening for recurrent loss. Determining which parent carries the variant is a single cheap test, and it is the kind of question a family who donated a genome to strangers might reasonably want asked.
+
+It also arrived from a pharmacogenomic screen run for a completely different reason, which is the argument for running one at all.
+
 ## 7. Contraindications
 
 Stated as strongly as the candidates, because a repurposing analysis that cannot say what to avoid has not characterised its mechanism.
@@ -466,7 +509,63 @@ Two things make this worth doing despite the ataluren withdrawal. The stop codon
 
 None of this requires a trial, an IND, or a decision about treating anyone.
 
-## 9. References
+## 9. From one genotype to a therapeutic hierarchy
+
+The diagnosis in Track 1 is usually treated as the endpoint. Here it is the thing that partitions the therapeutic space, and it does so **allele by allele** — which is the organising claim of this report and the reason a confirmed call mattered so much.
+
+```
+  chr15:40209701 T>G                          chr15:40220612 T>G
+  c.2210T>G  p.Leu737Ter                      c.3006T>G  p.Asn1002Lys
+  TTA → TGA, exon 17/23                       kinase domain, exon 23/23
+  NMD-targeted, 746 nt upstream               full length, K668 INTACT
+  of the last junction                        AlphaMissense 0.923
+         │                                             │
+         │ a premature termination codon               │ a protein that exists
+         │ is a druggable substrate                    │ and can be stabilised
+         ▼                                             ▼
+  ┌──────────────────────┐              ┌────────────────────────────────┐
+  │ CANDIDATE 3          │              │ CANDIDATE 1  NAD⁺ → SIRT2      │
+  │ PTC readthrough      │              │ CANDIDATE 2  inhibit CBP/p300  │
+  │ TGA = most permissive│              │ both act on the K668 mark      │
+  │ gated by E6a (NMD)   │              │ gated by E1/E3                 │
+  └──────────────────────┘              └────────────────────────────────┘
+         └──────────────────┬──────────────────────────┘
+                            ▼
+              the compound-heterozygous state itself
+              — reduced BubR1 dose, CIN, senescence —
+          ┌─────────────────────────────────────────────┐
+          │ CANDIDATE 4  hydroxychloroquine             │
+          │ CANDIDATE 5  senolytics                     │
+          │ treat the consequence, not the lesion       │
+          └─────────────────────────────────────────────┘
+                            │
+                   ✗ CONTRAINDICATED  MPS1/TTK · Aurora B · PLK1 · KIF11 · HSP90i
+                     every one of them worsens a checkpoint already at half dose
+```
+
+**Why this is not a rhetorical device.** Each branch is allele-specific in a falsifiable way, and would be *wrong* for a different MVA1 patient:
+
+- A patient with **two truncating alleles** gets nothing from candidates 1 or 2. There is no K668 to keep deacetylated, because there is no full-length protein. They would be a candidate 3 patient exclusively.
+- A patient with **two missense alleles** gets nothing from candidate 3. There is no premature termination codon to read through.
+- **This child is the only configuration where all three routes are simultaneously live**, because they carry exactly one of each.
+
+That is what "precision" should mean in a repurposing report and usually does not. The common failure is to name a disease and then propose drugs for the disease. Here the two alleles license different interventions, and the report can say which patient each one would fail in.
+
+**The hierarchy, in the order it should actually be attempted.**
+
+| | | Gate |
+|---|---|---|
+| **1** | Establish the premise — is BubR1 actually reduced, is the checkpoint actually failing | **E1, E2** |
+| **2** | Candidate 1 — NAD⁺ precursors. Best specificity, best evidence, best access, and the mechanism is directly observable | **E3**, reading the K668 mark with SIRT2 knockdown as control |
+| **3** | Candidate 3 — readthrough, but only after **E6a** says the nonsense transcript survives NMD at all. One PCR decides it |
+| **4** | Candidate 2 — CBP/p300 inhibition. Strongest mechanism-to-drug match in the report, worst safety profile. A cell-culture question long before a clinical one |
+| **5** | Candidates 4 and 5 — consequence-directed, and useful mainly if the lesion-directed routes fail |
+
+Nothing above step 1 is a treatment decision, and steps 2–4 are all cell-culture experiments before they are anything else.
+
+**What Track 1 contributed beyond the diagnosis.** The same WGS, already sequenced and already paid for, answered three further questions at no marginal cost: it excluded structural variants at the locus, it bounded mosaic aneuploidy from two independent modalities, and — §6 — it excluded the mitochondrial variants that would have made an aminoglycoside dangerous. A genome sequenced to find a diagnosis keeps paying out afterwards, and that is the most scalable finding here.
+
+## 10. References
 
 - North BJ, Rosenberg MA, Jeganathan KB, et al. SIRT2 induces the checkpoint kinase BubR1 to increase lifespan. *EMBO J* 33(13):1438–1453, 2014. [PMC4194088](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4194088/)
 - Baker DJ, Wijshake T, Tchkonia T, et al. Clearance of p16Ink4a-positive senescent cells delays ageing-associated disorders. *Nature* 479:232–236, 2011. [doi:10.1038/nature10600](https://www.nature.com/articles/nature10600)

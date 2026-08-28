@@ -242,7 +242,31 @@ OptimusKG carries the chemical space PrimeKG could not evaluate — including **
 
 **And one sharp negative.** SIRT2 does have a drug edge in OptimusKG, to **cambinol** — a SIRT1/2 *inhibitor*, the opposite of what H1 needs. There is no SIRT2 activator anywhere in the graph. So H1 cannot be pursued as a direct-target intervention at all; it has to work at the substrate level, by raising NAD⁺ supply. The graph did not nominate that hypothesis, but it does constrain how the hypothesis can be executed — which is a fair description of what a knowledge graph is actually good for on a disease like this one.
 
-MVA maps to `MONDO_0000141` in OptimusKG, so a retrained model has a disease node to query.
+MVA maps to `MONDO_0000141` in OptimusKG, so a retrained model would have a disease node to query.
+
+**But retraining is not the upgrade worth buying.** `06_optimuskg_mechanism_anchored.py` runs §5.8's reachability question against OptimusKG instead — one pass over the edge table, no training — and the result reframes the whole gap.
+
+| | PrimeKG | OptimusKG |
+|---|---|---|
+| BUB1B protein interactors | 95 | 96 |
+| Drugs reachable from the five MVA genes | 592 | 459 |
+| Nicotinamide riboside reachable | node absent | **node present, still not reachable** |
+| Acadesine, chloroquine, metformin, dasatinib | not reachable | **not reachable** |
+| Tanespimycin (17-AAG) | node absent | **reachable** via CEP57–HSP90AA1 |
+| Quercetin | not reachable | **reachable** via HSP90AA1 and UBA1 |
+| Only drug reaching SIRT2 | none | **cambinol — an inhibitor** |
+
+Three things fall out.
+
+**The NAD⁺ gap is not about graph size.** Nicotinamide riboside, nicotinamide and niacin are all *nodes* in OptimusKG, and none of them is reachable from the MVA genes, because none carries a drug–target edge into the SIRT2 neighbourhood. The only molecule with an edge to SIRT2 in either graph is cambinol, an inhibitor, pointing the wrong way.
+
+The reason is structural and general: **an intervention that acts on a substrate pool rather than a protein target is invisible to a target-centric knowledge graph.** Nicotinamide riboside does not bind SIRT2 — it raises the NAD⁺ that SIRT2 consumes. There is no edge type in either graph for "increases the availability of a cofactor this enzyme requires". Making the graph five times larger does not help, and neither would retraining on it. This is a coverage limit of the *schema*, not of the data, and it will apply to every nutrient, cofactor and metabolic intervention anyone tries to repurpose this way.
+
+**H3 does gain real support.** Tanespimycin becomes reachable through **CEP57–HSP90AA1**, which is a genuine mechanistic route rather than a hub detour: 17-AAG is an HSP90 inhibitor, HSP90 interacts with an MVA gene product, and proteotoxic stress is the published basis of the hypothesis. Quercetin arrives by the same HSP90 route. Chloroquine, acadesine and metformin remain unreachable — their targets are autophagy and AMPK machinery, which are not protein interactors of the checkpoint.
+
+**The contraindication flag reproduces across two independent graphs.** Reversine, enzastaurin, fostamatinib, hesperidin and wortmannin all fire, targeting AURKB, PLK1 and TTK, along with unnamed ChEMBL PLK1 and TTK inhibitors. That is the same warning derived twice from separately assembled resources, which is about as much corroboration as this kind of analysis can offer.
+
+Note also that the *smaller* number of reachable drugs in the larger graph — 459 against 592 — is a point in OptimusKG's favour, not against it: its drug–target annotations are more conservative, and the PrimeKG excess is largely promiscuous edges.
 
 ### 5.10 What is still to run
 

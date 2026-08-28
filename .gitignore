@@ -1,0 +1,26 @@
+# ---- patient data: NEVER commit. Deleted after the hackathon per the data-use terms.
+data
+data/
+/mnt/
+*.vcf
+*.vcf.gz
+*.vcf.gz.tbi
+*.fastq
+*.fastq.gz
+*.bam
+*.bai
+*.cram
+*.crai
+*.docx
+
+# ---- large third-party checkouts and reference data
+external/
+refs/
+work/
+scratch/
+
+# ---- python
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/

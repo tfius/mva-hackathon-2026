@@ -1,0 +1,770 @@
+<title>LIGAND-AI Data Landscape</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+
+<style>
+:root{
+  --ground:#EDF0F1;
+  --surface:#FFFFFF;
+  --surface-2:#F5F7F8;
+  --ink:#10171D;
+  --muted:#59686F;
+  --line:#D0D9DD;
+  --line-soft:#E2E8EA;
+  --accent:#0E6E72;
+  --accent-soft:#D9EAEA;
+  --rust:#A0501F;
+  --rust-soft:#F2E4D9;
+  --moss:#3A6742;
+  --moss-soft:#DFEADF;
+  --shadow:0 1px 2px rgba(16,23,29,.05), 0 8px 24px -16px rgba(16,23,29,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0B1012;
+    --surface:#121A1D;
+    --surface-2:#162024;
+    --ink:#E3EBED;
+    --muted:#8A9BA2;
+    --line:#243035;
+    --line-soft:#1C262A;
+    --accent:#54B5B1;
+    --accent-soft:#12312F;
+    --rust:#CE8A5E;
+    --rust-soft:#2E2118;
+    --moss:#7FB98A;
+    --moss-soft:#182618;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0B1012;
+  --surface:#121A1D;
+  --surface-2:#162024;
+  --ink:#E3EBED;
+  --muted:#8A9BA2;
+  --line:#243035;
+  --line-soft:#1C262A;
+  --accent:#54B5B1;
+  --accent-soft:#12312F;
+  --rust:#CE8A5E;
+  --rust-soft:#2E2118;
+  --moss:#7FB98A;
+  --moss-soft:#182618;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{
+  max-width:1360px;
+  margin:0 auto;
+  padding:0 28px 96px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:0;
+}
+
+@media (min-width:1120px){
+  .wrap{grid-template-columns:210px minmax(0,1fr);column-gap:56px;align-items:start}
+  .masthead{grid-column:1 / -1}
+  .rail{position:sticky;top:32px;display:block}
+  .doc{grid-column:2}
+}
+
+/* ---------- masthead ---------- */
+.masthead{
+  padding:64px 0 40px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:44px;
+}
+.kicker{
+  font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:11.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin:0 0 18px;
+  font-weight:500;
+}
+h1{
+  font-family:Archivo,"Helvetica Neue",Arial,sans-serif;
+  font-weight:700;
+  font-size:clamp(38px,5.4vw,64px);
+  line-height:1.02;
+  letter-spacing:-.025em;
+  margin:0 0 20px;
+  text-wrap:balance;
+  max-width:16ch;
+}
+.standfirst{
+  font-size:20px;
+  line-height:1.5;
+  color:var(--muted);
+  max-width:64ch;
+  margin:0 0 36px;
+}
+.standfirst strong{color:var(--ink);font-weight:600}
+
+.facts{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(148px,1fr));
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:3px;
+  overflow:hidden;
+}
+.fact{background:var(--surface);padding:16px 18px}
+.fact .n{
+  font-family:Archivo,sans-serif;
+  font-weight:600;
+  font-size:26px;
+  letter-spacing:-.02em;
+  line-height:1.1;
+  font-variant-numeric:tabular-nums;
+  display:block;
+}
+.fact .l{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:10.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-top:6px;
+  display:block;
+}
+
+/* ---------- rail ---------- */
+.rail{display:none}
+.rail nav{
+  border-left:1px solid var(--line);
+  padding-left:16px;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+.rail a{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11.5px;
+  letter-spacing:.03em;
+  color:var(--muted);
+  text-decoration:none;
+  line-height:1.35;
+}
+.rail a:hover,.rail a:focus-visible{color:var(--accent)}
+
+/* ---------- sections ---------- */
+section{margin:0 0 64px;scroll-margin-top:24px}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin:0 0 10px;
+}
+h2{
+  font-family:Archivo,sans-serif;
+  font-weight:600;
+  font-size:clamp(24px,3vw,31px);
+  letter-spacing:-.02em;
+  line-height:1.15;
+  margin:0 0 8px;
+  text-wrap:balance;
+}
+h3{
+  font-family:Archivo,sans-serif;
+  font-weight:600;
+  font-size:18px;
+  letter-spacing:-.008em;
+  margin:36px 0 10px;
+}
+.lede{color:var(--muted);max-width:70ch;margin:0 0 26px;font-size:17.5px}
+p{max-width:70ch;margin:0 0 16px}
+a{color:var(--accent);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+strong{font-weight:600}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:.88em}
+p code,li code,td code{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:3px;padding:1px 5px}
+
+ul{max-width:70ch;padding-left:20px;margin:0 0 18px}
+li{margin-bottom:7px}
+
+/* ---------- tables ---------- */
+.scroller{
+  overflow-x:auto;
+  border:1px solid var(--line);
+  border-radius:3px;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  margin:0 0 14px;
+}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th,td{
+  text-align:left;
+  padding:11px 16px;
+  border-bottom:1px solid var(--line-soft);
+  vertical-align:top;
+  font-size:15px;
+}
+thead th{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:10.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:500;
+  background:var(--surface-2);
+  border-bottom:1px solid var(--line);
+  white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:none}
+td.t{font-family:"IBM Plex Mono",monospace;font-size:13.5px;font-weight:500;white-space:nowrap}
+td.num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;font-size:13.5px}
+td.dim{color:var(--muted)}
+caption{caption-side:bottom;text-align:left;color:var(--muted);font-size:13.5px;padding:10px 2px 0;line-height:1.45}
+
+/* ---------- status pills ---------- */
+.pill{
+  display:inline-block;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:10.5px;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  padding:3px 8px;
+  border-radius:2px;
+  white-space:nowrap;
+  font-weight:500;
+}
+.pill.open{background:var(--moss-soft);color:var(--moss);border:1px solid color-mix(in srgb,var(--moss) 34%,transparent)}
+.pill.gated{background:var(--rust-soft);color:var(--rust);border:1px solid color-mix(in srgb,var(--rust) 34%,transparent)}
+.pill.err{background:var(--accent-soft);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 34%,transparent)}
+
+/* ---------- target grid ---------- */
+.targets{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(196px,1fr));
+  gap:1px;
+  background:var(--line-soft);
+  border:1px solid var(--line);
+  border-radius:3px;
+  overflow:hidden;
+  margin-bottom:14px;
+}
+.targets span{
+  background:var(--surface);
+  padding:7px 11px;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11.5px;
+  color:var(--ink);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.targets span b{font-weight:600;color:var(--accent)}
+
+/* ---------- code ---------- */
+pre{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:3px;
+  padding:16px 18px;
+  overflow-x:auto;
+  margin:0 0 14px;
+  box-shadow:var(--shadow);
+  line-height:1.6;
+}
+pre code{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:13px;
+  background:none;
+  border:none;
+  padding:0;
+  color:var(--ink);
+}
+pre .c{color:var(--muted)}
+
+/* ---------- callout ---------- */
+.note{
+  border:1px solid var(--line);
+  border-left:3px solid var(--rust);
+  background:var(--surface);
+  border-radius:3px;
+  padding:16px 20px;
+  margin:0 0 18px;
+  max-width:74ch;
+}
+.note p{margin:0;font-size:16px}
+.note .h{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:10.5px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--rust);
+  display:block;
+  margin-bottom:6px;
+}
+
+/* ---------- steps ---------- */
+.steps{list-style:none;padding:0;margin:0;max-width:74ch;counter-reset:s}
+.steps li{
+  counter-increment:s;
+  display:grid;
+  grid-template-columns:34px 1fr;
+  gap:14px;
+  padding:16px 0;
+  border-bottom:1px solid var(--line-soft);
+  margin:0;
+}
+.steps li:last-child{border-bottom:none}
+.steps li::before{
+  content:counter(s);
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12px;
+  color:var(--accent);
+  border:1px solid var(--line);
+  border-radius:2px;
+  width:26px;height:26px;
+  display:grid;place-items:center;
+  margin-top:2px;
+}
+.steps h4{
+  font-family:Archivo,sans-serif;
+  font-size:16px;
+  font-weight:600;
+  margin:0 0 4px;
+}
+.steps p{margin:0;color:var(--muted);font-size:16px}
+
+footer{
+  border-top:1px solid var(--line);
+  padding-top:24px;
+  color:var(--muted);
+  font-size:14.5px;
+}
+footer p{max-width:74ch}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="kicker">Survey · ligand-ai.org and its data ecosystem</p>
+    <h1>LIGAND-AI Data Landscape</h1>
+    <p class="standfirst">What the IHI LIGAND-AI programme actually publishes today, which datasets and models are downloadable without an account — including the folding and NVIDIA BioNeMo stacks around it — and <strong>what can run on the local box</strong>: 2× RTX PRO 6000 Blackwell, 24-core Threadripper, 123 GB RAM.</p>
+    <div class="facts">
+      <div class="fact"><span class="n">22</span><span class="l">DEL datasets</span></div>
+      <div class="fact"><span class="n">92</span><span class="l">E-ASMS screens</span></div>
+      <div class="fact"><span class="n">15</span><span class="l">Open, no login</span></div>
+      <div class="fact"><span class="n">~6 GB</span><span class="l">DEL parquet total</span></div>
+      <div class="fact"><span class="n">6.8 GB</span><span class="l">DELBERT corpus</span></div>
+      <div class="fact"><span class="n">4</span><span class="l">Pretrained models</span></div>
+    </div>
+  </header>
+
+  <aside class="rail">
+    <nav>
+      <a href="#finding">The finding</a>
+      <a href="#ecosystem">Where data lives</a>
+      <a href="#del">DEL datasets</a>
+      <a href="#easms">E-ASMS targets</a>
+      <a href="#challenge">Challenge data</a>
+      <a href="#models">Models &amp; code</a>
+      <a href="#folding">Folding stack</a>
+      <a href="#nvidia">NVIDIA BioNeMo</a>
+      <a href="#access">Getting the data</a>
+      <a href="#schema">Column dictionary</a>
+      <a href="#hardware">Hardware &amp; storage</a>
+      <a href="#plan">Suggested first runs</a>
+      <a href="#sources">Sources</a>
+    </nav>
+  </aside>
+
+  <main class="doc">
+
+    <section id="finding">
+      <p class="eyebrow">ligand-ai.org</p>
+      <h2>The site is a programme page, not a data portal</h2>
+      <p class="lede">Nothing is downloadable from ligand-ai.org itself. Every asset it describes is hosted elsewhere.</p>
+      <p>LIGAND-AI is an Innovative Health Initiative project (grant 101252959) led by Pfizer and the Structural Genomics Consortium, with partners across nine countries. The public site is a React SPA with seven content routes — <code>/about</code>, <code>/work-packages</code>, <code>/partners</code>, <code>/resources</code>, <code>/protocol</code>, <code>/news</code>, <code>/contact</code>. The news feed is empty ("check back soon"); <code>/resources</code> is a link board pointing outward.</p>
+      <p>The stated programme scope is worth knowing because it tells you what will land over the next few years: ligandability data for <strong>2,000 purified human proteins</strong> by Enantioselective Affinity Selection Mass Spectrometry, at least 200 newly purified proteins, 500 community-contributed targets, two open-source DNA-encoded libraries, and open benchmarking runs with CASP, CACHE and DREAM. All of it is committed to release in "AI-ready formats" via AIRCHECK.</p>
+      <p>So the practical question — what can run here today — resolves entirely into AIRCHECK plus the code repos around it.</p>
+    </section>
+
+    <section id="ecosystem">
+      <p class="eyebrow">Link map</p>
+      <h2>Where the assets actually live</h2>
+      <div class="scroller">
+        <table>
+          <thead>
+            <tr><th>Resource</th><th>What it holds</th><th>Access</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="t"><a href="https://aircheck.ai">aircheck.ai</a></td><td>DEL + E-ASMS screening datasets, trained models, challenge data. <strong>The only thing here with bulk downloadable data.</strong></td><td><span class="pill open">Mostly open</span></td></tr>
+            <tr><td class="t"><a href="https://aircheck.ai/mainframe">MAINFRAME</a></td><td>International ML / cheminformatics network behind the modelling work</td><td class="dim">Community</td></tr>
+            <tr><td class="t"><a href="https://conscience.ca/beacon/">BEACON</a></td><td>Conscience benchmarking consortium; runs CACHE challenges with wet-lab validation of predictions</td><td class="dim">Challenges</td></tr>
+            <tr><td class="t"><a href="https://www.thesgc.org/ProteinContributionNetwork">PCN</a></td><td>Submit purified protein, get it screened, receive validated hits back</td><td class="dim">Contribute</td></tr>
+            <tr><td class="t"><a href="https://public.thesgc.org/protocol/">SGC protocols</a></td><td>Expression and purification protocols for the LIGAND-AI proteins</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t"><a href="https://www.target2035.net/">Target 2035</a></td><td>Parent mission; runs the PGK2 DEL-ML challenge</td><td class="dim">Community</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="del">
+      <p class="eyebrow">AIRCHECK · DNA-encoded library screens</p>
+      <h2>DEL datasets — 22 total, 15 open</h2>
+      <p class="lede">Sizes below were measured directly against the signed-URL service, not estimated. Every open file is a single parquet.</p>
+      <div class="scroller">
+        <table>
+          <thead>
+            <tr><th>Target / screen</th><th>Partner</th><th>Selection</th><th>Size</th><th>Access</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="t">WDR91</td><td>HitGen</td><td class="dim">2023-08-28</td><td class="num">0.91 GB</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">WDR12</td><td>HitGen</td><td class="dim">2023-08-28</td><td class="num">0.33 GB</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">SETDB1</td><td>HitGen</td><td class="dim">2023-08-28</td><td class="num">0.98 GB</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">LRRK2</td><td>HitGen</td><td class="dim">2023-08-28</td><td class="num">—</td><td><span class="pill err">API 500</span></td></tr>
+            <tr><td class="t">DCAF7</td><td>HitGen</td><td class="dim">2025-03-31</td><td class="num">0.94 GB</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">Chicken PLCZ1</td><td>HitGen</td><td class="dim">2025-03-31</td><td class="num">0.94 GB</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">Chicken PLCZ1 · vs. known inhibitor</td><td>HitGen</td><td class="dim">2024-03-31</td><td class="num">0.63 GB</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">Human PLCZ1 D202R / H170A+H215A</td><td>HitGen</td><td class="dim">2025-03-31</td><td class="num">0.13 GB</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">Human PLCZ1 mut · vs. known inhibitor</td><td>HitGen</td><td class="dim">2025-03-31</td><td class="num">0.10 GB</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">PLCZ1 chicken-or-human combined</td><td>HitGen</td><td class="dim">2025-03-31</td><td class="num">—</td><td><span class="pill err">API 500</span></td></tr>
+            <tr><td class="t">PLCZ1 off-target His-PLCD1;2:756</td><td>HitGen</td><td class="dim">2025-03-31</td><td class="num">0.88 GB</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">Nsp2 full-length</td><td>UNC</td><td class="dim">2024-10-07</td><td class="num">web</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">Nsp2 full-length · vs. known inhibitor</td><td>UNC</td><td class="dim">2024-10-07</td><td class="num">web</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">Nsp2 protease domain</td><td>UNC</td><td class="dim">2024-10-07</td><td class="num">web</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">Nsp2 protease domain · vs. known inhibitor</td><td>UNC</td><td class="dim">2024-10-07</td><td class="num">web</td><td><span class="pill open">Open</span></td></tr>
+            <tr><td class="t">SETDB1</td><td>X-Chem</td><td class="dim">2023-10-20</td><td class="num">—</td><td><span class="pill gated">Login</span></td></tr>
+            <tr><td class="t">WDR91</td><td>X-Chem</td><td class="dim">2023-10-20</td><td class="num">—</td><td><span class="pill gated">Login</span></td></tr>
+            <tr><td class="t">RFWD3</td><td>X-Chem</td><td class="dim">2023-10-20</td><td class="num">—</td><td><span class="pill gated">Login</span></td></tr>
+            <tr><td class="t">DNMT3A</td><td>X-Chem</td><td class="dim">2023-10-20</td><td class="num">—</td><td><span class="pill gated">Login</span></td></tr>
+            <tr><td class="t">DCAF1</td><td>X-Chem</td><td class="dim">2023-10-20</td><td class="num">—</td><td><span class="pill gated">Login</span></td></tr>
+            <tr><td class="t">AAMP</td><td>X-Chem</td><td class="dim">2023-10-20</td><td class="num">—</td><td><span class="pill gated">Login</span></td></tr>
+            <tr><td class="t">THEMIS</td><td>X-Chem</td><td class="dim">TBD</td><td class="num">—</td><td><span class="pill gated">Login</span></td></tr>
+          </tbody>
+          <caption>“web” = downloadable from the AIRCHECK datasets page but not exposed through the <code>aircheckdata</code> package, which currently indexes HitGen only. The two <span class="mono">API 500</span> rows resolve in the package’s dataset list but the signed-URL service returns 500 for them — retry, or take those two from the web download button.</caption>
+        </table>
+      </div>
+      <p>Nine measured files total <strong>5.84 GB</strong>. With LRRK2 and the combined PLCZ1 screen included, budget ~8 GB for the complete open HitGen set.</p>
+      <p>Note the experimental design in the PLCZ1 family: paired screens with and without a competing known inhibitor, plus a deliberate off-target counter-screen against PLCD1. That is a ready-made selectivity benchmark, not just five more targets.</p>
+    </section>
+
+    <section id="easms">
+      <p class="eyebrow">AIRCHECK · Enantioselective affinity-selection MS</p>
+      <h2>E-ASMS — 92 screens, all open</h2>
+      <p class="lede">Every E-ASMS dataset is SGC-contributed and carries a download button with no login. Target names encode <span class="mono">GENE_UNIPROT_start_end</span>, so the construct boundaries are in the identifier.</p>
+      <div class="targets">
+        <span><b>PLCG1</b>_P19174_1_1290</span><span><b>DNMT3A</b>_Q9Y6K1_278_427</span><span><b>PIAS1</b>_O75925_124_490</span><span><b>LRRK2</b>_Q5S007_2141_2527</span><span><b>BIRC3</b>_Q13489_26_103</span><span><b>NSP3Macro</b>_Sars2_206_374</span><span><b>TP53</b>_P04637_94_294</span><span><b>KLHL3</b>_Q9UH77_298_587</span><span><b>LRRK2</b>_Q5S007_1327_1838</span><span><b>FBXW7</b>_Q969H0_349_707</span><span><b>KLHL40</b>_Q2TBA0_313_621</span><span><b>FLN5</b>_NA_NA_NA</span><span><b>PLCZ1</b>_Q86YW0_2_608</span><span><b>HTTQ54</b>_P42858_1-3175</span><span><b>SKP1</b>_P63208_1_163</span><span><b>NEIL3</b>_Q8TAT5_1_301</span><span><b>KHSRP</b>_Q92945_234_497</span><span><b>COPB2</b>_P35606_1_300</span><span><b>WDR48</b>_Q8TAF3_5_677</span><span><b>DDB1</b>_Q16531_1_1140</span>
+        <span><b>HUWE1</b>_Q7Z6Z7_1611_1700</span><span><b>ChickV</b>_NSP2_536-1333</span><span><b>PGAM5</b>_Q96HS1_90_289</span><span><b>SLC9C2</b>_Q5TAH2_856_1090</span><span><b>TRIM37</b>_O94972_267_407</span><span><b>AASS</b>_Q9UDR5_455_926</span><span><b>Rab40C</b>_Q96S21_10-224</span><span><b>PATL2</b>_C9JE40_288_543</span><span><b>SEC31A</b>_O94979_1_338</span><span><b>WDR55</b>_Q9H6Y2_21_334</span><span><b>HERC2</b>_O95714_2959_3326</span><span><b>PB2</b>_Q0A2G6_318_483</span><span><b>CORO1A</b>_P31146_1_461</span><span><b>rep</b>_P0DTD1_6453_6798</span><span><b>NEIL2</b>_Q969S2_1_332</span><span><b>USP37</b>_Q86T82_1_979</span><span><b>BRD1A</b>_O95696_555_688</span><span><b>FBX022</b>_Q8NEZ5_13-403</span><span><b>INPP5D</b>_Q92835_2_858</span><span><b>STUB1</b>_Q9UNE7_1_303</span>
+        <span><b>TOPBP1</b>_Q92547_1264_1493</span><span><b>HERC2</b>_O95714_3951_4321</span><span><b>WIPI2</b>_Q9Y4P8_13_380</span><span><b>ChikV</b>_NSP2_993-1333</span><span><b>KLHL2</b>_O95198_294_593</span><span><b>TRIM58</b>_Q8NG06_250_466</span><span><b>ChikVNSP3</b>_M9VZ69_1334_1493</span><span><b>DCAF1</b>_Q9Y4B6_1039_1401</span><span><b>DCAF7</b>_P61962_1_342</span><span><b>ZER1</b>_Q7Z7L7_518_766</span><span><b>RFWD3</b>_Q6PCD5_425_774</span><span><b>MAGEA3</b>_P43357_104_294</span><span><b>ASH1L</b>_Q9NR48_2051_2335</span><span><b>DDX1</b>_Q92499_1_740</span><span><b>WDR20</b>_Q8TBZ3_1_569</span><span><b>NOVA1</b>_P51513_49_246</span><span><b>BICC1</b>_Q9H694_47_425</span><span><b>GFP</b>_P44212_1-238</span><span><b>TRIM39</b>_Q9HCM9_323_518</span><span><b>TRIM28</b>_Q13263_619_811</span>
+        <span><b>PLCZ1</b>_Q2VRL0_1_637</span><span><b>WDR91</b>_A4D1P6_392_747</span><span><b>THEMIS</b>_Q8N1K5_267_562</span><span><b>DHX58</b>_Q96C10_1_678</span><span><b>SLC9C1</b>_Q4G0N8_859_1013</span><span><b>ABHD14B</b>_Q96IU4_1_210</span><span><b>TBXT</b>_O15178_41_226</span><span><b>KLHL7</b>_Q8IXQ5_290_586</span><span><b>rep</b>_P0DTD1_5325_5925</span><span><b>HERC2</b>_O95714_371_736</span><span><b>SPSB2</b>_Q99619_26_219</span><span><b>TRIM36</b>_Q9NQ86_507_728</span><span><b>TBL1XR1</b>_Q9BZK7_1_514</span><span><b>DUSP29</b>_Q68J44_1_220</span><span><b>YTHDC1</b>_Q96MU7_345_509</span><span><b>TLE4</b>_Q04727_474_773</span><span><b>YTHDF2</b>_Q9Y5A9_408_550</span><span><b>PLCD1</b>_P51178_2_756</span><span><b>AASS</b>_Q9UDR5_23_476</span><span><b>IFIH1</b>_Q9BYX4_306_1025</span>
+        <span><b>HAT1</b>_O14929_20_341</span><span><b>HRAS</b>_NA_NA_NA</span><span><b>FAN1</b>_Q9Y2M0_373_1017</span><span><b>MSH6</b>_P52701_89_203</span><span><b>MBPcontrol</b>_NA_NA_NA</span><span><b>ascc3</b>_E1BNG3_400_2201</span><span><b>DENV2</b>_NSP5_1-901</span><span><b>SETDB1</b>_Q15047_197_403</span><span><b>PBK</b>_Q96KB5_1_322</span><span><b>BCAT1</b>_P54687_1_386</span><span><b>TRIM24</b>_O15164_824_1006</span><span><b>PLCG2</b>_P16885_1_1195</span>
+      </div>
+      <p>Useful structure hiding in that list: <strong>GFP and MBP are negative controls</strong> — free non-specific-binder baselines. <strong>HERC2 appears three times</strong> and <strong>LRRK2, AASS and rep (SARS-CoV-2 replicase) twice</strong>, each as a different construct, which gives you within-protein domain comparisons. Seven targets (DNMT3A, LRRK2, DCAF1, DCAF7, RFWD3, SETDB1, THEMIS, WDR91, PLCZ1/PLCD1) overlap with the DEL side — those are the cross-modality pairs worth building on.</p>
+    </section>
+
+    <section id="challenge">
+      <p class="eyebrow">AIRCHECK · Challenges</p>
+      <h2>Target 2035 PGK2 challenge data</h2>
+      <p>A separate tab hosts benchmark-shaped data with train/test splits already defined. All three require an account (Baylor College of Medicine as provider):</p>
+      <ul>
+        <li><code>PGK2</code> — target screen against the BCM OpenDEL screening libraries</li>
+        <li><code>PGK2_CACHE_Val_Test_Set</code> — the validation and test split for the challenge</li>
+        <li><code>OpenDEL_libraries</code> — building-block IDs and SMILES for all 12 OpenDEL libraries</li>
+      </ul>
+      <p>This is the one part of AIRCHECK with a published evaluation protocol and gold labels, which makes it the natural place to calibrate a model against other people's numbers. <a href="https://github.com/StructuralGenomicsConsortium/Target2035_Aircheck_Utils">Target2035_Aircheck_Utils</a> ships the fingerprint extraction, parquet readers, a training notebook and the evaluation scripts.</p>
+    </section>
+
+    <section id="models">
+      <p class="eyebrow">HuggingFace · GitHub</p>
+      <h2>Models and code that run locally</h2>
+
+      <h3>DELBERT — the strongest published baseline</h3>
+      <p>A self-supervised transformer that treats molecular fingerprints as a discrete token language, masked-LM pretrained. It was designed for exactly AIRCHECK's constraint: screening data released as precomputed fingerprints without structures. Published at the ICLR 2026 MLGenX workshop; reported 1.6–2.7× improvement in early-enrichment metrics over XGBoost and LightGBM ensembles on three of four targets under library-based out-of-distribution evaluation.</p>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Artifact</th><th>Repo</th><th>Size</th></tr></thead>
+          <tbody>
+            <tr><td>Code</td><td class="t"><a href="https://github.com/bowang-lab/DELBERT">bowang-lab/DELBERT</a></td><td class="num">—</td></tr>
+            <tr><td>Tokenized corpus (WDR12/91, LRRK2, SETDB1, DCAF7)</td><td class="t"><a href="https://huggingface.co/datasets/wanglab/delbert_data">wanglab/delbert_data</a></td><td class="num">6.77 GB</td></tr>
+            <tr><td>Finetuned · WDR91</td><td class="t">wanglab/delbert-wdr91</td><td class="num">284 MB</td></tr>
+            <tr><td>Finetuned · LRRK2</td><td class="t">wanglab/delbert-lrrk2</td><td class="num">284 MB</td></tr>
+            <tr><td>Finetuned · SETDB1</td><td class="t">wanglab/delbert-setdb1</td><td class="num">284 MB</td></tr>
+            <tr><td>Finetuned · DCAF7</td><td class="t">wanglab/delbert-dcaf7</td><td class="num">284 MB</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Inference takes raw AIRCHECK parquet directly — the four dense FP columns <code>ECFP4</code>, <code>FCFP6</code>, <code>ATOMPAIR</code>, <code>TOPTOR</code> are the model's expected input format, so no conversion step sits between the download and a prediction.</p>
+
+      <h3>AIRCHECK's own pipelines</h3>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Repo</th><th>What it does</th><th>Local?</th></tr></thead>
+          <tbody>
+            <tr><td class="t"><a href="https://github.com/StructuralGenomicsConsortium/AIRCHECK-DEL-ML">AIRCHECK-DEL-ML</a></td><td>Containerized end-to-end DEL screening pipeline — Docker, MLflow, LightGBM/scikit-learn, RDKit, FastAPI model serving</td><td>Yes — documented fully-local mode with local MLflow and local filesystem; GCP is optional</td></tr>
+            <tr><td class="t"><a href="https://github.com/StructuralGenomicsConsortium/AIRCHECK-data-package">AIRCHECK-data-package</a></td><td><code>aircheckdata</code> — dataset loader with column selection and caching</td><td>Yes</td></tr>
+            <tr><td class="t"><a href="https://github.com/StructuralGenomicsConsortium/Target2035_Aircheck_Utils">Target2035_Aircheck_Utils</a></td><td>Fingerprint extraction from SMILES, parquet→NumPy helpers, training notebook, evaluation metrics</td><td>Yes</td></tr>
+            <tr><td class="t"><a href="https://github.com/StructuralGenomicsConsortium/AIRCHECK-negative_sampler">AIRCHECK-negative_sampler</a></td><td>Negative sampling for DEL training sets</td><td>Yes</td></tr>
+            <tr><td class="t"><a href="https://github.com/StructuralGenomicsConsortium/EASMS-data-processing">EASMS-data-processing</a></td><td>E-ASMS processing scripts</td><td>Yes</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The models AIRCHECK hosts on its own site are two LightGBM classifiers — <span class="mono">DEL-WDR91</span> and <span class="mono">DEL-LRRK2</span> — each with linked experiment results, a prediction view and source. Treat them as the floor to beat, not the state of the art.</p>
+
+      <h3>External benchmarks worth pulling in</h3>
+      <ul>
+        <li><strong>SAIR</strong> (SandboxAQ) — 1,048,857 unique protein-ligand pairs, 5.2 M 3D structures, co-folded with Boltz-1x and labelled with ChEMBL/BindingDB potency. CC BY 4.0, commercial use permitted. <strong>811 GB</strong> on HuggingFace — the single largest thing in this document.</li>
+        <li><strong>PLINDER</strong> — PDB-derived protein-ligand interaction dataset with published splits; the standard benchmark for docking generalization.</li>
+        <li><strong>KinDEL</strong> (insitro) — 81 M DEL compounds with docking poses for MAPK14 and DDR1. Largest public DEL benchmark; a good generalization test for anything trained on AIRCHECK.</li>
+        <li><strong>MMELON</strong> (IBM) — multi-view molecular foundation model, graph + image + text, pretrained on up to 200 M molecules.</li>
+        <li><strong>MPDF</strong> — multimodal pretraining DEL-fusion for denoising non-specific DEL interactions.</li>
+      </ul>
+    </section>
+
+    <section id="folding">
+      <p class="eyebrow">Structure prediction</p>
+      <h2>Folding and co-folding: what is actually downloadable</h2>
+      <p class="lede">"Download AlphaFold" resolves into three unrelated artifacts with three different access stories. Only one of them is gated.</p>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Artifact</th><th>Terms</th><th>Access</th></tr></thead>
+          <tbody>
+            <tr><td class="t">AlphaFold 2</td><td>Apache-2.0 code, CC BY 4.0 weights</td><td><span class="pill open">Open</span> No gate. Apo only — protein and complexes, no ligands</td></tr>
+            <tr><td class="t">AlphaFold 3</td><td>CC-BY-NC-SA 4.0, code and parameters</td><td><span class="pill gated">Request</span> Code is public; <strong>weights are not downloadable</strong>. Form to DeepMind, academic affiliation, non-commercial only, no redistribution</td></tr>
+            <tr><td class="t">AlphaFold DB</td><td>CC BY 4.0</td><td><span class="pill open">Open</span> 214 M predicted structures. Per-proteome tars on EBI FTP; full mirror ~23 TiB at <code>gs://public-datasets-deepmind-alphafold-v4</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>For this programme the AlphaFold <em>database</em> matters more than the model. It already covers most of the 92 E-ASMS targets and will cover the incoming 2,000-protein set — retrieval beats folding when someone has already folded it.</p>
+
+      <h3>Co-folding is the relevant capability</h3>
+      <p>WP7 is pose and hit prediction, which needs protein <em>and</em> ligand folded together. Every serious open co-folder ships weights with no request step:</p>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Model</th><th>Weights</th><th>Size</th><th>Why it matters here</th></tr></thead>
+          <tbody>
+            <tr><td class="t">Boltz-2</td><td class="t">boltz-community/boltz-2</td><td class="num">6.2 GB</td><td>MIT, <code>pip install boltz</code>. Joint structure <strong>and binding affinity</strong> — approaching FEP accuracy at ~1000× the speed. The one to start with.</td></tr>
+            <tr><td class="t">OpenFold3</td><td class="t">OpenFold/OpenFold3</td><td class="num">12.6 GB</td><td>Fully open AF3 reproduction, four checkpoints. What you use if you want AF3 behaviour without the licence.</td></tr>
+            <tr><td class="t">Chai-1</td><td class="t">chaidiscovery/chai-1</td><td class="num">1.2 GB</td><td>Lightest co-folder; good for high-throughput triage passes.</td></tr>
+            <tr><td class="t">Protenix</td><td class="t">ByteDance / community</td><td class="num">varies</td><td>Another AF3 reproduction, several size variants including a mini.</td></tr>
+            <tr><td class="t">ESMFold</td><td class="t">facebook/esmfold_v1</td><td class="num">—</td><td>Single-sequence, no MSA, seconds per protein. Apo only, but useful for bulk structure sanity checks.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <span class="h">Database footprint</span>
+        <p>AF3's genetic databases are 252 GB compressed, <strong>630 GB uncompressed</strong>, with ~1 TB recommended and SSD strongly preferred — MSA search is I/O-bound. AF2's <code>full_dbs</code> are larger still, dominated by BFD. Boltz and Chai sidestep this entirely by defaulting to a remote MSA server, or can point at local ColabFold/MMseqs2 databases. Roughly 20 GB gets all three co-folders running with no local database at all.</p>
+      </div>
+      <p>Hardware clears every bar: Blackwell is compute capability 12.0 against AF3's floor of 8.0, CUDA 13.3 is already installed, and 96 GB per card is well past the A100-80GB the documentation assumes — meaning noticeably larger complexes than the published limits. 123 GB system RAM exceeds the 64 GB recommended for genetic search.</p>
+    </section>
+
+    <section id="nvidia">
+      <p class="eyebrow">NVIDIA BioNeMo</p>
+      <h2>NVIDIA's protein and ligand stack</h2>
+      <p class="lede">Roughly twenty repos under <a href="https://github.com/NVIDIA-BioNeMo">NVIDIA-BioNeMo</a>, most updated within the past week. Several of them fill gaps this project would otherwise have to build.</p>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Model / library</th><th>What it does</th><th>Fit</th></tr></thead>
+          <tbody>
+            <tr><td class="t">nvMolKit</td><td>GPU-accelerated cheminformatics — molecular similarity, conformer generation, geometry optimisation</td><td>The sleeper hit. DEL-scale fingerprinting and similarity are the CPU bottleneck in every pipeline here</td></tr>
+            <tr><td class="t">nvDock</td><td>All-atom diffusion docking for a <em>known</em> pocket</td><td>Pose prediction on targets with a solved or AFDB structure</td></tr>
+            <tr><td class="t">DiffDock</td><td>Blind docking, no pocket definition needed. NVIDIA's NIM build is retrained on PLINDER + SAIR — 1 M complexes, 5.2 M structures</td><td>Upstream source is MIT (<a href="https://github.com/gcorso/DiffDock">gcorso/DiffDock</a>); the retrained NIM is the stronger one</td></tr>
+            <tr><td class="t">DualBind</td><td>3D structure-based binding affinity, dual-loss framework</td><td>Second opinion against Boltz-2's affinity head</td></tr>
+            <tr><td class="t">GenMol</td><td>Masked discrete diffusion, fragment-based generation with scaffold/motif retention. Supersedes MolMIM</td><td>Hit expansion — hold the DEL warhead, vary the rest. Weights: <code>nvidia/NV-GenMol-89M-v2</code>, 1.4 GB</td></tr>
+            <tr><td class="t">ReaSyn</td><td>Predicts a molecule's synthesis pathway from building blocks. Apache-2.0</td><td>Maps directly onto WP4 hit expansion — filters generated compounds to ones that can actually be made</td></tr>
+            <tr><td class="t">La-Proteina / Proteina / Proteina-Complexa</td><td>Flow-based generative protein design; Complexa does binder design against protein <strong>and small-molecule</strong> targets</td><td>Weights: <code>nvidia/NV-La-Proteina-Ucond-v1</code> 17.1 GB, <code>-Motif-v1</code> 15.8 GB</td></tr>
+            <tr><td class="t">boltz-cp</td><td>Context parallelism for Boltz-2</td><td>Splits a single prediction across both cards — the direct answer to having two GPUs</td></tr>
+            <tr><td class="t">KERMT</td><td>Pretrained GNN for molecular property prediction. Apache-2.0</td><td>ADMET-style filtering on generated compounds</td></tr>
+            <tr><td class="t">cuik-molmaker</td><td>Fast molecular featurization</td><td>Feeds the GNNs above</td></tr>
+            <tr><td class="t">megalodon / avgflow</td><td>Conformer generation (SO(3)-averaged flow matching, ICML 2025)</td><td>Conformer ensembles ahead of docking</td></tr>
+            <tr><td class="t">ESM-2 mirrors</td><td><code>nvidia/esm2_*</code>, 8 M → 15 B parameters, MIT</td><td>15 B checkpoint is 121 GB — fits, but 3 B (22.7 GB) is the practical choice</td></tr>
+            <tr><td class="t">RNAPro · CodonFM · JEPA-DNA</td><td>RNA 3D folding, codon-resolution LMs, genomic foundation model</td><td>Out of scope here, worth knowing they exist</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>The blueprint that matters</h3>
+      <p>NVIDIA publishes a <a href="https://github.com/NVIDIA-BioNeMo-blueprints/generative-virtual-screening">generative virtual screening blueprint</a> chaining <strong>GenMol → DiffDock → Boltz-2</strong>: generate candidates, dock them, score binding affinity. That is a complete hit-expansion loop, and it is exactly the shape of WP4. Swap in a DEL-derived starting scaffold and the AIRCHECK <code>ENRICHMENT</code> column becomes your ground truth for calibrating it.</p>
+
+      <div class="note">
+        <span class="h">Licensing</span>
+        <p>Terms vary per repo and are not uniform. ReaSyn, KERMT and RNAPro are Apache-2.0; the ESM-2 mirrors are MIT; several others — Proteina, DualBind, nvDock, boltz-cp — carry non-standard or unstated licences on GitHub. Check the per-repo <code>LICENSE</code> and the model card before anything leaves research use. NIM containers are a separate distribution channel and need an NGC account and API key.</p>
+      </div>
+    </section>
+
+    <section id="access">
+      <p class="eyebrow">Mechanics</p>
+      <h2>Getting the data</h2>
+      <p class="lede">Programmatic access needs no account for the HitGen sets. The package resolves a dataset name to a signed GCS URL through a public endpoint, then streams the parquet.</p>
+      <pre><code><span class="c"># verified working on this machine, Python 3.14, clean venv</span>
+pip install aircheckdata
+
+<span class="c"># list what the package indexes (HitGen only, 11 datasets)</span>
+python -c "from aircheckdata import list_datasets; print(list_datasets())"
+
+<span class="c"># inspect the schema before pulling a gigabyte</span>
+python -c "from aircheckdata import get_columns; print(get_columns('HitGen','WDR91'))"</code></pre>
+      <pre><code>from aircheckdata import load_dataset
+
+<span class="c"># pull only what the model needs — the FP columns are the bulk of the file</span>
+df = load_dataset(
+    "HitGen", "WDR91",
+    columns=["DEL_ID", "SMILES", "ECFP4", "FCFP6", "ATOMPAIR", "TOPTOR",
+             "TARGET_VALUE", "NTC_VALUE", "ENRICHMENT", "LABEL"],
+    show_progress=True,
+)</code></pre>
+      <p>Under the hood it POSTs <code>{"company_name": ..., "target": ...}</code> to a Cloud Run signed-URL service and reads the returned URL with PyArrow. If you want to fetch outside Python, that same endpoint gives you a plain HTTPS URL you can hand to <code>curl</code> or <code>aria2c</code> — which is the faster route for bulk mirroring across the new disks.</p>
+      <div class="note">
+        <span class="h">Licence</span>
+        <p>The HitGen DEL data is covered by the <a href="https://www.aircheck.ai/docs/HitGen.pdf">HitGen End User Licence Agreement</a>. Read it before mirroring anything, and check its redistribution terms before any derived dataset leaves this machine. X-Chem and BCM data additionally require an AIRCHECK account.</p>
+      </div>
+      <p>E-ASMS datasets are downloaded from the web table rather than the package — the loader currently indexes DEL/HitGen only. 92 individual downloads is worth scripting against the same signed-URL service once you have the provider and target strings.</p>
+    </section>
+
+    <section id="schema">
+      <p class="eyebrow">Schema</p>
+      <h2>What is in a DEL parquet</h2>
+      <p class="lede">22 columns. Structures are included for the HitGen sets — the fingerprints-only privacy mode that DELBERT was designed around applies to other providers.</p>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Column</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td class="t">SMILES</td><td>Structure of the enumerated DEL compound</td></tr>
+            <tr><td class="t">DEL_ID</td><td>Unique ID of the fully enumerated DEL compound</td></tr>
+            <tr><td class="t">LIBRARY_ID</td><td>Vendor and sub-library number</td></tr>
+            <tr><td class="t">BB1_ID / BB2_ID / BB3_ID</td><td>Building-block IDs at each cycle — the split for library-based OOD evaluation</td></tr>
+            <tr><td class="t">TARGET_ID</td><td>Protein target identifier</td></tr>
+            <tr><td class="t">TARGET_VALUE</td><td>Raw sequence count in the target selection</td></tr>
+            <tr><td class="t">NTC_VALUE</td><td>Raw count in the no-target control selection</td></tr>
+            <tr><td class="t">ENRICHMENT</td><td>Ratio of target count to NTC count</td></tr>
+            <tr><td class="t">LABEL</td><td>Binary enrichment label — 0 not enriched, 1 enriched</td></tr>
+            <tr><td class="t">MW / ALOGP</td><td>Molecular weight (integer), calculated LogP (1 dp)</td></tr>
+            <tr><td class="t">ECFP4 / ECFP6</td><td>Extended-connectivity count fingerprints, radius 2 / 3, 2048 bits</td></tr>
+            <tr><td class="t">FCFP4 / FCFP6</td><td>Feature-connectivity fingerprints, 2048 bits</td></tr>
+            <tr><td class="t">ATOMPAIR</td><td>Atom-pair fingerprint, 2048 bits</td></tr>
+            <tr><td class="t">TOPTOR</td><td>Topological torsion, non-binary, 2048 bits</td></tr>
+            <tr><td class="t">MACCS</td><td>166-bit MACCS keys, binary</td></tr>
+            <tr><td class="t">RDK</td><td>RDKit graph fingerprint, 2048 bits, max path 7, binary</td></tr>
+            <tr><td class="t">AVALON</td><td>Avalon fingerprint, 2048 bits</td></tr>
+          </tbody>
+          <caption>Not every dataset carries all nine fingerprint types; each download is marked with which are present.</caption>
+        </table>
+      </div>
+    </section>
+
+    <section id="hardware">
+      <p class="eyebrow">Local capacity</p>
+      <h2>Hardware fit and storage planning</h2>
+      <p class="lede">Compute is not the constraint anywhere in this landscape. Storage layout is the only thing worth planning deliberately.</p>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Resource</th><th>Available</th><th>What this workload needs</th></tr></thead>
+          <tbody>
+            <tr><td>GPU</td><td class="num">2 × 96 GB</td><td class="dim">DELBERT finetuning fits comfortably on one card; the second frees you to run a full hyperparameter sweep in parallel</td></tr>
+            <tr><td>System RAM</td><td class="num">123 GB</td><td class="dim">Ample for whole-file parquet loads — but see the expansion note below</td></tr>
+            <tr><td>CPU</td><td class="num">24C / 48T</td><td class="dim">RDKit fingerprint regeneration and LightGBM training are the CPU-bound steps; both parallelize well</td></tr>
+            <tr><td>Cold data</td><td class="num">~15 GB</td><td class="dim">All open DEL parquet + the DELBERT corpus + all four checkpoints</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>With disks going in, the things worth sizing against are downstream of AIRCHECK, not AIRCHECK itself:</p>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Candidate</th><th>Footprint</th><th>Worth it?</th></tr></thead>
+          <tbody>
+            <tr><td class="t">All open AIRCHECK DEL parquet</td><td class="num">~8 GB</td><td>Yes — mirror everything, it's noise-level</td></tr>
+            <tr><td class="t">DELBERT corpus + 4 checkpoints</td><td class="num">7.9 GB</td><td>Yes</td></tr>
+            <tr><td class="t">Boltz-2 + Chai-1 + OpenFold3</td><td class="num">20 GB</td><td>Yes — all three, no local MSA database needed</td></tr>
+            <tr><td class="t">GenMol + La-Proteina + ESM-2 3B</td><td class="num">57 GB</td><td>Yes if you run the generative loop</td></tr>
+            <tr><td class="t">AF3 genetic databases</td><td class="num">630 GB</td><td>Only if committing to AF3 with local MSA search. SSD.</td></tr>
+            <tr><td class="t">SAIR</td><td class="num">811 GB</td><td>Yes for affinity fine-tuning — it is the closest thing to a labelled ground truth at scale</td></tr>
+            <tr><td class="t">AlphaFold DB, full mirror</td><td class="num">23 TiB</td><td>No. Pull per-proteome tars instead</td></tr>
+          </tbody>
+          <caption>SSD matters for the AF3 databases (MSA search is I/O-bound) and for materialized training shards. Everything else is fine on spinning disk.</caption>
+        </table>
+      </div>
+      <div class="note">
+        <span class="h">The one real trap</span>
+        <p>The parquet files are compressed sparse fingerprints. Materializing nine dense 2048-wide FP columns as int32 is roughly 70 KB per row — over a multi-million-row screen that expands from under a gigabyte on disk into the terabyte range. Always pass <code>columns=</code>, and keep working sets as sparse arrays or memory-mapped shards. This is a working-set discipline, not a download-size problem.</p>
+      </div>
+      <p>With more disks going in, a sane layout is one volume for immutable raw mirrors (AIRCHECK parquet + HuggingFace cache, ~50 GB with headroom for the 2,000-protein E-ASMS release as it lands), and a separate fast volume for materialized training shards and MLflow artifacts, which is where the real growth happens.</p>
+    </section>
+
+    <section id="plan">
+      <p class="eyebrow">Sequence</p>
+      <h2>Suggested first runs</h2>
+      <ol class="steps">
+        <li>
+          <h4>Reproduce a published number</h4>
+          <p>Pull WDR91 (0.91 GB) and <code>wanglab/delbert-wdr91</code>, run inference on the raw parquet, and confirm the early-enrichment metric against the paper. This validates the whole chain — licence, loader, schema, model input format — before anything is trained.</p>
+        </li>
+        <li>
+          <h4>Establish the floor</h4>
+          <p>Train the LightGBM baseline via AIRCHECK-DEL-ML in fully-local mode on the same target and split. Now you have both ends of the published range on your own hardware.</p>
+        </li>
+        <li>
+          <h4>Train DELBERT from scratch</h4>
+          <p>Pretrain and finetune on the 6.77 GB tokenized corpus using library-based OOD splits on <code>BB*_ID</code>. One GPU per run, two runs concurrently.</p>
+        </li>
+        <li>
+          <h4>Exploit the paired screens</h4>
+          <p>The PLCZ1 family — with/without competing inhibitor, plus the PLCD1 off-target counter-screen — supports selectivity modelling that single-target datasets cannot. Nothing published uses it yet.</p>
+        </li>
+        <li>
+          <h4>Cross the modalities</h4>
+          <p>Seven proteins have both DEL and E-ASMS screens. Whether DEL-trained models transfer to E-ASMS hit calling on the same protein is an open question with the data already in hand.</p>
+        </li>
+        <li>
+          <h4>Add structure to the fingerprint models</h4>
+          <p>Retrieve AFDB structures for the DEL targets, co-fold the top-enriched compounds with Boltz-2, and check whether its affinity head agrees with the measured <code>ENRICHMENT</code>. That correlation is the gate on everything structure-based downstream.</p>
+        </li>
+        <li>
+          <h4>Close the generative loop</h4>
+          <p>Run GenMol → nvDock/DiffDock → Boltz-2 on a confirmed DEL hit, filter the output through ReaSyn for synthesizability, and you have a WP4 hit-expansion pipeline running end to end locally.</p>
+        </li>
+        <li>
+          <h4>Test generalization externally</h4>
+          <p>Score against KinDEL (MAPK14, DDR1), fine-tune the Boltz-2 affinity head on SAIR, and register for the Target 2035 PGK2 challenge, which has gold labels and a published evaluation protocol.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="sources">
+      <p class="eyebrow">Provenance</p>
+      <h2>Sources</h2>
+      <p>Dataset counts, target lists and access states were read directly from the AIRCHECK site; file sizes were measured against the signed-URL service; package behaviour and the column dictionary were verified in a clean virtualenv on this machine.</p>
+      <ul>
+        <li><a href="https://ligand-ai.org/">ligand-ai.org</a> — programme site, work packages, resources</li>
+        <li><a href="https://aircheck.ai/datasets">aircheck.ai/datasets</a> — DEL and E-ASMS catalogue</li>
+        <li><a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5c01972">Enabling Open Machine Learning of DEL Selections</a> — <em>J. Med. Chem.</em></li>
+        <li><a href="https://zenodo.org/records/15330172">AIRCHECK: Powering AI-Driven Drug Discovery with Open Science</a> — Zenodo</li>
+        <li><a href="https://www.thesgc.org/open_data">SGC Open Data</a> · <a href="https://www.ihi.europa.eu/projects-results/project-factsheets/ligand-ai">IHI project factsheet</a></li>
+        <li><a href="https://github.com/google-deepmind/alphafold3/blob/main/WEIGHTS_TERMS_OF_USE.md">AlphaFold 3 weights terms</a> · <a href="https://github.com/google-deepmind/alphafold3/blob/main/docs/installation.md">AF3 installation and database setup</a></li>
+        <li><a href="https://boltz.bio/boltz2">Boltz-2</a> · <a href="https://github.com/NVIDIA-BioNeMo">NVIDIA-BioNeMo on GitHub</a> · <a href="https://huggingface.co/datasets/SandboxAQ/SAIR">SAIR on HuggingFace</a></li>
+        <li><a href="https://academic.oup.com/nar/article/52/D1/D368/7337620">AlphaFold Protein Structure Database in 2024</a> — <em>Nucleic Acids Research</em></li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>Compiled 26 August 2026. Two dataset endpoints were returning HTTP 500 at time of writing; the AIRCHECK site also carries a banner noting datasets are being re-benchmarked ahead of a release "later this year", so expect this catalogue to grow.</p>
+    </footer>
+
+  </main>
+</div>

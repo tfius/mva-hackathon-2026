@@ -1,0 +1,6 @@
+proband_id,chrom_1,pos_1,ref_1,alt_1,chrom_2,pos_2,ref_2,alt_2,epcr,finding_type,notes
+PROBAND01,chr15,40209701,T,G,chr15,40220612,T,G,0.95,primary,"BUB1B compound heterozygous. c.2210T>G p.Leu737Ter (ClinVar Pathogenic/Likely_pathogenic for Mosaic variegated aneuploidy syndrome 1; gnomAD gAF 3.3e-05) in trans with c.3006T>G p.Asn1002Lys (absent from gnomAD and dbSNP; AlphaMissense 0.923; BUB1B kinase domain). Classic MVA1 truncating + hypomorphic-missense configuration."
+PROBAND01,chr15,40209701,T,G,,,,,0.80,primary,"BUB1B c.2210T>G p.Leu737Ter alone - half-credit insurance if the answer key pairs this allele with a variant we did not call."
+PROBAND01,chr15,40220612,T,G,,,,,0.75,primary,"BUB1B c.3006T>G p.Asn1002Lys alone - half-credit insurance for the same reason."
+PROBAND01,chr22,20996720,C,G,,,,,0.20,secondary,"LZTR1 nonsense, heterozygous, ClinVar Pathogenic/Likely_pathogenic. Actionable incidental finding: heterozygous LZTR1 loss of function predisposes to schwannomatosis. Unrelated to the primary MVA phenotype."
+PROBAND01,chr1,145927447,C,T,,,,,0.10,secondary,"RBM8A 5' UTR variant, heterozygous, ClinVar Pathogenic/Likely_pathogenic low penetrance. Recessive carrier finding for TAR syndrome."

@@ -1,7 +1,7 @@
 # Track 2 — Mechanism and Drug Repurposing
 
 **Rare Disease, Real Kid: MVA Hackathon 2026** · proband `PROBAND01` · team `texdata`
-Draft — mechanism section complete, knowledge-graph section in progress. 28 August 2026
+28 August 2026 · [code](https://github.com/) · pitch script in `track2-video-script.md`
 
 > **Framing.** Everything below is a hypothesis for follow-up, not evidence that a medicine works. No candidate here has been tested in a person with MVA1. Nothing in this document is clinical advice, and every candidate would need mechanism confirmation, then a model system, then a clinician, before it meant anything for a patient.
 

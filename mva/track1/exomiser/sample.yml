@@ -1,0 +1,38 @@
+## Proband description for the unbiased Exomiser run.
+##
+## Only the eight HPO terms transcribed from the challenge phenotype document.
+## No gene panel, no interval, no MVA prior: if the BUB1B pair is the answer, a
+## method that was never pointed at BUB1B should find it unaided.
+---
+id: PROBAND01
+subject:
+  # Must match the VCF sample column; the challenge proband id is PROBAND01
+  # but the VCF carries the sequencing id.
+  id: WGS_EX2312012
+  # Established from the data, not assumed: 4,562 heterozygous chrX calls
+  # against 170k on chr1, and chrY present at 0.77x autosomal depth.
+  sex: MALE
+phenotypicFeatures:
+  - type: { id: "HP:0002859", label: "Rhabdomyosarcoma" }
+  - type: { id: "HP:0000121", label: "Nephrocalcinosis" }
+  - type: { id: "HP:0004322", label: "Short stature" }
+  - type: { id: "HP:0001508", label: "Failure to thrive" }
+  - type: { id: "HP:0003202", label: "Skeletal muscle atrophy" }
+  - type: { id: "HP:0001622", label: "Premature birth" }
+  - type: { id: "HP:0001518", label: "Small for gestational age" }
+  - type: { id: "HP:0200067", label: "Recurrent spontaneous abortion" }
+htsFiles:
+  - uri: "/mnt/data/mva-hackathon-2026/work/norm.vcf.gz"
+    htsFormat: VCF
+    genomeAssembly: hg38
+metaData:
+  created: "2026-08-28T19:00:00Z"
+  createdBy: texdata
+  resources:
+    - id: hp
+      name: human phenotype ontology
+      url: http://purl.obolibrary.org/obo/hp.owl
+      version: hp/releases/2025-12-01
+      namespacePrefix: HP
+      iriPrefix: "http://purl.obolibrary.org/obo/HP_"
+  phenopacketSchemaVersion: 1.0

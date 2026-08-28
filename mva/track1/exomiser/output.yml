@@ -1,0 +1,6 @@
+---
+outputContributingVariantsOnly: false
+numGenes: 50
+outputDirectory: /mnt/data/mva-hackathon-2026/work/exomiser
+outputFileName: PROBAND01-exome-unbiased
+outputFormats: [ HTML, JSON, TSV_GENE, TSV_VARIANT ]

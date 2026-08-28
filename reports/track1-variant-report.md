@@ -16,8 +16,9 @@ Team `texdata` · GRCh38 · 28 August 2026
 | HGVS p. | `p.Leu737Ter` | `p.Asn1002Lys` |
 | Consequence | stop_gained, exon 17/23 | missense, exon 23/23 |
 | Genotype | 0/1 · AD 21,25 · DP 46 · GQ 99 | 0/1 · AD 15,13 · DP 28 · GQ 99 |
-| Population frequency | gnomAD genomes 3.29 × 10⁻⁵ (rs759242053) | **absent from gnomAD and dbSNP** |
-| In silico | PTC 748 nt upstream of the final exon junction → NMD predicted | AlphaMissense 0.923 (likely pathogenic) |
+| Population frequency | gnomAD genomes 3.29 × 10⁻⁵ (rs759242053) | **1 allele in 1,461,878** gnomAD v4 exomes (AF 6.8 × 10⁻⁷); absent from gnomAD genomes and from dbSNP |
+| In silico | PTC 748 nt upstream of the final exon junction → NMD predicted | AlphaMissense 0.923, MVP 0.852, REVEL 0.472 |
+| Exomiser ACMG | **PATHOGENIC** — PVS1, PM2_Supporting, PP4_Moderate, PP5_Strong | **UNCERTAIN_SIGNIFICANCE** — PM2_Supporting, PP4_Moderate, BP1 |
 | ClinVar | **Pathogenic/Likely_pathogenic**, "Mosaic variegated aneuploidy syndrome 1" | novel nucleotide; `c.3006T>A`, the *same* p.Asn1002Lys substitution, is a ClinVar VUS |
 
 This is the configuration MVA1 is known for: one null allele paired with one hypomorphic missense. Complete biallelic loss of BUB1B is not compatible with life, so surviving patients essentially always retain partial function on one allele.
@@ -27,7 +28,7 @@ This is the configuration MVA1 is known for: one null allele paired with one hyp
 BUB1B encodes BubR1, the pseudokinase core of the mitotic spindle assembly checkpoint. UniProt O60566: 1050 aa, BUB1 N-terminal domain 62–226, protein kinase domain **766–1050**, catalytic proton acceptor D882.
 
 - **`p.Leu737Ter`** truncates at residue 737 — **29 residues before the kinase domain even begins**. The premature termination codon sits at c.2210, and the final exon–exon junction is at c.2958, so the PTC is 748 nt upstream of it and comfortably past the 50-nt boundary: nonsense-mediated decay is predicted, and the allele is a true null. Even on transcript that escaped NMD, the product would lack the entire kinase domain.
-- **`p.Asn1002Lys`** sits *inside* the kinase domain, 120 residues C-terminal to the active site, and swaps a neutral amide for a positive charge. AlphaMissense 0.923. It is absent from 800k+ gnomAD alleles. The identical amino-acid substitution reached by a different nucleotide (`c.3006T>A`) is already in ClinVar as a VUS — independent evidence that the residue is under clinical scrutiny — while `c.3006T>C`, which is synonymous, is classified Likely benign. The classification tracks the protein change, not the position.
+- **`p.Asn1002Lys`** sits *inside* the kinase domain, 120 residues C-terminal to the active site, and swaps a neutral amide for a positive charge. AlphaMissense 0.923 and MVP 0.852, though REVEL is only 0.472 — the predictors do not agree, and that disagreement is reported rather than averaged away. It appears **once** in 1,461,878 gnomAD v4 exome alleles and not at all in gnomAD genomes: essentially private. The identical amino-acid substitution reached by a different nucleotide (`c.3006T>A`) is already in ClinVar as a VUS — independent evidence that the residue is under clinical scrutiny — while `c.3006T>C`, which is synonymous, is classified Likely benign. The classification tracks the protein change, not the position.
 
 Phenotype fit: rhabdomyosarcoma is the MVA1-defining malignancy (with Wilms tumour), and intrauterine growth restriction, short stature and failure to thrive are core MVA1 features. Parental recurrent pregnancy loss is on-mechanism for carrier parents of a chromosome-segregation disorder, not incidental history.
 
@@ -45,13 +46,29 @@ Getting this stage right is worth as much as the biology: Track 1 scores on an e
 
 **S2 · ClinVar cross-reference** (`02_clinvar_scan.sh`). The answer key is a *clinically confirmed* pair, so there was a good chance at least one allele was already a ClinVar record. Genome-wide annotation against ClinVar GRCh38 yielded **7** Pathogenic/Likely_pathogenic non-reference calls, non-conflicting. One of them was allele A, annotated verbatim to "Mosaic variegated aneuploidy syndrome 1".
 
-**S3 · Exhaustive locus analysis** (`03_gene_deepdive.py`). ClinVar alone finds one allele and stops — allele B is in no database. Rather than filter by predicted consequence, every called variant across the BUB1B locus ±50 kb was classified against the canonical transcript's exon structure and pushed through Ensembl VEP. Of 46 non-reference calls in that window, allele B is the only one with **no population frequency at all**. Every other locus variant is deep-intronic and common (AF 0.02–0.99).
+**S3 · Exhaustive locus analysis** (`03_gene_deepdive.py`). ClinVar alone finds one allele and stops — allele B is in no clinical database. Rather than filter by predicted consequence, every called variant across the BUB1B locus ±50 kb was classified against the canonical transcript's exon structure and pushed through Ensembl VEP. Of 46 non-reference calls in that window, allele B is the only one that is essentially **private** — a single gnomAD exome allele, no rsID. Every other locus variant is deep-intronic and common (AF 0.02–0.99).
 
 This ordering matters. A conventional rare-variant filter chain applied genome-wide can lose allele B, because a lone missense in a gene that already has a ClinVar-pathogenic hit is only interesting once the recessive hypothesis is on the table. Working the locus exhaustively, after the gene is nominated, is what surfaces it.
 
 **S4 · Structural alternatives excluded.** MVA1's second allele is frequently non-coding or a copy-number event, so those were checked before settling: depth holds at 26–48× across the whole gene with no drop, heterozygous calls are distributed throughout with no run of homozygosity, and no splice-region candidate exists within ±20 bp of any exon boundary. There is no deletion in trans.
 
 **S5 · Differential diagnoses.** The other MVA genes carry nothing: CEP57 has 4 called variants (none coding-damaging), TRIP13 has 3, CENPE has 123 of which the two missense score AlphaMissense 0.099 and 0.105 — benign range. No competing candidate approaches the BUB1B pair.
+
+**S6 · Unbiased confirmation with Exomiser** (`mva/track1/exomiser/`). Everything above began from the MVA prior, which is exactly the kind of reasoning that finds what it went looking for. So the same VCF was put through Exomiser 15.1.0 with the 2512 hg38 build, given **only the eight HPO terms and the sex** — no gene panel, no interval, no mention of BUB1B or of MVA — with every inheritance mode enabled so a dominant or de novo answer could not be filtered away.
+
+Of 363 genes and 588 filtered variants, it returned:
+
+| Rank | Gene | MOI | Contributing variants |
+|---|---|---|---|
+| **1** | **BUB1B** | AD | `c.2210T>G p.Leu737*` |
+| **2** | **BUB1B** | **AR** | **`c.2210T>G p.Leu737*` + `c.3006T>G p.Asn1002Lys`** |
+| 3 | FANCD2 | AR | — |
+| 4 | LZTR1 | AD | — |
+| 5 | GNRHR | AD | — |
+
+Rank 2 is the compound-heterozygous pair, both alleles flagged as contributing, matched to **ORPHA:1052 Mosaic variegated aneuploidy syndrome**. A method with no knowledge of the hypothesis reconstructs it exactly. FANCD2 at rank 3 is the sensible near-miss — the other chromosomal-instability syndrome in the differential — and LZTR1 at rank 4 is the same incidental finding submitted here as a secondary.
+
+**On Exomiser's own ACMG call for allele B.** It classifies `p.Asn1002Lys` as VUS, applying **BP1** — "missense variant in a gene for which primarily truncating variants cause disease". For *BUB1B* and MVA1 that rule is misapplied, and the reason is mechanistic: biallelic truncating *BUB1B* is not viable, so surviving MVA1 patients essentially always carry a missense or otherwise hypomorphic allele in trans with a null. The genotype that BP1 treats as evidence against pathogenicity is the genotype the disease requires. Removing BP1 and the classification moves to Likely pathogenic on PM2_Supporting + PP4_Moderate + PP3 (AlphaMissense 0.923, MVP 0.852) with PM3 available once phase is established.
 
 ## 4. Mosaic aneuploidy tested directly from the reads
 
@@ -81,7 +98,8 @@ That predicts a uniform floor with no outlier, which is exactly what is observed
 - **Phase is not determined.** The two alleles are 10,911 bp apart — far beyond the reach of 150 bp paired-end reads, with no intervening heterozygous SNP close enough to chain read-backed phasing through, and no parental samples. `PGT`/`PID` are absent for both calls. *Trans* is inferred from the clinical diagnosis, the autosomal-recessive mechanism of MVA1, and the parental history of recurrent pregnancy loss — not demonstrated from this data. Trio sequencing or long reads would settle it.
 - The mosaic-aneuploidy analysis bounds rather than confirms, as set out above.
 - `p.Asn1002Lys` has no functional assay behind it. AlphaMissense 0.923 and kinase-domain position are strong circumstantial support; the ClinVar VUS at the same residue shows the field has not yet closed the question either.
-- Genome-wide unbiased ranking (Exomiser 15.1.0 with the 2512 hg38 build, offline VEP 116, SHEPHERD) is still running. This report will be updated with the ensemble result, which is a check on whether a method that *doesn't* start from the MVA prior lands in the same place.
+- The Exomiser run is coding-focused. A genome-wide non-coding pass (REMM, full SpliceAI tabix) and a SHEPHERD knowledge-graph ranking are still to come; neither is expected to change the call, but both would strengthen the claim that nothing else was missed.
+- Predictor disagreement on allele B is real: AlphaMissense 0.923 and MVP 0.852 against REVEL 0.472. The case rests on the genotype and phenotype, not on any single score.
 
 ## 6. Submission
 

@@ -65,6 +65,10 @@ Everything runs from the challenge VCF and FASTQs plus public reference data. `m
 
 Two workarounds worth knowing about if you hit them: pandas 2 removed `DataFrame.append`, which TxGNN needs (pin 1.5.3), and Harvard Dataverse returns 403 to the default `python-requests` User-Agent while serving curl the identical URL.
 
+## A note on identifiers
+
+`WGS_EX2312012` and `HGWCNDSX7` appear throughout the pipeline. They are the sequencing library and flow-cell identifiers the organisers assigned, already present in the challenge dataset's own filenames, and they are required for the pipeline to be reproducible. They are not patient identifiers and carry nothing that could re-identify anyone.
+
 ## Data handling
 
 The challenge data belongs to a real child and their family. It stays outside this repository — under `/mnt/data/mva-hackathon-2026/`, excluded by `.gitignore` — and will be deleted at the close of the hackathon with notification to `MVAHackathon2026@synapse.org`, as the data-use terms require. No attempt was made to re-identify or contact the family.

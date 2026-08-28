@@ -95,7 +95,11 @@ That predicts a uniform floor with no outlier, which is exactly what is observed
 
 ## 5. Limitations, stated plainly
 
-- **Phase is not determined.** The two alleles are 10,911 bp apart — far beyond the reach of 150 bp paired-end reads, with no intervening heterozygous SNP close enough to chain read-backed phasing through, and no parental samples. `PGT`/`PID` are absent for both calls. *Trans* is inferred from the clinical diagnosis, the autosomal-recessive mechanism of MVA1, and the parental history of recurrent pregnancy loss — not demonstrated from this data. Trio sequencing or long reads would settle it.
+- **Phase is not determined, and this is now measured rather than assumed.** The FASTQs were re-aligned to GRCh38 (`05_align.sh`: 1,076,740,679 reads, 99.57% mapped, 98.09% properly paired, 12.9% duplicates) and `07_phase_attempt.py` made the attempt.
+
+  Over the BUB1B locus the library's insert size runs to a median of 443 bp, a 99.9th percentile of 1,221 bp and a **largest observed template of 1,272 bp**. The two alleles are 10,911 bp apart — **nine times** the longest fragment in the data. Read-backed phasing would have to chain through intervening heterozygous sites instead, and there is exactly **one** between them, at `chr15:40216470`, splitting the distance into steps of 6,769 bp and 4,142 bp. Both are more than three times the longest template. Checking directly: **0 of 2 consecutive steps are bridged by even one shared template.** `PGT`/`PID` are absent from both calls for the same reason.
+
+  So phase is not recoverable from this library, by a factor of roughly nine — not marginally missed. *Trans* is inferred from the clinical diagnosis, the autosomal-recessive mechanism of MVA1, and the parental history of recurrent pregnancy loss. It would be settled by trio sequencing or by any long-read platform, where a single 15 kb read spans the pair comfortably.
 - The mosaic-aneuploidy analysis bounds rather than confirms, as set out above.
 - `p.Asn1002Lys` has no functional assay behind it. AlphaMissense 0.923 and kinase-domain position are strong circumstantial support; the ClinVar VUS at the same residue shows the field has not yet closed the question either.
 - The Exomiser run is coding-focused. A genome-wide non-coding pass (REMM, full SpliceAI tabix) and a SHEPHERD knowledge-graph ranking are still to come; neither is expected to change the call, but both would strengthen the claim that nothing else was missed.

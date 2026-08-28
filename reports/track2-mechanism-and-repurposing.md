@@ -280,6 +280,33 @@ This is not hypothetical caution. In PrimeKG the *only* spindle-checkpoint prote
 
 Two clinical notes follow from the same mechanism. In a chromosomal-instability syndrome, **radiosensitivity and genotoxic-chemotherapy tolerance should be treated as open questions** rather than assumed. And any antitumour agent whose mechanism *requires* a functional checkpoint will underperform here on principle — which is worth knowing, because TxGNN ranks several of them in the top 1% of indications.
 
+## 8. What would settle this — proposed validation
+
+Every hypothesis above is falsifiable in patient-derived cells, before any clinical question arises and without exposing anyone to anything. Listing the experiments is the point: a repurposing report that cannot say how it would be proven wrong is a story.
+
+Assumed starting material: a patient fibroblast or lymphoblastoid line, and a parental or age-matched control.
+
+**E1 — Is the missense allele actually hypomorphic?** *(tests the premise everything else rests on)*
+Western blot for BubR1 in patient versus control. The prediction is roughly half the protein of control, and specifically **not** absent — a null result here refutes the entire report, and an allele-specific expression assay on the transcript would say whether the shortfall is the NMD allele alone or the missense allele contributing less than a full copy.
+
+**E2 — Does the checkpoint actually fail?** *(tests the mechanism)*
+Micronucleus frequency and chromosome spreads on patient versus control, with and without a nocodazole challenge. The prediction is elevated missegregation, and it also supplies the read-out for every intervention below. This closes the loop the §4 analysis could not: the WGS bounds mosaicism in *blood* below f ≈ 0.054, but cultured fibroblasts are where MVA has always been scored.
+
+**E3 — Do NAD⁺ precursors raise BubR1?** *(tests H1, the most specific hypothesis)*
+Dose-response of nicotinamide riboside on patient cells, reading BubR1 protein level (E1) and micronucleus rate (E2). Two things make this a sharp test rather than a hopeful one. The K668 acetylation state can be measured directly by immunoprecipitation with an acetyl-lysine antibody, so the *mechanism* is observable and not merely the outcome. And SIRT2 knockdown should abolish any effect — if BubR1 rises without SIRT2, the hypothesis is wrong even though the number moved.
+
+This is also the only route available: §5.9 found that SIRT2's sole drug edge in OptimusKG is **cambinol, an inhibitor**, and no SIRT2 activator exists in either graph. H1 has to work at the substrate level or not at all.
+
+**E4 — Are the patient's cells selectively vulnerable to aneuploidy stress?** *(tests H3)*
+Viability of patient versus control cells across a hydroxychloroquine and an AMPK-activator dose range. The prediction is a therapeutic window — greater sensitivity in the patient line — and the honest expectation is that it is narrow, because the constitutional cells are aneuploid too. A tumour-derived line, if one exists from the rhabdomyosarcoma, is the comparison that matters: it should be far more sensitive than either.
+
+**E5 — Is there a senescent burden to clear?** *(tests H2, and the most likely to fail)*
+SA-β-galactosidase and p16^INK4a in patient fibroblasts, with and without dasatinib plus quercetin. `BubR1^H/H` mice are progeroid and a young child is not, so a low baseline senescent fraction would say the mouse result does not transfer at this age — which is worth knowing early, given that H2 otherwise has the strongest published anchor of the three.
+
+**Order and cost.** E1 and E2 are inexpensive, take weeks, and gate everything else: if the protein is not reduced or the checkpoint is not failing, nothing downstream is worth running. E3 is the highest-value experiment because it tests the hypothesis the knowledge graph could not even see. E5 is the cheapest way to retire a hypothesis that might not apply to a patient this young.
+
+None of this requires a trial, an IND, or a decision about treating anyone.
+
 ## 8. References
 
 - North BJ, Rosenberg MA, Jeganathan KB, et al. SIRT2 induces the checkpoint kinase BubR1 to increase lifespan. *EMBO J* 33(13):1438–1453, 2014. [PMC4194088](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4194088/)

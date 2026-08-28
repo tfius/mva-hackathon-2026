@@ -17,8 +17,16 @@ mosdepth -t "$THREADS" -n --fast-mode --by 10000 "$WORK/mosdepth.10kb" "$BAM"
 
 # --- Structural variants. The challenge VCF has none, so this is the only pass
 #     that can say whether a structural event was missed anywhere in the genome.
-delly call -g <(zcat "$REF") -o "$WORK/delly.bcf" "$BAM" 2>&1 | tail -5 || \
-  echo "delly needs an uncompressed reference; see 06 notes"
+#     delly needs a real uncompressed FASTA with an index, not a process
+#     substitution, so decompress once and keep it.
+PLAINREF="$REFS/GRCh38_no_alt.fa"
+if [[ ! -s "$PLAINREF.fai" ]]; then
+  echo "decompressing reference for delly"
+  bgzip -cd -@ 8 "$REF" > "$PLAINREF"
+  samtools faidx "$PLAINREF"
+fi
+delly call -g "$PLAINREF" -o "$WORK/delly.bcf" "$BAM"
+bcftools view "$WORK/delly.bcf" | grep -vc '^#' | xargs echo "delly SV records:"
 
 # --- Insert-size distribution, which is what decides whether read-backed
 #     phasing of the two BUB1B alleles is even arguable.

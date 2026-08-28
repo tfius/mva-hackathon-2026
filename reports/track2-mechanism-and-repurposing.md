@@ -144,21 +144,38 @@ Every microtubule-targeting agent sits near the **top of the indications**, not 
 
 The graph knows MVA is a cancer-predisposition syndrome and retrieves sarcoma chemotherapy. It does not know that the spindle assembly checkpoint in this child is *already* hypomorphic, because that fact lives in the variant, not in the disease node. The mechanism is right and the model is wrong, and the disagreement is the most clinically consequential statement in this report: a knowledge-graph repurposing pipeline run on this case without mechanism reasoning would rank checkpoint-dependent chemotherapeutics as the leading recommendations.
 
-### 5.6 Explanations — and why they cannot be mechanistic here
+### 5.6 Explanations — hub artefacts, and what survives removing them
 
 `03_txgnn_explain.py` reconstructs graph-backed rationales from the released GraphMask gates: a 7,695,474-row edge table with per-layer importance for the indication task. TxGNN's shipped `paths.csv` covers a curated demo set and has no MVA node, so paths are found by bidirectional beam search, two hops from the disease and two from the drug, joined at the meeting node and scored as the length-normalised product of edge importances.
 
-**Run on raw gate importance, the result is an artefact, and an instructive one.** Every top path, for every drug, was:
+**Run on raw gate importance the result is an artefact, and an instructive one.** Every top path, for every drug, was:
 
 ```
 MVA <- Colon cancer -> Pimecrolimus <- CYP3A4 -> <drug>
 ```
 
-with scores of 0.5159 for dasatinib, 0.5152 for hydroxychloroquine, 0.5123 for chloroquine and 0.5074 for paclitaxel. Four chemically unrelated drugs, four near-identical scores, one shared hepatic enzyme. The drug-independence is the tell: this is a statement about metabolism, not about why any of them might help. Anything presented as a "graph-backed medical rationale" without that check would be presenting a CYP3A4 lookup as a mechanism.
+scoring 0.5159 for dasatinib, 0.5152 for hydroxychloroquine, 0.5123 for chloroquine, 0.5074 for paclitaxel. Four chemically unrelated drugs, four near-identical scores, one shared hepatic enzyme. The drug-independence is the tell: this is a statement about metabolism, not about why any of them might help. Presented unchecked, a CYP3A4 lookup becomes a "graph-backed medical rationale".
 
-Three corrections were applied: `drug_effect` edges excluded (side effects are not therapeutic rationale), intermediate nodes down-weighted by 1/log₁₀(degree), and 658 ADME hub proteins (CYP, ABC, SLC, UGT, ALB and relatives) removed outright, since degree down-weighting alone was not enough to stop CYP3A4 winning on gate value.
+Three corrections: `drug_effect` edges excluded, since a side effect is not a therapeutic rationale; intermediate nodes down-weighted by 1/log₁₀(degree); and 658 ADME hub proteins (CYP, ABC, SLC, UGT, ALB and relatives) removed outright, because degree down-weighting alone did not stop CYP3A4 winning on gate value. Beam width matters and was itself a trap — at 3,000 the filters left only paclitaxel with any path, which looked like a dramatic finding and was an artefact of the search. At 12,000 every candidate has paths. The result below is the beam-12,000 one.
 
-**The deeper reason is structural, and it is checkable.** Counting edges in PrimeKG directly:
+What survives is honest but thin:
+
+```
+Dasatinib   MVA <-[disease_disease]- chromosomal anomaly -> Prader-Willi syndrome
+                <-[disease_protein]- EPHA2 -[drug_protein]-> Dasatinib
+Dasatinib   MVA -[disease_disease]-> cancer-predisposition syndrome <- Bloom syndrome
+                <-[disease_protein]- KIT -[drug_protein]-> Dasatinib
+Paclitaxel  MVA <-[disease_protein]- TRIP13 -> germ cell tumor
+                -[disease_disease]-> testicular teratoma <-[off-label use]- Paclitaxel
+```
+
+Dasatinib's routes go through its real kinase targets (EPHA2, KIT, STAT5B) but into unrelated syndromes; the Bloom syndrome path is the only one with biological texture, Bloom being another chromosomal-instability cancer-predisposition syndrome. Paclitaxel's route passes through an actual MVA gene, and says *an MVA gene is implicated in a cancer, and this drug is used off-label in that cancer.* None of it is about checkpoint dose. Nothing routes through BubR1.
+
+Two honest caveats about the reconstruction itself. The search is undirected, so some recovered paths traverse `contraindication` edges while supporting an indication prediction — those edges do carry non-zero GraphMask importance for the indication task, but any rationale shown to a clinician must mark their polarity, and this reconstruction currently does not. And path scores are not calibrated probabilities; they order paths, nothing more.
+
+### 5.7 Why no explanation reaches BubR1 — and the near miss that matters
+
+Counting edges in PrimeKG directly:
 
 | Gene | Total edges | Drug edges |
 |---|---|---|
@@ -169,23 +186,32 @@ Three corrections were applied: `drug_effect` edges excluded (side effects are n
 | TRIP13 | 516 | **0** |
 | CDC20 | 500 | **0** |
 | MAD2L1 | 580 | **0** |
-| AURKB | 762 | 10 — AT9283, Enzastaurin, Reversine … |
+| AURKB | 762 | 10 — AT9283, Enzastaurin, **Reversine** … |
 | PLK1 | 962 | 12 |
 | TTK | 288 | 6 — BOS172722 … |
 | CENPE | 404 | 2 — GSK-923295 |
 
-**Every gene the MVA node connects to has zero drug edges.** The path `MVA → BUB1B → drug` does not exist, because its last edge does not exist. No knowledge-graph method can produce a mechanistically direct explanation for this disease — not TxGNN, not any other — and the hub detour is what remains when the direct route is absent. That is a property of the graph, not a failure of the model.
+**Every gene the MVA node connects to has zero drug edges.** The path `MVA → BUB1B → drug` does not exist because its last edge does not exist. That is a property of the graph, not a failure of the model, and it explains the hub detour completely.
 
-And the sharper half: the spindle-checkpoint proteins that *are* druggable in PrimeKG — AURKB, PLK1, TTK, CENPE — are precisely the ones that must not be inhibited in a child whose checkpoint is already hypomorphic. One of the AURKB ligands, **reversine**, is a tool compound used in the laboratory to *induce* aneuploidy. A pipeline that reasoned "find the disease's pathway, find drugs against it" would nominate the contraindicated class with high confidence and a clean-looking subgraph behind it.
+The sharper half: the checkpoint proteins that *are* druggable in PrimeKG — AURKB, PLK1, TTK, CENPE — are precisely the ones that must not be inhibited in a child whose checkpoint is already hypomorphic. One of the AURKB ligands, **reversine**, is a laboratory tool used to *induce* aneuploidy. A pipeline reasoning "find the disease's pathway, find drugs against it" would nominate the contraindicated class with high confidence and a clean subgraph behind it.
 
-With the ADME hubs removed, the best surviving paths do run through MVA's own genes, for example:
+**And now the finding that changes how this should be read.** BUB1B's 95 protein interactors in PrimeKG include **SIRT2**, **CREBBP** and **EP300** — alongside HDAC1–5 and KAT2A/KAT2B.
 
-```
-MVA <-[disease_protein]- TRIP13 -[disease_protein]-> germ cell tumor
-    -[disease_disease]-> testicular teratoma <-[off-label use]- Paclitaxel
-```
+That is the entire acetylation-control axis hypothesis H1 rests on: CBP/p300 writes the acetyl mark, SIRT2 erases it, and BubR1 abundance follows. **PrimeKG encodes the mechanism.** What it does not encode is any drug edge from the NAD⁺ precursors to SIRT2 or its pathway, because nicotinamide riboside and NMN are supplements with no indication records. The graph holds every link but the last one, and TxGNN cannot surface the best-supported hypothesis in this report while sitting one edge away from it.
 
-Readable and traceable — but note what it is actually saying: *an MVA gene is implicated in a cancer, and this drug is used off-label in that cancer.* It is a cancer-treatment rationale, which is what the graph has to offer, not a rationale about checkpoint dose.
+The lesson is not that knowledge graphs are the wrong tool. It is that ranking 1,801 drugs by a link predictor asks the graph a question it cannot answer here, while walking outward from the disease's own genes asks one it can.
+
+### 5.8 Mechanism-anchored reachability
+
+So `05_mechanism_anchored.py` asks the narrower question directly: starting from BUB1B, BUB1, BUB3, CEP57 and TRIP13, which drugs are reachable through a single protein–protein interaction? Every hit carries the interactor it came through, so the claim is inspectable — *this drug targets a protein that physically interacts with a protein the disease disrupts* — and candidates whose target is itself a checkpoint protein are flagged rather than dropped.
+
+526 interactors, **592 distinct reachable drugs**, 939 gene–interactor–drug rows. Three groups stand out:
+
+- **Flagged contraindicated by construction** — fostamatinib (BUB1B–AURKB, BUB1–PLK1), enzastaurin (BUB1B–AURKB), wortmannin (BUB1–PLK1). The flag fires exactly where the mechanism says it should, which is a check on the method as much as on the drugs.
+- **The acetylation axis** — HDAC inhibitors (vorinostat, romidepsin, panobinostat, belinostat, mocetinostat, pracinostat) are all reachable through BUB1B–HDAC1/2/3/4. Mechanistically adjacent and worth follow-up, but **the direction of effect is unresolved**: SIRT2 is a class III sirtuin and is not inhibited by these class I/II agents, and the published acetylation sites on BubR1 do not all act in the same direction. Listed as a question, not a recommendation.
+- **NADH**, reachable via BUB1B–NDUFA2, BUB1–ALDH1B1 and BUB3–DLD — redox metabolism rather than the SIRT2 axis, so weak corroboration at best.
+
+This is a reachability set, not a ranking, and its interpretation is bounded by that. But it recovers the mechanism the drug-level model could not, from the same graph.
 
 ### 5.7 What is still to run
 

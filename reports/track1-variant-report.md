@@ -93,6 +93,29 @@ This is consistent with the diagnosis rather than against it, for two reasons th
 
 That predicts a uniform floor with no outlier, which is exactly what is observed. The measured floor of 0.00071 is shared by every chromosome and corresponds to *f* ≈ 0.11 if read as dosage; it is equally consistent with ordinary technical overdispersion, and **a single sample with no matched control cannot separate the two.** Stated as a bound rather than a finding: this analysis excludes a dominant single-chromosome mosaicism and is silent on uniform low-level variegation.
 
+### 4.1 The same question from read depth
+
+The B-allele analysis above uses the VCF. Re-aligning the FASTQs makes a second, independent modality available — read depth — and `08_coverage_aneuploidy.py` asks the same question of it.
+
+**The naive version is wrong, and it is worth showing why.** mosdepth's per-chromosome mean reports chr22 at 36.5×, chr15 at 38.8×, chr14 at 39.0× and chr13 at 40.8× against a genome mean near 46×. Read as dosage that is a ~20% deficit on five chromosomes — a spectacular finding, and an artefact. Those are the acrocentrics, whose satellite and rDNA arrays are unmappable: only **69.6%** of chr22's 10 kb windows carry plausible depth, 76.8% of chr21's, 80.2% of chr15's. A whole-length mean averages in the zero blocks.
+
+Taking instead the **median depth over mappable windows** — those within 0.5–1.75× the genome median, which is insensitive both to the zero blocks and to segmental-duplication pileups:
+
+| | naive mean | robust median | ratio | mappable |
+|---|---|---|---|---|
+| chr22 | 36.45× | **48.17×** | 1.031 | 69.6% |
+| chr15 | 38.80× | **47.02×** | 1.006 | 80.2% |
+| chr13 | 40.81× | **46.27×** | 0.990 | 84.3% |
+| chr9 | 41.61× | **46.75×** | 1.000 | 86.5% |
+
+Every autosome then falls between 0.984 and 1.046 of the autosomal median of 46.74×, the largest deviation is **2.9 σ**, and no chromosome is an outlier. The 3 σ detection limit is a mosaic fraction of **f ≈ 0.097** — less sensitive than the B-allele test, as expected, since depth carries no allelic information.
+
+`chrX` at 0.522 and `chrY` at 0.537 of autosomal depth confirm a male karyotype from a third direction, independent of both the VCF's heterozygosity and its chrY calls.
+
+**The residual is GC bias, and the two methods together prove it.** The chromosomes still sitting slightly high — chr19 at 1.046, chr17 and chr22 at 1.031, chr16 at 1.027 — are exactly the GC-rich ones, the same set that dominated the *unfiltered* B-allele statistic. If chr19 were genuinely gained at f ≈ 0.09, the B-allele frequencies on it would have to show a matching excess variance. They do not: chr19's filtered excess sits +0.000158 from the autosomal median, well inside noise. A real dosage change moves both statistics; a GC artefact moves only the depth one. It moves only the depth one.
+
+**Joint conclusion.** Two independent modalities, agreeing: no whole-chromosome mosaic aneuploidy is detectable in this blood sample, bounded at **f < 0.054** by allele balance and **f < 0.097** by depth. As set out above, that is what *variegated* aneuploidy is expected to look like in bulk uncultured blood, and it is a bound rather than a refutation.
+
 ## 5. Limitations, stated plainly
 
 - **Phase is not determined, and this is now measured rather than assumed.** The FASTQs were re-aligned to GRCh38 (`05_align.sh`: 1,076,740,679 reads, 99.57% mapped, 98.09% properly paired, 12.9% duplicates) and `07_phase_attempt.py` made the attempt.

@@ -7,6 +7,28 @@
 
 ---
 
+## 0. Summary
+
+**The lesion.** Biallelic *BUB1B*: `p.Leu737Ter`, a null whose truncation loses the entire kinase domain, in trans with `p.Asn1002Lys`, a kinase-domain missense seen once in 1,461,878 gnomAD alleles. Not a null genotype — a hypomorph with residual, partly-working BubR1. Complete BubR1 loss is embryonic lethal, so every therapeutic idea here has to operate on protein that exists.
+
+**Three hypotheses, each anchored to a published experiment in this gene or this biology.** Raise the residual protein via NAD⁺/SIRT2, which controls BubR1 abundance through acetylation at K668 — and **K668 is deleted on the null allele but intact on the missense one**, so this genotype specifically has a substrate to stabilise, and one with two truncating alleles would not. Clear the damaged cells with senolytics, the founding experiment for which was run in the BubR1 progeroid mouse and rescued the very tissues this child is symptomatic in. Exploit aneuploid cells' proteotoxic stress, where chloroquine and 17-AAG have published selectivity.
+
+**Two of the three were independently confirmed by a model that had no mechanism input.** TxGNN zero-shot on the MVA node — which carries 214 phenotype edges, five genes and *no drug edges* — put hydroxychloroquine and chloroquine at the 2.8th percentile of 1,801 drugs and dasatinib at 3.8%.
+
+**Four findings that were not expected, and that are the substance of this submission:**
+
+1. **BubR1 is undrugged, and the checkpoint's pharmacology points the wrong way.** *BUB1B* has 464 edges in PrimeKG and **zero drug edges**; so do BUB1, BUB3, CEP57 and TRIP13. OptimusKG, four times denser around BUB1B and built from 65 independent sources, reproduces the gap exactly. Meanwhile AURKB, PLK1, TTK and CENPE *are* druggable — the contraindicated set. One of the AURKB ligands is **reversine**, which laboratories use to *induce* aneuploidy. A pipeline reasoning "find the pathway, find drugs against it" returns the contraindication list as its answer with a clean subgraph attached.
+
+2. **The model's top recommendations are contraindicated.** Paclitaxel ranks 7 of 1,801 on *indications*, vinblastine 17, eribulin 19. The graph knows MVA is a cancer-predisposition syndrome and retrieves sarcoma chemotherapy; it does not know the checkpoint is already hypomorphic, because that fact lives in the variant and not in the disease node.
+
+3. **Nutrient and cofactor interventions are structurally invisible to knowledge graphs.** PrimeKG contains BUB1B–SIRT2 and BUB1B–CBP/p300 — the entire mechanism H1 rests on — and still cannot surface it. Nicotinamide riboside *is* a node in OptimusKG and is still unreachable, because it does not bind SIRT2; it raises the NAD⁺ SIRT2 consumes, and no edge type exists for that. This is a limit of the schema, not the data, and no amount of graph size or retraining fixes it.
+
+4. **Explanations need auditing before they are called rationales.** Run on raw GraphMask importance, every top path for every drug went through CYP3A4 with near-identical scores for chemically unrelated drugs. That is a metabolism lookup presented as a mechanism.
+
+**What we actually recommend** is not a treatment. It is five experiments in patient-derived cells, in §8, any one of which can refute this report within weeks: blot for BubR1, count micronuclei, then dose with nicotinamide riboside reading the K668 acetyl mark with SIRT2 knockdown as the control. Not a trial — a blot, a chromosome spread, and a knockdown.
+
+---
+
 ## 1. The lesion, stated precisely
 
 Track 1 calls biallelic *BUB1B*: `c.2210T>G p.Leu737Ter` (null) in trans with `c.3006T>G p.Asn1002Lys` (missense). See [`track1-variant-report.md`](track1-variant-report.md).

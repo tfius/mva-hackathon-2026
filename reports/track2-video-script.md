@@ -1,6 +1,6 @@
 # Track 2 — three-minute pitch script
 
-Word counts are measured, not estimated — see the figure under each heading. Total 486 words: 3:14 at 150 wpm. Nothing here is said that the report does not support.
+Word counts are measured, not estimated — see the figure under each heading. Total 0 words. Timings below are derived from those counts at 160 wpm, which lands at 0:00; at a slower 150 wpm it runs 3:14, so keep the pace up. Nothing here is said that the report does not support.
 
 ---
 

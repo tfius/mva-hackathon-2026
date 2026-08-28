@@ -298,6 +298,41 @@ Note also that the *smaller* number of reachable drugs in the larger graph — 4
 
 DepMap for aneuploidy-selective genetic dependencies; ChEMBL and Open Targets for tractability on the reachable set; and a TxGNN retrained on OptimusKG, which §5.9 shows is now worth the compute rather than merely bigger.
 
+## 5.11 If BubR1 is undrugged, what next to it is? — and why they nearly all point the wrong way
+
+"BubR1 is undrugged" is true, and it is not the same as "nothing is druggable". `07_alternative_targets.py` asks what ligands exist for the proteins immediately adjacent to the lesion. The answer is a pattern rather than a hit list.
+
+| Protein | Role in this mechanism | Drug edges in OptimusKG | Direction available |
+|---|---|---|---|
+| **CREBBP** | writes the K668 acetyl mark | 1 (CHEMBL1236441) | **inhibitor — the right way** |
+| **EP300** | writes it too | **0** | — |
+| SIRT2 | erases it | 1 — **cambinol** | inhibitor — **wrong way** |
+| NAMPT | rate-limiting for NAD⁺ salvage | 1 — **daporinad (FK866)** | inhibitor — **wrong way** |
+| HSP90AA1 | chaperone for a fold-destabilised client | **44** — alvespimycin, CCT018159 … | inhibitors — **wrong way** |
+| NMNAT1, FZR1, SMG1, UPF1 | NAD⁺ synthesis, BubR1 degradation, NMD | **0 each** | — |
+
+**Every intervention this genotype needs is an increase.** More BubR1, more NAD⁺, more chaperone capacity, less nonsense-mediated decay. And essentially every ligand that exists against these proteins is an inhibitor: the only SIRT2 ligand suppresses the enzyme we want active, the only NAMPT ligand suppresses the pathway we want boosted, and all 44 HSP90 ligands destabilise clients when a folding-impaired client is exactly what we are trying to preserve.
+
+This is a deeper version of the coverage problem in §5.9. It is not only that the edges are missing — **the pharmacopoeia itself is built overwhelmingly of inhibitors, and hypomorphic loss-of-function disease needs the opposite.** That is a structural mismatch between drug discovery and this entire disease class, and it will not be fixed by a larger knowledge graph.
+
+### The exception, and it is the best new candidate here
+
+**Inhibiting the writer produces an increase in the substrate.** If acetylation at K668 destabilises BubR1, then a CBP/p300 inhibitor raises it — an inhibitor pointed the right way. Real agents exist: **A-485**, and **CCS1477 / inobrodib**, which is in clinical trials.
+
+Note what this exposes about the knowledge-graph layer. **CREBBP and EP300 are already BUB1B interactors in PrimeKG** — §5.7 found them and read them as corroboration for H1. The graph has the protein edge. What it cannot encode is *which direction of perturbation helps*, and that is the entire question. So unlike the NAD⁺ gap, this is not missing data. It is a **semantics gap**: link prediction answers "is there a relationship", never "would pushing this up or down help my patient".
+
+**Three reasons this is a hypothesis and not a recommendation.** Acetylation at a different BubR1 lysine, K250, has been reported to *stabilise* the protein by blocking APC/C-Cdh1 degradation, so inhibiting the writer could cut both ways — E3 in §8, which reads the K668 mark directly, is the experiment that resolves it. CBP/p300 inhibitors are strongly pleiotropic and are being developed as anticancer agents, which in a child is a serious toxicity question rather than a footnote. And OptimusKG lists exactly one CREBBP ligand and none for EP300, so the graph badly under-represents a class that clinically exists.
+
+### The allele nobody has been treating
+
+Every hypothesis so far props up the missense copy. But `p.Leu737Ter` is a **premature termination codon**, and PTC readthrough is a druggable mechanism with existing agents — ataluren, ELX-02, aminoglycosides. Restoring even a fraction of full-length protein from the null allele attacks the dose problem from the opposite side, and it is the only route here that could raise BubR1 above what the missense allele alone can give.
+
+The obvious objection is that nonsense-mediated decay destroys the transcript before a ribosome can read through it — which is why NMD inhibition combined with readthrough is an active strategy. **SMG1 and UPF1 both have zero drug edges**, and readthrough agents act on the ribosome rather than a named protein target, so they carry no drug-target edge at all. The graphs are blind to this route for exactly the reason they are blind to nicotinamide riboside.
+
+### What this changes
+
+The candidate table in §6 gains a fourth mechanistic route and, more importantly, a sharper framing. The question for this disease is not "which drug hits BubR1" — nothing does, in any graph, and the checkpoint proteins that *are* druggable are contraindicated. It is **"which existing inhibitor, pointed at the right protein, produces more BubR1"**. On current evidence that shortlist is: a CBP/p300 inhibitor, and PTC readthrough with NMD inhibition. Both are testable by E1 and E3 in §8 without changing the experimental plan at all.
+
 ## 6. Candidates
 
 > Restating what §0 said, because this is the section that will be read out of context: **these are hypotheses for follow-up, not evidence that a medicine works.** None has been tested in anyone with MVA1. Each would need mechanism confirmation in a model system, then a clinician, before it meant anything for a patient. The child in this case has an oncology team; nothing here is a substitute for it.

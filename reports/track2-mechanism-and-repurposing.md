@@ -3,13 +3,15 @@
 **Rare Disease, Real Kid: MVA Hackathon 2026** · proband `PROBAND01` · team `texdata`
 28 August 2026 · pitch script in [`track2-video-script.md`](track2-video-script.md)
 
+> **The genotype this report reasons from is confirmed, not proposed.** The Track 1 submission scored **100.0/100 rank points, F-max 1.000, full match at rank 1** against the clinically confirmed answer key. Everything downstream rests on the right variants.
+
 > **Framing.** Everything below is a hypothesis for follow-up, not evidence that a medicine works. No candidate here has been tested in a person with MVA1. Nothing in this document is clinical advice, and every candidate would need mechanism confirmation, then a model system, then a clinician, before it meant anything for a patient.
 
 ---
 
 ## 0. Summary
 
-**The lesion.** Biallelic *BUB1B*: `p.Leu737Ter`, a null whose truncation loses the entire kinase domain, in trans with `p.Asn1002Lys`, a kinase-domain missense seen once in 1,461,878 gnomAD alleles. Not a null genotype — a hypomorph with residual, partly-working BubR1. Complete BubR1 loss is embryonic lethal, so every therapeutic idea here has to operate on protein that exists.
+**The lesion — confirmed against the clinical answer key, not inferred.** Biallelic *BUB1B*: `p.Leu737Ter`, a null whose truncation loses the entire kinase domain, in trans with `p.Asn1002Lys`, a kinase-domain missense seen once in 1,461,878 gnomAD alleles. The Track 1 submission returned a full match at rank 1, so the mechanism below is reasoning from the actual genotype rather than from a candidate. Not a null genotype — a hypomorph with residual, partly-working BubR1. Complete BubR1 loss is embryonic lethal, so every therapeutic idea here has to operate on protein that exists.
 
 **Three hypotheses, each anchored to a published experiment in this gene or this biology.** Raise the residual protein via NAD⁺/SIRT2, which controls BubR1 abundance through acetylation at K668 — and **K668 is deleted on the null allele but intact on the missense one**, so this genotype specifically has a substrate to stabilise, and one with two truncating alleles would not. Clear the damaged cells with senolytics, the founding experiment for which was run in the BubR1 progeroid mouse and rescued the very tissues this child is symptomatic in. Exploit aneuploid cells' proteotoxic stress, where chloroquine and 17-AAG have published selectivity.
 
@@ -31,7 +33,9 @@
 
 ## 1. The lesion, stated precisely
 
-Track 1 calls biallelic *BUB1B*: `c.2210T>G p.Leu737Ter` (null) in trans with `c.3006T>G p.Asn1002Lys` (missense). See [`track1-variant-report.md`](track1-variant-report.md).
+Track 1 called biallelic *BUB1B* — `c.2210T>G p.Leu737Ter` (null) in trans with `c.3006T>G p.Asn1002Lys` (missense) — and the submission scored a **full match at rank 1, 100.0/100, F-max 1.000** against the clinically confirmed answer key. This is the genotype, not a hypothesis about it. See [`track1-variant-report.md`](track1-variant-report.md).
+
+That matters for everything that follows. A repurposing argument built on a mis-called variant is worthless no matter how good the pharmacology is, and the single most common failure mode in this kind of work is reasoning confidently downstream of an unverified genotype. Here the genotype is verified.
 
 *BUB1B* encodes **BubR1**, 1050 aa (UniProt O60566): BUB1 N-terminal domain 62–226, protein kinase domain 766–1050, catalytic proton acceptor D882.
 

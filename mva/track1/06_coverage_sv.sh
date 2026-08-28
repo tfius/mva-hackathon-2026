@@ -29,7 +29,9 @@ fi
 # installing the aligners into the main env pulled boost forward to 1.92, which
 # leaves delly unable to load libboost_iostreams.so.1.85.0.
 DELLY=${DELLY:-/mnt/data/mva-hackathon-2026/mamba/envs/delly/bin/delly}
-"$DELLY" call -g "$PLAINREF" -o "$WORK/delly.bcf" "$BAM"
+# delly 2.6 renamed the short-read caller from `call` to `sr`; `call` now
+# returns "Unrecognized command" rather than an error naming the replacement.
+"$DELLY" sr -g "$PLAINREF" -o "$WORK/delly.bcf" "$BAM"
 bcftools view "$WORK/delly.bcf" | grep -vc '^#' | xargs echo "delly SV records:"
 
 # --- Insert-size distribution, which is what decides whether read-backed

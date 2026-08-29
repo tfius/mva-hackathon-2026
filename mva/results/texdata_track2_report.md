@@ -107,7 +107,7 @@ Feasibility is four factors on a 1–5 scale rather than one number, so a reader
 | 3 | **PTC readthrough** ± NMD inhibition | Attacks the *other* allele. `c.2210T>G` creates **TGA** — the most readthrough-permissive stop codon — so restoring even partial full-length protein raises total BubR1 above what the missense allele alone gives | 4 | **1** | see below | see below | NMD destroys the transcript before a ribosome reaches the PTC (gated by **E6a**); the +4 base is A, an intermediate context; and the agents differ so widely on access and safety that a single score for the row would be meaningless |
 | 4 | **Hydroxychloroquine** | Autophagy inhibition; chloroquine is one of three compounds identified as aneuploidy-selective. Aneuploid cells lean on autophagy to clear proteotoxic load | 3 | 3 | **5** | 4 | Constitutional cells are aneuploid too, so "selective" is degree not kind; retinal toxicity is dose-limiting |
 | 5 | **Dasatinib (+ quercetin)** | Senolytic clearance of p16^Ink4a-positive cells, which rescued skeletal muscle and adipose **in the BubR1 progeroid mouse** — the tissues this child is symptomatic in | 4 | **3** | 3 | 3 | BubR1^H/H mice are progeroid and a child is not; senescent burden may be low at this age; needs oncology sign-off given cancer predisposition |
-| 6 | **Epigenetic activation** (dCas9 activator at the *BUB1B* promoter) | Raise transcription of the surviving full-length allele. Not repurposing — included because it shares candidates 1 and 2's validated premise by a different route, and because the modality reached the clinic in 2025–26 | 4 | 3 | **2** | **2** | Systemic requirement vs tissue-restricted delivery; possible dominant-negative from upregulating the truncated allele; persistent transcriptional activator in a cancer-predisposition background |
+| 6 | **Genomic correction** — prime editing of `c.2210T>G`, with epigenetic activation as the less durable alternative | Permanently revert the **nonsense** allele. Not repurposing; included because it shares candidates 1, 2 and 3's validated premise, and because a genomic edit is the one route immune to the durability problem that defeats every other | 4 | 3 | **2** | **1** | Systemic requirement vs tissue-restricted delivery; possible dominant-negative from upregulating the truncated allele; persistent transcriptional activator in a cancer-predisposition background |
 | — | *HDAC inhibitors* | Reachable from BUB1B via HDAC1–4, and BubR1 abundance is acetylation-controlled | 2 | 1 | 3 | 3 | **Direction unresolved** — SIRT2 is class III and is not inhibited by these agents. A question, not a candidate |
 
 **A stated criterion for the evidence column, and two scores it changes.** "Strength of published support" is too loose to be checkable, so it is resolved here into one question: **was the proposed modality itself tested, or only a genetic proxy for it?** An experiment that administers the actual class of intervention and measures the actual molecular outcome is worth more than one that establishes the principle by genetic means and leaves the drug as an inference.
@@ -143,21 +143,40 @@ What the withdrawal really changes is the order of operations: it makes the chea
 
 **Candidates 1 and 3 are the two that could be investigated without exposing anyone to anything** — both testable in patient-derived cells for BubR1 level and micronucleus rate before any clinical question arises. That is what §7 recommends.
 
-### 5.1 Candidate 6 — epigenetic activation, and why it ranks last
+### 5.1 Candidate 6 — genomic correction, and which allele to edit
 
-The modality reached patients: **TUNE-401** is in Phase 1b (NZ/Hong Kong, HBV) and **EPI-321** completed first-in-human enrolment and dose escalation in July 2026 (FSHD, muscle — extrahepatic). Platform risk has fallen materially and the scores reflect it. *CRMA-1001 could not be confirmed in human testing and is not counted.*
+*Evaluated at a reader's suggestion. One premise has to be corrected first, and it is the second time it has arisen, so it is stated here permanently: **neither allele can be called maternal or paternal.** There are no parental samples, phase was not established (Track 1 report §5: largest observed template 1,272 bp against a 10,911 bp gap, 0 of 2 heterozygous steps bridged), and nothing in a singleton genome assigns an allele to a parent. Even *trans* is inferred from the clinical diagnosis, not measured.*
 
-**But every confirmed programme is a silencer, and three things do not transfer.**
+**Two things about the proposal are right, and one answers an objection this report raised against itself.**
 
-1. **Silencing has a heritable mark; activation does not.** 5-methylcytosine is copied by DNMT1 at every replication. VP64/p300 activation has no self-propagating equivalent and dilutes as cells divide — and BubR1 matters *in dividing cells*, so durability is worst exactly where treatment is needed, while the clinical precedent comes from liver and muscle where a deposited mark stays put.
-2. **There is no repressive mark here to erase** — and our own data proves it: the missense allele **is transcribed**, because it produces the protein. Durable epigenetic activation works by demethylating a *silenced* promoter. This one is not silenced.
-3. **The extrahepatic proof point is AAV to muscle, not LNP.** "Extrahepatic LNP + activation" is the configuration this needs, and no programme demonstrates it. BubR1 is required in every dividing cell and this phenotype is systemic; tissue-restricted delivery is mismatched at the level of concept.
+*Prime editing is the correct tool, and base editing is not.* Both variants are `T>G`, so reverting either requires **G→T** — a transversion. Cytosine and adenine base editors perform C→T and A→G; neither can do this. Prime editing (or a search-and-replace equivalent) is genuinely required, and that is a precise technical call rather than a fashionable one.
 
-**A hazard specific to this genotype.** Promoter-level activation is not allele-selective. `p.Leu737Ter` retains the **KEN box and Bub3-binding region** while losing the kinase domain, so a truncated species that still binds Bub3 and Cdc20 without functioning is a plausible **dominant negative** — and driving its transcription is the one way this could worsen what it treats. **E6a** already tests it.
+*A genomic edit defeats the durability problem.* §4 and the epigenetic route founder on the same thing: BubR1 matters **in dividing cells**, and an activating epigenetic mark has no self-propagating equivalent of 5-methylcytosine, so it dilutes with every division. A corrected DNA sequence is copied by replication itself. **The objection that sinks epigenetic activation does not apply to genomic correction**, and that is the strongest argument in this candidate's favour.
 
-**On Factor V Leiden and LNPs.** Established: ionisable-lipid LNPs can trigger complement activation-related pseudoallergy; inflammation is prothrombotic; heterozygous FVL raises VTE risk ~3–8×. **Not** established: any documented LNP–FVL interaction, and this report does not invent one. Conclusion: vigilance and haematology input, not a categorical contraindication — and the child's **central venous access during chemotherapy** is a far larger, better-documented thrombotic exposure than a hypothetical LNP dose.
+**But the proposed edit targets the wrong allele, and this genotype settles which is right.**
 
-Ranked last because **the concept is better supported than several candidates above it and the execution is far worse.** Different axes. If durable extrahepatic activation is shown in humans, it moves up; the experiment that says whether it is worth revisiting is **E1**, because the degree of protein reduction sets how much upregulation would be needed.
+Write the two alleles as contributions to total BubR1, with *x* the residual activity of the hypomorph (0 < *x* < 1):
+
+| | Genotype | Total BubR1 |
+|---|---|---|
+| Now | null (0) + hypomorph (*x*) | ***x*** |
+| Correct **`c.3006T>G`** (the missense, as proposed) | null (0) + WT (1) | **1** |
+| Correct **`c.2210T>G`** (the nonsense) | WT (1) + hypomorph (*x*) | **1 + *x*** |
+
+Correcting the nonsense allele yields more BubR1 than correcting the missense, **by exactly the residual activity of the allele you would otherwise have overwritten**. Both clear the clinical threshold — heterozygous carriers are healthy — but the surplus is not wasted: Baker 2013 showed that *more* BubR1 is protective, reducing tumorigenesis and extending lifespan. And correcting the nonsense allele **also removes the dominant-negative hazard**, since `p.Leu737Ter` retains the KEN box and Bub3-binding region while losing the kinase domain.
+
+**E1 measures *x* directly.** The experiment that gates every other candidate also tells you how much better the nonsense edit would be.
+
+**Where the delivery proposal breaks, and it is developmental rather than technical.**
+
+- **There are no renal stem cells to target.** Human nephrogenesis ceases around 34–36 weeks of gestation; no new nephrons form postnatally. Wilms tumour arises from **nephrogenic rests** — persistent embryonic remnants — not from a maintained progenitor compartment. A renal-cortex-targeted payload aimed at "dividing stem cell niches" is aimed at a population that has largely ceased to exist in a child of this age.
+- **The tumour is skeletal muscle, not marrow.** MVA1's characteristic cancers are rhabdomyosarcoma and Wilms. Muscle satellite cells are largely quiescent and mature fibres are post-mitotic syncytia — the delivery problem that muscle gene therapy has spent two decades on.
+- **Most of the phenotype is not cancer, and much of it is already fixed.** Growth restriction, short stature and low muscle mass are developmental, and this child was born at 32 weeks weighing a kilogram. No edit is retroactive.
+- **Partial correction in an already-mosaic disease.** In vivo editing corrects a fraction of cells, so the result is a mosaic of corrected and uncorrected ones — in a disease already defined by mosaicism. For cancer risk that is still real benefit, since risk falls roughly with the uncorrected fraction. For the systemic dose deficit it is a partial fix at best.
+
+**Verdict.** This candidate is **stronger than the epigenetic version it replaces**, on the durability argument alone, and it absorbs it rather than sitting alongside it. It remains ranked last on **access**, which drops to 1: no in vivo prime editing programme has reached patients, and ligand-targeted extrahepatic LNP delivery to quiescent muscle satellite cells is unsolved.
+
+The reason for keeping it in the table is unchanged and worth stating plainly: **the concept is better supported than several candidates above it and the execution is far worse.** Those are different axes, and collapsing them is how a report recommends something undeliverable. If in vivo prime editing reaches patients, this moves up — and the edit it should make is `c.2210T>G`, not `c.3006T>G`.
 
 ## 6. Contraindications
 

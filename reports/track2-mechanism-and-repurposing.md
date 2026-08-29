@@ -350,6 +350,7 @@ The first three all aim at the same target — **more BubR1** — from three ind
 | 3 | **PTC readthrough** ± NMD inhibition | Attacks the *other* allele. `c.2210T>G` creates **TGA** — the most readthrough-permissive stop codon — so restoring even partial full-length protein raises total BubR1 above what the missense allele alone gives | 4 | **1** | see below | see below | NMD destroys the transcript before a ribosome reaches the PTC (gated by **E6a**); the +4 base is A, an intermediate context; and the agents differ so widely on access and safety that a single score for the row would be meaningless |
 | 4 | **Hydroxychloroquine** | Autophagy inhibition; chloroquine is one of three compounds identified as aneuploidy-selective. Aneuploid cells lean on autophagy to clear proteotoxic load | 3 | 3 | **5** | 4 | Constitutional cells are aneuploid too, so "selective" is degree not kind; retinal toxicity is dose-limiting |
 | 5 | **Dasatinib (+ quercetin)** | Senolytic clearance of p16^Ink4a-positive cells, which rescued skeletal muscle and adipose **in the BubR1 progeroid mouse** — the tissues this child is symptomatic in | 4 | **3** | 3 | 3 | BubR1^H/H mice are progeroid and a child is not; senescent burden may be low at this age; needs oncology sign-off given cancer predisposition |
+| 6 | **CRISPRa** (dCas9–VP64 at the *BUB1B* promoter) | Raise transcription of the surviving full-length allele. Not repurposing — included because it is the same therapeutic goal as candidates 1 and 2 by a different route, and because **§6.2** shows delivery, not concept, is what defeats it | 4 | 3 | **1** | **1** | Systemic requirement vs tissue-restricted delivery; possible dominant-negative from upregulating the truncated allele; persistent transcriptional activator in a cancer-predisposition background |
 | — | *HDAC inhibitors* | Reachable from BUB1B via HDAC1–4, and BubR1 abundance is acetylation-controlled | 2 | 1 | 3 | 3 | **Direction unresolved** — SIRT2 is class III and is not inhibited by these agents. A question, not a candidate |
 
 **A stated criterion for the evidence column, and two scores it changes.** "Strength of published support" is too loose to be checkable, so it is resolved here into one question: **was the proposed modality itself tested, or only a genetic proxy for it?** An experiment that administers the actual class of intervention and measures the actual molecular outcome is worth more than one that establishes the principle by genetic means and leaves the drug as an inference.
@@ -438,6 +439,56 @@ But Factor V Leiden is heterozygous in this child, so **at least one parent carr
 **The honest strength of this claim is "worth testing", not "explains".** The association between Factor V Leiden and recurrent pregnancy loss is real but modest and contested, meta-analyses disagree, and major obstetric guidelines do not universally recommend thrombophilia screening for recurrent loss. Determining which parent carries the variant is a single cheap test, and it is the kind of question a family who donated a genome to strangers might reasonably want asked.
 
 It also arrived from a pharmacogenomic screen run for a completely different reason, which is the argument for running one at all.
+
+### 6.2 Transcriptional upregulation, and a delivery analysis
+
+*Added in review, at a reader's suggestion. Two corrections have to come first, because the suggestion arrived with premises this dataset cannot support.*
+
+**Correction 1 — parent of origin is unknown and unknowable here.** There are no parental samples in this challenge, phase was not established (§5 of the Track 1 report: largest observed template 1,272 bp against a 10,911 bp gap, 0 of 2 heterozygous steps bridged), and nothing in a singleton genome assigns an allele to a parent. Neither `p.Asn1002Lys` nor `p.Leu737Ter` can be called maternal or paternal. Even *trans* is an inference from the clinical diagnosis and the recessive mechanism, not a measurement. Attaching a parent to an allele would stack an unmeasured claim on top of an unproven one.
+
+**Correction 2 — there is no "allele preservation data" yet.** What exists is that the missense allele is full length, retains K668, and scores 0.923 on AlphaMissense. Whether the protein is actually present, and at what level, is exactly what **E1** and **E6a** are designed to measure and have not yet measured.
+
+With those fixed, the underlying idea is sound and is evaluated here on its merits.
+
+#### 6.2.1 Why upregulation is well motivated — and the strongest evidence in this report
+
+If the lesion is **dose**, then raising transcription of the intact allele is a direct attack on it. That is not speculative for this gene:
+
+Sustained high BubR1 expression in transgenic mice **preserves genomic integrity, reduces tumorigenesis even against oncogenic Ras, extends lifespan, and delays age-related deterioration and aneuploidy across tissues** — and it does so specifically by *correcting mitotic checkpoint impairment and microtubule–kinetochore attachment defects* ([Baker et al., Nat Cell Biol 2013](https://www.nature.com/articles/ncb2643)).
+
+Those are the exact two defects this child's genotype produces. This is the single strongest piece of evidence in the dossier, and it does not belong to CRISPRa alone — **it is the shared premise underneath candidates 1, 2 and 6.** More BubR1 is protective, in this gene, in vivo, with the mechanism named. What separates the three candidates is only how you get there.
+
+#### 6.2.2 The allele-specificity question, and a real hazard
+
+CRISPRa at the *BUB1B* promoter is **not allele-selective**. It would upregulate both.
+
+For the missense allele that is the therapeutic effect. For the nonsense allele, most of the extra transcript is destroyed by NMD and is simply wasted — inert, not harmful.
+
+**But not certainly inert.** NMD is efficient, not absolute. `p.Leu737Ter` truncates before the kinase domain while **retaining the N-terminal region — the KEN box and the Bub3-binding domain**. A truncated BubR1 that still binds Bub3 and Cdc20 but cannot function is a plausible **dominant negative**, and driving its transcription harder is the one way this intervention could actively worsen the phenotype it is meant to treat.
+
+This is testable before anything else: **E6a** already measures how much nonsense transcript survives NMD, and a western for a truncated species answers the rest. A candidate that has a specific, cheap way to be proven dangerous is better characterised than one that does not.
+
+#### 6.2.3 Delivery risk analysis
+
+**The dominant problem is not thrombosis. It is tissue.** BubR1 is required in every dividing cell, and this phenotype is systemic — growth restriction, skeletal muscle, and a cancer predisposition that is not organ-restricted. A non-liver LNP means a tissue-targeted formulation (lung- or spleen-tropic SORT-type designs), all preclinical. Raising BubR1 in one organ does not treat a whole-body dose deficit. **Tissue-restricted delivery is mismatched to this indication at the level of concept, which is why candidate 6 scores 1 on access and 1 on safety regardless of the thrombotic question.**
+
+**On Factor V Leiden specifically — a real consideration, stated at its true strength.**
+
+| | |
+|---|---|
+| What is established | LNPs, especially ionisable-lipid formulations, can trigger **complement activation-related pseudoallergy** and acute inflammatory responses. Inflammation is prothrombotic. Heterozygous FVL raises venous thromboembolism risk roughly 3–8 fold |
+| What is **not** established | Any direct, documented LNP–Factor V Leiden interaction. There is no evidence base for a specific synergy, and this report does not invent one |
+| Honest conclusion | FVL is a reason for **vigilance and haematology input**, not a categorical contraindication to LNP delivery |
+
+And the proportionality matters. This child already has, or will have, **central venous access while receiving chemotherapy** — a far larger, far better-documented thrombotic exposure than a hypothetical LNP dose. If Factor V Leiden changes management here, it changes it for the line and the chemotherapy first. That is the actionable finding from §6.1, and it is actionable today, whereas candidate 6 is not actionable at all.
+
+**Third hazard, and it is specific to this patient.** A persistent transcriptional activator — dCas9–VP64 — in a child with a **chromosomal-instability cancer-predisposition syndrome** carries off-target transcriptional activation risk in precisely the background where unscheduled gene activation is least welcome. Transient delivery mitigates it, and transient delivery is in tension with a lifelong dose deficit. That tension has no clean answer.
+
+#### 6.2.4 Verdict
+
+Candidate 6 earns its place in the table for one reason: it makes explicit that **candidates 1, 2 and 6 share a single validated premise** — Baker's demonstration that more BubR1 is protective in this gene, in vivo. Candidates 1 and 2 reach that goal with molecules that already exist and can be tested in cells next week. Candidate 6 reaches it with a delivery problem that is unsolved for a systemic indication, in a patient population of one, with a plausible dominant-negative hazard attached.
+
+It is ranked last on purpose, and the reason is worth stating plainly: **the concept is better supported than several candidates above it, and the execution is far worse.** Those are different axes, and collapsing them is how a repurposing report ends up recommending something undeliverable.
 
 ## 7. Contraindications
 

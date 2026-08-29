@@ -1,6 +1,6 @@
 # Track 2 — three-minute pitch script
 
-Total 492 spoken words. Section timings are derived from those counts at 160 wpm, landing at 3:04; at a relaxed 150 wpm it runs 3:16, so keep the pace up. Nothing here is said that the report does not support.
+Total 505 spoken words. Section timings are derived from those counts at 160 wpm, landing at 3:09; at a relaxed 150 wpm it runs 3:16, so keep the pace up. Nothing here is said that the report does not support.
 
 ---
 
@@ -18,13 +18,13 @@ One null allele, one partly-working copy — and that is the whole basis of what
 
 BubR1 is the core of the spindle assembly checkpoint. At reduced dose it leaks, chromosomes missegregate, and you get mosaic aneuploidy and cancer.
 
-BubR1-hypomorphic mice are also progeroid — growth retardation, muscle wasting, fat loss. This child's phenotype. The model already exists.
+BubR1-hypomorphic mice are also progeroid — growth retardation, muscle wasting, fat loss. This child's phenotype. The model exists.
 
 **[0:51–1:17] What the graph confirms, and what it gets wrong** · 70 words · 26s
 
-We ran TxGNN zero-shot on the MVA node in PrimeKG — genuinely zero-shot, that node has no drug edges at all.
+We ran TxGNN zero-shot on the MVA node in PrimeKG — that node has no drug edges at all.
 
-It confirmed two of our three mechanism-first hypotheses — chloroquine and dasatinib, both in the top four percent of 1,801 drugs, both reached independently from the literature.
+It confirmed two of our three mechanism-first hypotheses, both in the top four percent of 1,801 drugs, both reached independently from the literature.
 
 But its top recommendations are paclitaxel, vinblastine and eribulin. Microtubule poisons, top one percent of indications, for a child whose checkpoint is already broken.
 
@@ -46,9 +46,9 @@ BubR1's abundance is set by acetylation at lysine 668 — written by CBP, erased
 
 Raise NAD, and SIRT2 keeps the mark off — in BubR1 mice that stabilised BubR1 in vivo. Or inhibit the writer: CBP/p300 inhibitors exist and are in trials. An inhibitor pointed the right way.
 
-Why this child specifically — K668 is deleted on the null allele and intact on the missense one. There is a substrate to stabilise. Two truncating alleles would get nothing from this.
+Why this child specifically — the missense allele makes full-length protein carrying K668; the nonsense allele is destroyed before it makes any. There is a substrate to stabilise. Two truncating alleles would get nothing.
 
-And PrimeKG already knows CBP touches BubR1. It cannot say which direction helps. That is the gap.
+PrimeKG already knows CBP touches BubR1. It cannot say which direction helps. That is the gap.
 
 **[2:33–3:04] How we would be proven wrong** · 83 words · 31s
 

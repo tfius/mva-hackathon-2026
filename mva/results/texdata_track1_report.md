@@ -35,7 +35,11 @@ BUB1B encodes BubR1, the pseudokinase core of the mitotic spindle assembly check
 
 Phenotype fit: rhabdomyosarcoma is the MVA1-defining malignancy (with Wilms tumour), and intrauterine growth restriction, short stature and failure to thrive are core MVA1 features. Parental recurrent pregnancy loss is on-mechanism for carrier parents of a chromosome-segregation disorder, not incidental history.
 
-Nephrocalcinosis is *not* a recognised MVA1 feature. Present since birth in a 32-week, ~1 kg infant, it is far better explained by prematurity — loop diuretics and parenteral nutrition — than by a second genetic diagnosis. It is reported here as explained, not as unexplained.
+Nephrocalcinosis is not a *characteristic* MVA1 feature, though renal dysfunction is reported in ~13% of MVA1 cases, so "not a recognised feature" would be stronger than the literature supports. Prematurity remains the base-rate explanation — nephrocalcinosis occurs in 20–64% of preterm infants, and loop diuretics and parenteral nutrition are the usual drivers.
+
+**Two caveats this report previously omitted, both raised in adversarial review.** First, those exposures are *inferred*, not observed — no drug history is in the challenge data — and Track 2 then builds a patient-specific aminoglycoside argument on top of that inference, which is the most reversible clinical claim in either document. Second, **the chronology does not fit**: the phenotype document records nephrocalcinosis as present *since birth*, and NICU nephrocalcinosis from postnatal diuretics and TPN is acquired over weeks of exposure. A finding present at birth points antenatal.
+
+**So it was screened rather than assumed.** All 13 nephrocalcinosis and Bartter-syndrome genes — *KCNJ1, SLC12A1, CLCNKB, BSND, CASR, CLDN16, CLDN19, CYP24A1, SLC34A1, SLC34A3, ATP6V1B1, ATP6V0A4, CLCN5* — yield **1,147 non-reference calls and zero rare (<1% gnomAD) coding or splice variants**. A 693 bp heterozygous deletion near *KCNJ1* surfaced in the SV panel and was checked: it lies **22,801 bp outside the gene body**, is heterozygous, and antenatal Bartter type 2 is recessive. No monogenic cause is present in these genes. The negative is now measured; the limitation is that it covers SNVs and indels in 13 genes, not deep-intronic, regulatory or copy-number causes.
 
 ## 3. How the call was reached
 
@@ -49,11 +53,13 @@ Getting this stage right is worth as much as the biology: Track 1 scores on an e
 
 **S2 · ClinVar cross-reference** (`02_clinvar_scan.sh`). The answer key is a *clinically confirmed* pair, so there was a good chance at least one allele was already a ClinVar record. Genome-wide annotation against ClinVar GRCh38 yielded **7** Pathogenic/Likely_pathogenic non-reference calls, non-conflicting. One of them was allele A, annotated verbatim to "Mosaic variegated aneuploidy syndrome 1".
 
-**S3 · Exhaustive locus analysis** (`03_gene_deepdive.py`). ClinVar alone finds one allele and stops — allele B is in no clinical database. Rather than filter by predicted consequence, every called variant across the BUB1B locus ±50 kb was classified against the canonical transcript's exon structure: **175 non-reference calls**, of which 77 upstream, 84 downstream, 12 deep-intronic, and **exactly two exonic** — alleles A and B. **Not one variant falls within ±20 bp of any exon boundary**, which is what rules out a splice-disrupting second allele rather than merely making it unlikely. The 46 calls spanning the gene and its immediate flanks were then pushed through Ensembl VEP, and allele B is the only one that is essentially **private** — a single gnomAD exome allele, no rsID. Every other locus variant is common (AF 0.02–0.99).
+**S3 · Exhaustive locus analysis** (`03_gene_deepdive.py`). ClinVar alone finds one allele and stops — allele B is in no clinical database. Rather than filter by predicted consequence, every called variant across the BUB1B locus ±50 kb was classified against the canonical transcript's exon structure: **175 non-reference calls**, of which 77 upstream, 84 downstream, 12 deep-intronic, and **exactly two exonic** — alleles A and B. **Not one variant falls within ±20 bp of any exon boundary.** That is what was measured, and the claim is scoped to it: **no candidate splice variant in the canonical ±20 bp windows.** It does *not* rule out a splice-disrupting allele. Branch points sit ~20–50 nt upstream of the 3′ splice site, deep-intronic pseudoexon activation occurs hundreds of nt away, and exonic splice enhancers and silencers are invisible to a distance rule entirely. **SpliceAI has not been run on the 12 deep-intronic calls at this locus**, so this negative is narrower than an earlier draft claimed. The 46 calls spanning the gene and its immediate flanks were then pushed through Ensembl VEP, and allele B is the only one that is essentially **private** — a single gnomAD exome allele, no rsID. Every other locus variant is common (AF 0.02–0.99).
 
 This ordering matters. A conventional rare-variant filter chain applied genome-wide can lose allele B, because a lone missense in a gene that already has a ClinVar-pathogenic hit is only interesting once the recessive hypothesis is on the table. Working the locus exhaustively, after the gene is nominated, is what surfaces it.
 
-**S4 · Structural alternatives excluded.** MVA1's second allele is frequently non-coding or a copy-number event, so those were checked before settling: depth holds at 26–48× across the whole gene with no drop, heterozygous calls are distributed throughout with no run of homozygosity, and no variant at all falls within ±20 bp of any exon boundary across the whole ±50 kb locus. There is no deletion in trans.
+**S4 · Structural alternatives excluded.** MVA1's second allele is frequently non-coding or a copy-number event, so those were checked before settling: depth holds at 26–48× across the whole gene with no drop, heterozygous calls are distributed throughout with no run of homozygosity, and no variant falls within ±20 bp of any exon boundary across the ±50 kb locus — a canonical-splice-site negative, not a splicing negative, since SpliceAI has not been run on the deep-intronic calls.
+
+**On excluding a deletion in trans, the argument used here is the wrong one and is replaced.** An earlier draft cited "depth flat 26–48× across the gene" — but a 26→48 spread *is* a 1.85× range, and a heterozygous deletion produces a 2× drop, so a measurement whose scatter spans the effect cannot exclude it. The sound argument was available and unused: **both alleles are called heterozygous with VAF 0.55 and 0.44 at MAPQ 60.** A deletion in trans at either position would render it hemizygous and drive VAF toward 1.0. Allele balance excludes an overlapping deletion far more tightly than any depth range.
 
 **S5 · Differential diagnoses.** The other MVA genes carry nothing: CEP57 has 4 called variants (none coding-damaging), TRIP13 has 3, CENPE has 123 of which the two missense score AlphaMissense 0.099 and 0.105 — benign range. No competing candidate approaches the BUB1B pair.
 
@@ -69,9 +75,21 @@ Of 363 genes and 588 filtered variants, it returned:
 | 4 | LZTR1 | AD | — |
 | 5 | GNRHR | AD | — |
 
-Rank 2 is the compound-heterozygous pair, both alleles flagged as contributing, matched to **ORPHA:1052 Mosaic variegated aneuploidy syndrome**. A method with no knowledge of the hypothesis reconstructs it exactly. FANCD2 at rank 3 is the sensible near-miss — the other chromosomal-instability syndrome in the differential — and LZTR1 at rank 4 is the same incidental finding submitted here as a secondary.
+Rank 2 is the compound-heterozygous pair, both alleles flagged as contributing, matched to **ORPHA:1052 Mosaic variegated aneuploidy syndrome**. A method that was never pointed at BUB1B reconstructs it.
 
-**On Exomiser's own ACMG call for allele B.** It classifies `p.Asn1002Lys` as VUS, applying **BP1** — "missense variant in a gene for which primarily truncating variants cause disease". For *BUB1B* and MVA1 that rule is misapplied, and the reason is mechanistic: biallelic truncating *BUB1B* is not viable, so surviving MVA1 patients essentially always carry a missense or otherwise hypomorphic allele in trans with a null. The genotype that BP1 treats as evidence against pathogenicity is the genotype the disease requires. Removing BP1 and the classification moves to Likely pathogenic on PM2_Supporting + PP4_Moderate + PP3 (AlphaMissense 0.923, MVP 0.852) with PM3 available once phase is established.
+**"Unbiased" needs qualifying, though, and the report's own output gives the reason.** Exomiser's variant scorer reads ClinVar, and allele A is a ClinVar record annotated verbatim to *Mosaic variegated aneuploidy syndrome 1* — which is why **PP5_Strong** appears in its ACMG output. The gene was not rediscovered from phenotype alone; it was partly retrieved from the same annotation §S2 used. What the run genuinely demonstrates is that **no gene panel or interval was needed**, not that the result is independent of ClinVar. Also, rank 1 is BUB1B under an *autosomal dominant* model with the nonsense alone, which is not a disease model for a recessive condition; the meaningful result is **rank 2, the AR compound-heterozygous pair**. FANCD2 at rank 3 is the sensible near-miss — the other chromosomal-instability syndrome in the differential — and LZTR1 at rank 4 is the same incidental finding submitted here as a secondary.
+
+**On Exomiser's own ACMG call for allele B.** It classifies `p.Asn1002Lys` as VUS, applying **BP1** — "missense variant in a gene for which primarily truncating variants cause disease". For *BUB1B* and MVA1 that rule is misapplied, and the reason is mechanistic: biallelic truncating *BUB1B* is not viable, so surviving MVA1 patients essentially always carry a missense or otherwise hypomorphic allele in trans with a null. The genotype that BP1 treats as evidence against pathogenicity is the genotype the disease requires. Removing BP1 is defensible. **The classification that was said to follow from it is not, and this is corrected here.**
+
+Under the ClinGen/Tavtigian points system, PM2_Supporting (1) + PP4_Moderate (2) + PP3_Supporting (1) = **4 points, which is still VUS** (Likely pathogenic needs 6). Under the 2015 Richards combining rules, 1 Moderate + 2 Supporting also fails every Likely-pathogenic combination. An earlier draft asserted LP; that was wrong.
+
+Three further problems in the same evidence set, all against us:
+
+- **PP3 is probably not applicable at all.** ClinGen SVI's calibrated thresholds (Pejaver 2022) place PP3_Supporting at REVEL ≥ 0.644 and BP4 at ≤ 0.290. **REVEL 0.472 sits in the indeterminate band — no code in either direction.** Reaching past it to AlphaMissense is precisely the predictor-shopping this report criticises elsewhere.
+- **PP4 is questionable at any strength.** It requires a phenotype highly specific for a disease with a *single* genetic aetiology; MVA has at least five genes, as §S5 and the disease node itself show.
+- **PP5_Strong, quoted for allele A, is deprecated.** ClinGen SVI recommended laboratories discontinue PP5/BP6 in 2018. It does not change allele A's call — PVS1 + PM2_Supporting suffices — but it should not be quoted uncritically.
+
+**What actually resolves this is PM3, and PM3 requires parental testing.** That is an ordinary clinical action, not a research question, and it is the highest-yield next step in this dossier.
 
 **S7 · Orthogonal validation from our own alignment.** Everything to this point rests on the VCF the organisers supplied — one aligner, one caller. The re-aligned BAM allows the call to be re-derived independently: bwa-mem2 instead of Sentieon's aligner, `bcftools mpileup`/`call` instead of Sentieon Haplotyper.
 
@@ -131,7 +149,9 @@ If a fraction *f* of cells carries three copies of a chromosome, heterozygous B-
 | chr17 | +0.0025 | +0.000097 |
 | mean BAF range | 0.357–0.497 | 0.4989–0.5000 |
 
-Filtered, **every autosome sits at 0.00071 ± 0.00006**, no chromosome deviates by more than 2.6 σ, and mean BAF is 0.4995 or better everywhere. Sex is male (chrX 4,562 heterozygous calls, chrY present at 0.77× autosomal depth).
+Filtered, **every autosome sits at 0.00071 ± 0.00006**, no chromosome deviates by more than 2.6 σ, and mean BAF is 0.4995 or better everywhere. Sex is male (chrX 4,562 heterozygous calls against 170k on chr1; chrY present).
+
+*Two chrY depth figures appear in this report and they measure different things.* The B-allele analysis reports median depth **at heterozygous call sites** on chrY as 0.77× autosomal — but heterozygous calls on a haploid chromosome are largely mismapped PAR and X-transposed reads, so that number describes an artefact, not dosage. The dosage figure is **0.537×** from §4.1's median over mappable 10 kb windows. Where the two disagree, the windowed one is correct.
 
 **Result: no per-chromosome mosaic aneuploidy above f ≈ 0.054 (3 σ) in this blood sample.**
 
@@ -244,6 +264,10 @@ Also detected and deliberately **not** submitted: *FLG* `p.Arg501Ter` (common, s
 
 Pipeline `mva/track1/00`–`04`, panels and Ensembl helpers in `mva/src/mva/`. Environment: bcftools 1.24 / htslib 1.23.1, Python 3.11, Ensembl VEP 116 (REST for locus work, offline cache for the genome-wide pass), ClinVar GRCh38 (August 2026), AlphaMissense hg38, Exomiser 15.1.0 + 2512 data.
 
-Patient data is confined to `/mnt/data/mva-hackathon-2026/`, excluded by `.gitignore`, and will be deleted at the close of the hackathon with notification to `MVAHackathon2026@synapse.org` as the data-use terms require. No attempt was made to re-identify or contact the family.
+The challenge **sequence data** is confined to `/mnt/data/mva-hackathon-2026/`, excluded by `.gitignore`, and will be deleted at the close of the hackathon with notification to `MVAHackathon2026@synapse.org`. No attempt was made to re-identify or contact the family.
+
+**A distinction this report should state rather than blur.** "Nothing patient-derived is committed" would be false, and an earlier draft came close to implying it. *This document is patient-derived.* It is released CC BY 4.0 with a public repository link and contains an essentially private variant absent from dbSNP, exact coordinates for both alleles, sex, gestational age, birth weight, an active malignancy, nephrocalcinosis, and a pharmacogenomic profile including *F5* Leiden, CYP2C19 \*2/\*17, CYP3A5 \*3/\*3 and DPYD \*6. That combination is individual-level genotype-plus-phenotype data.
+
+The hackathon's own terms provide for exactly this — submissions, code and reports are published under CC BY 4.0, and the research output is the deliverable while the sequence data is not. But the honest framing is *"the raw data stays private and the derived findings are published, as the terms require"*, not *"nothing patient-derived leaves this machine"*.
 
 AlphaMissense is CC BY-NC-SA 4.0 and is used here under its non-commercial terms. ClinVar, gnomAD, Ensembl and UniProt are used under their respective open licences. This report and the accompanying code are released CC BY 4.0.

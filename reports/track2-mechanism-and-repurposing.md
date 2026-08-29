@@ -350,7 +350,7 @@ The first three all aim at the same target — **more BubR1** — from three ind
 | 3 | **PTC readthrough** ± NMD inhibition | Attacks the *other* allele. `c.2210T>G` creates **TGA** — the most readthrough-permissive stop codon — so restoring even partial full-length protein raises total BubR1 above what the missense allele alone gives | 4 | **1** | see below | see below | NMD destroys the transcript before a ribosome reaches the PTC (gated by **E6a**); the +4 base is A, an intermediate context; and the agents differ so widely on access and safety that a single score for the row would be meaningless |
 | 4 | **Hydroxychloroquine** | Autophagy inhibition; chloroquine is one of three compounds identified as aneuploidy-selective. Aneuploid cells lean on autophagy to clear proteotoxic load | 3 | 3 | **5** | 4 | Constitutional cells are aneuploid too, so "selective" is degree not kind; retinal toxicity is dose-limiting |
 | 5 | **Dasatinib (+ quercetin)** | Senolytic clearance of p16^Ink4a-positive cells, which rescued skeletal muscle and adipose **in the BubR1 progeroid mouse** — the tissues this child is symptomatic in | 4 | **3** | 3 | 3 | BubR1^H/H mice are progeroid and a child is not; senescent burden may be low at this age; needs oncology sign-off given cancer predisposition |
-| 6 | **CRISPRa** (dCas9–VP64 at the *BUB1B* promoter) | Raise transcription of the surviving full-length allele. Not repurposing — included because it is the same therapeutic goal as candidates 1 and 2 by a different route, and because **§6.2** shows delivery, not concept, is what defeats it | 4 | 3 | **1** | **1** | Systemic requirement vs tissue-restricted delivery; possible dominant-negative from upregulating the truncated allele; persistent transcriptional activator in a cancer-predisposition background |
+| 6 | **Epigenetic activation** (dCas9 activator at the *BUB1B* promoter) | Raise transcription of the surviving full-length allele. Not repurposing — included because it shares candidates 1 and 2's validated premise by a different route, and because the modality reached the clinic in 2025–26 | 4 | 3 | **2** | **2** | Systemic requirement vs tissue-restricted delivery; possible dominant-negative from upregulating the truncated allele; persistent transcriptional activator in a cancer-predisposition background |
 | — | *HDAC inhibitors* | Reachable from BUB1B via HDAC1–4, and BubR1 abundance is acetylation-controlled | 2 | 1 | 3 | 3 | **Direction unresolved** — SIRT2 is class III and is not inhibited by these agents. A question, not a candidate |
 
 **A stated criterion for the evidence column, and two scores it changes.** "Strength of published support" is too loose to be checkable, so it is resolved here into one question: **was the proposed modality itself tested, or only a genetic proxy for it?** An experiment that administers the actual class of intervention and measures the actual molecular outcome is worth more than one that establishes the principle by genetic means and leaves the drug as an inference.
@@ -468,27 +468,51 @@ For the missense allele that is the therapeutic effect. For the nonsense allele,
 
 This is testable before anything else: **E6a** already measures how much nonsense transcript survives NMD, and a western for a truncated species answers the rest. A candidate that has a specific, cheap way to be proven dangerous is better characterised than one that does not.
 
-#### 6.2.3 Delivery risk analysis
+#### 6.2.3 The clinical precedent is real — and it is the wrong half of the field
 
-**The dominant problem is not thrombosis. It is tissue.** BubR1 is required in every dividing cell, and this phenotype is systemic — growth restriction, skeletal muscle, and a cancer predisposition that is not organ-restricted. A non-liver LNP means a tissue-targeted formulation (lung- or spleen-tropic SORT-type designs), all preclinical. Raising BubR1 in one organ does not treat a whole-body dose deficit. **Tissue-restricted delivery is mismatched to this indication at the level of concept, which is why candidate 6 scores 1 on access and 1 on safety regardless of the thrombotic question.**
+An earlier draft of this section scored candidate 6 at 1 for both access and safety, on the basis that in vivo epigenetic editing was preclinical. **That calibration is out of date and the scores are raised to 2.** What the precedent does and does not establish is worth separating carefully, because the gap is the whole argument.
 
-**On Factor V Leiden specifically — a real consideration, stated at its true strength.**
+| Programme | Status | What it does | Tissue |
+|---|---|---|---|
+| **TUNE-401** (Tune Therapeutics) | **Phase 1b**, New Zealand and Hong Kong | Epigenetic **silencer**, chronic hepatitis B | **Liver** |
+| **EPI-321** (Epicrispr) | **First-in-human enrolment and dose escalation complete**, July 2026 | Epigenetic **repressor** of DUX4, FSHD | **Muscle — extrahepatic** |
+| CRMA-1001 (nChroma) | **Not confirmed in humans.** Public sources describe hepatitis B research that has not entered human testing | Silencer | Liver |
+
+So: the modality is genuinely in patients, EPI-321 establishes that extrahepatic epigenetic modulation can complete dose escalation without severe genomic adverse events, and the platform risk has fallen materially. That is a real update and the report reflects it.
+
+**But every confirmed clinical programme is a silencer or repressor, and that is not a detail.**
+
+**1. Silencing has a heritable mark. Activation does not.** Epigenetic silencing deposits 5-methylcytosine, which DNMT1 copies onto the daughter strand at every replication. The edit propagates through cell division on its own. Transcriptional activation by VP64 or p300 has **no self-propagating equivalent** — the activating state dilutes as cells divide.
+
+Now notice which cells this disease lives in. BubR1 matters **in dividing cells**, because that is where a spindle assembly checkpoint operates. So the durability problem is worst in exactly the compartment that needs treating — while the clinical programmes are silencing in liver and muscle, tissues that are post-mitotic or slowly dividing, where a deposited mark stays put. The precedent is drawn from the easy end of the durability axis and this indication sits at the hard end.
+
+**2. There is no repressive mark here to remove.** Durable epigenetic activation works by erasing methylation from a silenced promoter. This one is not silenced — we know that from our own data, because the missense allele **is being transcribed**; it produces the p.Asn1002Lys protein. An unsilenced, actively transcribed promoter offers a demethylating editor nothing to act on. You are not de-repressing a switched-off gene, you are trying to super-activate an already-on one, which forces you back to a non-heritable activator domain and back to problem 1.
+
+**3. The delivery precedent is AAV to muscle, not extrahepatic LNP.** EPI-321 is the extrahepatic proof point and it is not an LNP result. TUNE-401 is LNP, and LNP-to-liver is the solved delivery problem, not the hard one. "Extrahepatic LNP + activation" is the specific configuration this candidate needs, and no programme above demonstrates it.
+
+#### 6.2.4 Delivery risk, and Factor V Leiden
+
+**The dominant problem remains tissue, not thrombosis.** BubR1 is required in every dividing cell and this phenotype is systemic — growth restriction, skeletal muscle, and a cancer predisposition that is not organ-restricted. FSHD is a muscle disease and hepatitis B is a liver disease; both are targets you can reach and stop. A whole-body dose deficit in a growing child is a different ask.
+
+**On Factor V Leiden — a real consideration at its true strength.**
 
 | | |
 |---|---|
-| What is established | LNPs, especially ionisable-lipid formulations, can trigger **complement activation-related pseudoallergy** and acute inflammatory responses. Inflammation is prothrombotic. Heterozygous FVL raises venous thromboembolism risk roughly 3–8 fold |
-| What is **not** established | Any direct, documented LNP–Factor V Leiden interaction. There is no evidence base for a specific synergy, and this report does not invent one |
-| Honest conclusion | FVL is a reason for **vigilance and haematology input**, not a categorical contraindication to LNP delivery |
+| Established | Ionisable-lipid LNPs can trigger complement activation-related pseudoallergy and acute inflammatory responses. Inflammation is prothrombotic. Heterozygous FVL raises VTE risk roughly 3–8 fold |
+| **Not** established | Any documented LNP–Factor V Leiden interaction. There is no evidence base for a specific synergy and this report does not invent one |
+| Conclusion | Vigilance and haematology input, **not** a categorical contraindication |
 
-And the proportionality matters. This child already has, or will have, **central venous access while receiving chemotherapy** — a far larger, far better-documented thrombotic exposure than a hypothetical LNP dose. If Factor V Leiden changes management here, it changes it for the line and the chemotherapy first. That is the actionable finding from §6.1, and it is actionable today, whereas candidate 6 is not actionable at all.
+Proportionality matters here. This child has, or will have, **central venous access during chemotherapy** — a far larger and better-documented thrombotic exposure than a hypothetical LNP dose. If Factor V Leiden changes management, it changes it for the line and the chemotherapy first. That is actionable today. Candidate 6 is not actionable at all.
 
-**Third hazard, and it is specific to this patient.** A persistent transcriptional activator — dCas9–VP64 — in a child with a **chromosomal-instability cancer-predisposition syndrome** carries off-target transcriptional activation risk in precisely the background where unscheduled gene activation is least welcome. Transient delivery mitigates it, and transient delivery is in tension with a lifelong dose deficit. That tension has no clean answer.
+**Third hazard, specific to this patient.** A persistent transcriptional activator in a child with a **chromosomal-instability cancer-predisposition syndrome** carries off-target activation risk in precisely the background where unscheduled gene expression is least welcome. Transient delivery mitigates it and is in tension with a lifelong dose deficit — and, per §6.2.3, transience is the default for activation whether you want it or not.
 
-#### 6.2.4 Verdict
+#### 6.2.5 Verdict
 
-Candidate 6 earns its place in the table for one reason: it makes explicit that **candidates 1, 2 and 6 share a single validated premise** — Baker's demonstration that more BubR1 is protective in this gene, in vivo. Candidates 1 and 2 reach that goal with molecules that already exist and can be tested in cells next week. Candidate 6 reaches it with a delivery problem that is unsolved for a systemic indication, in a patient population of one, with a plausible dominant-negative hazard attached.
+**The user of this report is right about the direction of travel and the framing.** You no longer need a molecule that binds BubR1 — that is precisely this report's thesis, and candidates 1, 2, 3 and 6 are four routes to the same target, none of which touches the protein directly. Epigenetic editing reaching patients in 2025–26 makes candidate 6 more credible than it was, and the scores move accordingly.
 
-It is ranked last on purpose, and the reason is worth stating plainly: **the concept is better supported than several candidates above it, and the execution is far worse.** Those are different axes, and collapsing them is how a repurposing report ends up recommending something undeliverable.
+What it does not do is close the specific gap. The clinical precedent is **silencing**, in **slowly-dividing tissue**, for **liver or muscle**. This indication needs **activation**, in **dividing cells**, **systemically**, with **no repressive mark to erase** and a **plausible dominant-negative** if the truncated allele is upregulated too.
+
+It stays ranked last, and the reason is unchanged and worth repeating: **the concept is better supported than several candidates above it, and the execution is far worse.** Those are different axes. Candidates 1 and 2 can be tested in patient cells next week; candidate 6 needs a durable extrahepatic activator that no one has yet shown in humans. If that changes — and on this trajectory it may — candidate 6 moves up, and the experiment that would tell you it is worth revisiting is still **E1**: establish that the missense allele's protein is reduced and by how much, because that number sets how much upregulation would even be needed.
 
 ## 7. Contraindications
 

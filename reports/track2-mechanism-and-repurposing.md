@@ -402,7 +402,8 @@ The *MT-RNR1* check above was one locus pair chosen because it bore on a candida
 | **F5 Leiden** (rs6025) | **heterozygous** C>T, AD 27,27 | 59× | **Actionable.** Central venous access plus chemotherapy is a strongly prothrombotic setting |
 | CYP2C19 | ***2/*17** diplotype (*2 het, *17 het, *3 ref) | 44–50× | Intermediate metaboliser. Informative, **not** actionable for voriconazole — that concern sits at the poor-metaboliser end, which this child is not |
 | CYP3A5 | ***3/*3** homozygous | 50× | Non-expressor. Common (~85% in Europeans); matters only if tacrolimus is ever used |
-| **DPYD** (*2A, *13, c.2846A>T, HapB3) | all reference | 42–53× | **No fluoropyrimidine toxicity risk allele.** Directly relevant: TxGNN ranked fluorouracil 6th |
+| **DPYD** (*2A, *13, c.2846A>T, HapB3) | all reference | 42–53× | **No CPIC-actionable reduced-function allele.** Directly relevant: TxGNN ranked fluorouracil 6th |
+| DPYD ***6** (rs1801160, c.2194G>A) | **heterozygous**, AD 22,10 | 33× | Found only by the widened filter. ClinVar `drug_response`, *reviewed by expert panel*, terms include `fluorouracil_response_-_Toxicity`. **But CPIC assigns it normal function** and it is not among the four actionable alleles — so it is reported, not acted on |
 | TPMT (*2, *3B, *3C), NUDT15 *3 | all reference | 34–65× | No thiopurine risk allele |
 | G6PD (A− 202A, A 376G) | reference | 24–29× | No haemolysis risk with rasburicase for tumour lysis |
 | **MT-RNR1** m.1555A>G, m.1494C>T | reference | **4,497× / 4,152×** | No mitochondrial predisposition to aminoglycoside deafness |
@@ -422,7 +423,11 @@ CLNDN=Thrombophilia_due_to_activated_protein_C_resistance | Budd-Chiari_syndrome
 
 Reviewed by expert panel — the highest ClinVar review status — and carrying thrombophilia and recurrent pregnancy loss as its disease terms, yet **not** matched by the Pathogenic/Likely_pathogenic filter that essentially every secondary-findings pipeline uses, this one included.
 
-So a standard clinical filter silently discards the entire `drug_response` and `risk_factor` classes: every pharmacogenomic variant, and risk alleles like this one. That is a generalisable defect, it cost us a real finding in Track 1, and the fix is one character of regex. It is reported here rather than quietly corrected because the failure is more useful than the correction.
+So a standard clinical filter silently discards the entire `drug_response` and `risk_factor` classes. **On this genome that is 137 non-reference calls**, twelve of them reviewed by expert panel — in *F5*, *DPYD*, *CYP2C19*, *VKORC1*, *MTHFR*, *SCN1A* and others.
+
+It cost us two findings, not one. Factor V Leiden, and **DPYD\*6** — which matters precisely because the narrow panel had let us write "no fluoropyrimidine toxicity risk allele", a claim that was too strong. The corrected statement is narrower and survives scrutiny: no *CPIC-actionable* reduced-function allele, plus one expert-panel `drug_response` variant that CPIC assigns normal function.
+
+That is the real lesson. The filter did not merely hide a finding; it let us assert a clean negative we had not earned. It is reported here rather than quietly corrected because the failure generalises further than the fix does, and because a wrong negative is more dangerous in a clinical document than a missing positive.
 
 #### 6.1.2 A second explanation for the family's reproductive history — stated carefully
 

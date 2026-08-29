@@ -162,6 +162,40 @@ Every autosome then falls between 0.984 and 1.046 of the autosomal median of 46.
 
 **Joint conclusion.** Two independent modalities, agreeing: no whole-chromosome mosaic aneuploidy is detectable in this blood sample, bounded at **f < 0.054** by allele balance and **f < 0.097** by depth. As set out above, that is what *variegated* aneuploidy is expected to look like in bulk uncultured blood, and it is a bound rather than a refutation.
 
+## 4.2 Evidence provenance — every negative, and the coverage that earns it
+
+Positive findings carry their own evidence. **Negatives do not**: a locus with no coverage produces no variant call, exactly like a locus that is genuinely reference, and a report that presents the two identically is asserting things it has not measured. Every "we did not find X" claim in this dossier is therefore listed with the measurement that makes it a finding rather than a silence.
+
+**The call**
+
+| Claim | Evidence | Measurement |
+|---|---|---|
+| `chr15:40209701 T>G` is a true heterozygote | 2 aligners, 2 callers | Sentieon AD 21,25 / DP 46 · bwa-mem2+bcftools AD 21,26 / DP 47 · **100% of 52 reads at MAPQ 60** · alt on both strands · VAF 0.55 |
+| `chr15:40220612 T>G` is a true heterozygote | same | Sentieon AD 15,13 / DP 28 · ours AD 15,12 / DP 27 · **100% of 32 reads at MAPQ 60** · VAF 0.44 |
+| Allele B is essentially private | gnomAD v4 API | **1 allele in 1,461,878** exomes (AF 6.8 × 10⁻⁷); absent from genomes and dbSNP |
+| NMD predicted for allele A | exon table arithmetic | PTC at c.2209–2211, last junction c.2957/c.2958 → **746 nt upstream**, far past the 50–55 nt rule |
+| The gene call is not method-dependent | Exomiser 15.1.0, HPO terms only | **rank 1 and 2 of 363 genes**, no panel, no BUB1B prior |
+
+**The negatives**
+
+| Claim | What would have hidden it | Measurement that rules that out |
+|---|---|---|
+| No splice-disrupting second allele | a variant near an exon boundary | **175 non-reference calls** across BUB1B ±50 kb classified by exon position; **0** within 20 bp of any boundary |
+| No structural variant at the locus | an SV invisible to an SNV caller | delly `sr`, **52,245 genome-wide calls**; 4 in BUB1B ±50 kb, 1 PASS — a 39 bp insertion **48 kb upstream** already present in the supplied VCF |
+| Neither allele is a mis-called SV | the compound het being one rearrangement | **0** called SVs span either position |
+| No deletion in trans | a het deletion mimicking hemizygosity | depth **flat 26–48×** across the gene; heterozygous calls distributed throughout; no run of homozygosity |
+| No per-chromosome mosaic aneuploidy — B-allele | GC and mappability bias faking one | filtered excess variance **0.00071 ± 0.00006** on every autosome, max deviation **2.6 σ** → **f < 0.054** |
+| — same, from read depth | unmappable satellite arrays faking a deficit | median over mappable windows; all autosomes **0.984–1.046**, max **2.9 σ** → **f < 0.097**. chr22 naive mean 36.5× vs robust median 48.2×, **69.6% mappable** |
+| Phase is genuinely unrecoverable | assuming rather than measuring | largest observed template **1,272 bp** against a **10,911 bp** gap (9×); one intervening het; **0 of 2 steps bridged** by any shared template |
+| No mitochondrial aminoglycoside-deafness allele | low mtDNA coverage | m.1555A>G and m.1494C>T reference at **4,497×** and **4,152×** → heteroplasmy bounded below ~0.1% |
+| No CPIC-actionable *DPYD*, *TPMT*, *NUDT15* or *G6PD* risk allele | a position with no reads | **24–65×** at every locus, checked individually against the BAM |
+
+**Explicitly not assessable, named rather than omitted**
+
+CYP2D6 star alleles (structural variation, CYP2D7 gene conversion) · UGT1A1\*28 (promoter TA repeat — and irinotecan is in the rhabdomyosarcoma VIT regimen, so this is a real gap) · HLA-B typing · phase, as above · anything requiring a parental sample.
+
+**Underlying data quality:** 1,076,740,679 reads, **99.57% mapped**, **98.09% properly paired**, 12.9% duplicates, ~45× post-duplicate — median VCF depth 44×, consistent.
+
 ## 5. Limitations, stated plainly
 
 - **Phase is not determined, and this is now measured rather than assumed.** The FASTQs were re-aligned to GRCh38 (`05_align.sh`: 1,076,740,679 reads, 99.57% mapped, 98.09% properly paired, 12.9% duplicates) and `07_phase_attempt.py` made the attempt.

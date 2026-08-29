@@ -32,3 +32,18 @@ echo "=== Pathogenic / Likely_pathogenic, non-reference genotype ==="
 awk -F'\t' '$7 != "0/0" && $7 != "./." && $11 ~ /Pathogenic|Likely_pathogenic/ && $11 !~ /Conflicting/' \
     "$WORK/clinvar_hits.tsv" \
   | tee "$WORK/clinvar_pathogenic.tsv" | wc -l
+
+# --- A Pathogenic/Likely_pathogenic filter silently discards two whole classes,
+#     and on this genome it discarded 137 calls. ClinVar files Factor V Leiden as
+#     CLNSIG=drug_response, reviewed by expert panel, with "Thrombophilia due to
+#     activated protein C resistance" and "Pregnancy loss, recurrent" among its
+#     disease terms - and it does not match the filter above. So does every
+#     pharmacogenomic variant, including a DPYD allele in this sample.
+#     Pulled out explicitly rather than hidden inside a wider regex nobody reads.
+echo
+echo "=== drug_response / risk_factor / protective, non-reference genotype ==="
+awk -F'\t' '$7 != "0/0" && $7 != "./." && $11 ~ /drug_response|risk_factor|protective|Affects/' \
+    "$WORK/clinvar_hits.tsv" | tee "$WORK/clinvar_pgx_risk.tsv" | wc -l
+echo "--- of those, reviewed by expert panel or practice guideline:"
+awk -F'\t' '$12 ~ /expert_panel|practice_guideline/ {split($13,g,":"); printf "  %s:%s %s>%s GT=%s %s [%s]\n", $1,$2,$3,$4,$7,g[1],$11}' \
+    "$WORK/clinvar_pgx_risk.tsv"

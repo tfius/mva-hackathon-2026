@@ -22,9 +22,15 @@ Pitch script: [`track2-video-script.md`](track2-video-script.md) · code: [githu
 1. **BubR1 is undrugged, and the checkpoint's pharmacology points the wrong way.** *BUB1B* has 464 edges in PrimeKG and **zero drug edges**; so do BUB1, BUB3, CEP57, TRIP13. OptimusKG — four times denser, 65 sources — reproduces the gap exactly. Meanwhile AURKB, PLK1, TTK and CENPE *are* druggable: the contraindicated set. One ligand the graph attaches to AURKB is **reversine** — whose aneuploidy-inducing activity is actually **MPS1/TTK inhibition**. Repeating that annotation uncritically is the failure §4.4 warns about; the point survives corrected, since the druggable checkpoint proteins remain the ones to avoid.
 2. **The model's top recommendations are contraindicated.** TxGNN ranks paclitaxel 7th of 1,801 on *indications*, vinblastine 17th, eribulin 19th — microtubule poisons for a child whose checkpoint is already at half dose. The graph knows MVA is a cancer-predisposition syndrome and retrieves sarcoma chemotherapy; it cannot know the checkpoint is broken, because that lives in the variant.
 3. **Two distinct blind spots, and only one is about size.** A **schema gap**: nicotinamide riboside does not bind SIRT2, it raises the NAD⁺ SIRT2 consumes, and no graph has an edge type for "increases availability of a cofactor" — so substrate-pool interventions are invisible at any scale. And a **semantics gap**: CREBBP and EP300 are *already* in PrimeKG as BUB1B interactors, and the graph still cannot say that *inhibiting* them should raise BubR1. Link prediction answers "is there a relationship", never "which direction helps my patient".
+
+*With the caveat adversarial review demanded*: this report reads graph-absence more than one way — as a fact about pharmacology for BubR1, as a schema limit for nicotinamide riboside. That holds only because the two were checked differently, and the "no SIRT2 activator exists" claim rests on a graph lookup rather than a ChEMBL search, making it the weakest of the three.
 4. **A standard secondary-findings filter asserts negatives it has not earned.** Filtering ClinVar to `Pathogenic|Likely_pathogenic` dropped **137 non-reference calls** on this genome, twelve reviewed by expert panel. It hid Factor V Leiden, and it let us write "no fluoropyrimidine toxicity risk allele" when the child carries an expert-panel `drug_response` *DPYD* variant.
 
-**What we recommend is not a treatment.** It is six experiments in patient cells (§7), any of which can refute this report within weeks. Not a trial — a blot, a chromosome spread, and a knockdown.
+**What we recommend is not a treatment.** It is six experiments (§7), any of which can refute this report. Not a trial — a blot, a chromosome spread, and a knockdown.
+
+**Honest about what that costs.** An earlier draft said "within weeks". Independent feasibility review put it at **9–18 months and $150–300k**, dominated not by bench work but by ethics approval and deriving a patient cell line that does not yet exist — and the data-use terms forbid *this* team from obtaining material at all. Two experiments escape that: **E6b** needs no patient material and **E6a** needs only blood, not a biopsy. The realistic route runs through the child's clinical genetics team, or through labs that already hold MVA patient lines and the assays.
+
+**And the immediately useful part of this dossier is not the candidates.** It is §9 — a published surveillance guideline for MVA that this report initially lacked, a pharmacogenomic profile obtained free from the diagnostic genome, and parental testing, which would establish phase, supply ACMG PM3 and enable recurrence counselling. None of that needs new science.
 
 ## 2. The lesion, and what breaks
 
@@ -199,7 +205,7 @@ Stated as strongly as the candidates, because an analysis that cannot say what t
 - **PLK1 and KIF11/Eg5 inhibitors** — mitotic-arrest-dependent mechanisms presupposing an intact checkpoint
 - **HSP90 inhibitors** — see below
 
-Not hypothetical: in PrimeKG the *only* checkpoint proteins carrying drug edges are AURKB, PLK1, TTK and CENPE — this list — while BUB1B and every other MVA gene carry none. One AURKB ligand is **reversine**, a tool compound used to *induce* aneuploidy. "Find the pathway, find drugs against it" returns the contraindication list with a clean subgraph attached.
+Not hypothetical: in PrimeKG the *only* checkpoint proteins carrying drug edges are AURKB, PLK1, TTK and CENPE — this list — while BUB1B and every other MVA gene carry none. One ligand the graph attaches to AURKB is **reversine** — whose aneuploidy-inducing activity is in fact **MPS1/TTK inhibition**, an annotation this report first repeated without auditing. The point survives corrected: the druggable checkpoint proteins remain the ones to avoid. "Find the pathway, find drugs against it" returns the contraindication list with a clean subgraph attached.
 
 **HSP90 inhibitors moved here from the candidate list — a correction worth showing.** An earlier draft listed 17-AAG as a candidate on the strength of Amon's screen. HSP90 inhibition by 17-AAG causes **delocalisation of BUB1 and BUBR1 from kinetochores**, with CENP-H, CENP-I, CENP-E and HEC1. HSP90 with its co-chaperone SGT1 is required for kinetochore **assembly** — upstream of checkpoint signalling, not part of it — so this is a failure to build the structure, not a dampening of a signal. In a child at half BubR1 dose it attacks the protein every other hypothesis tries to preserve.
 
@@ -352,6 +358,18 @@ Nothing above step 1 is a treatment decision, and steps 2–4 are cell-culture e
 **What Track 1 contributed beyond the diagnosis.** The same WGS, already sequenced and paid for, excluded structural variants at the locus, bounded mosaic aneuploidy from two independent modalities, and excluded the mitochondrial variants that would make an aminoglycoside dangerous. A genome sequenced to find a diagnosis keeps paying out — the most scalable finding here.
 
 ## 11. References
+
+*The first block was load-bearing and uncited until independent review.*
+
+- **van Ree JH, et al.** BubR1 allelic effects drive phenotypic heterogeneity in mosaic-variegated aneuploidy progeria syndrome. *J Clin Invest* 2020. [126863](https://www.jci.org/articles/view/126863) — closest published model to this genotype: `BubR1^X753/L1002P`, a truncation with a missense ten residues from p.Asn1002Lys, embryonic lethal in mouse; severity differs between allele pairs **at matched total BubR1 protein**.
+- **Suijkerbuijk SJE, et al.** Molecular causes for BUBR1 dysfunction in mosaic variegated aneuploidy. *Cancer Res* 2010;70:4891 — patient lines of this allele class show low overall BUBR1 abundance, impaired checkpoint, alignment defects.
+- **AACR Childhood Cancer Predisposition Workshop.** Screening and surveillance in genomic instability disorders. *Clin Cancer Res* 2024;30:5009. [PMC11705613](https://pmc.ncbi.nlm.nih.gov/articles/PMC11705613/) — MVA: renal ultrasound q3m to age 7, radiation avoided, HPV vaccination.
+- **CCPW schwannomatosis update.** *Clin Cancer Res* 2025;31:1400. [PMC12002630](https://pmc.ncbi.nlm.nih.gov/articles/PMC12002630/) — incidental *LZTR1* variants without personal or family history should not prompt surveillance imaging.
+- **ASH/ISTH 2026.** Anticoagulant prophylaxis in paediatric patients at risk of VTE. *Blood Adv* 2026;10:4303. [PMC13276589](https://pmc.ncbi.nlm.nih.gov/articles/PMC13276589/)
+- **Pejaver V, et al.** Calibration of computational tools for missense pathogenicity. *Am J Hum Genet* 2022 — REVEL 0.290–0.644 is indeterminate.
+- **Tavtigian SV, et al.** A naturally scaled point system for ACMG/AMP classification. *Hum Mutat* 2020.
+- **Biesecker LG, Harrison SM.** Discontinue PP5/BP6. *Genet Med* 2018.
+- **Loughran G, et al.** Dual-luciferase readthrough artefacts. *EMBO J* 2025.
 
 - North BJ, Rosenberg MA, Jeganathan KB, et al. SIRT2 induces the checkpoint kinase BubR1 to increase lifespan. *EMBO J* 33(13):1438–1453, 2014. [PMC4194088](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4194088/)
 - Baker DJ, Wijshake T, Tchkonia T, et al. Clearance of p16Ink4a-positive senescent cells delays ageing-associated disorders. *Nature* 479:232–236, 2011. [doi:10.1038/nature10600](https://www.nature.com/articles/nature10600)

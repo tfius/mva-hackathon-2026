@@ -1,352 +1,109 @@
 # Track 2 — Mechanism and Drug Repurposing
 
-**Rare Disease, Real Kid: MVA Hackathon 2026** · proband `PROBAND01` · team `texdata`
-28 August 2026 · pitch script in [`track2-video-script.md`](track2-video-script.md)
+**Rare Disease, Real Kid: MVA Hackathon 2026** · proband `PROBAND01` · team `texdata` · 29 August 2026
+Pitch script: [`track2-video-script.md`](track2-video-script.md) · code: [github.com/tfius/mva-hackathon-2026](https://github.com/tfius/mva-hackathon-2026)
 
-> **The genotype this report reasons from is confirmed, not proposed.** The Track 1 submission scored **100.0/100 rank points, F-max 1.000, full match at rank 1** against the clinically confirmed answer key. Everything downstream rests on the right variants.
+> **Hypotheses for follow-up, not evidence that a medicine works.** None has been tested in anyone with MVA1. Each needs mechanism confirmation in a model system, then a clinician, before it means anything for a patient. This child has an oncology team; nothing here substitutes for it.
 
-> **Framing.** Everything below is a hypothesis for follow-up, not evidence that a medicine works. No candidate here has been tested in a person with MVA1. Nothing in this document is clinical advice, and every candidate would need mechanism confirmation, then a model system, then a clinician, before it meant anything for a patient.
-
----
-
-## 0. Summary
-
-**The lesion — confirmed against the clinical answer key, not inferred.** Biallelic *BUB1B*: `p.Leu737Ter`, a null whose truncation loses the entire kinase domain, in trans with `p.Asn1002Lys`, a kinase-domain missense seen once in 1,461,878 gnomAD alleles. The Track 1 submission returned a full match at rank 1, so the mechanism below is reasoning from the actual genotype rather than from a candidate. Not a null genotype — a hypomorph with residual, partly-working BubR1. Complete BubR1 loss is embryonic lethal, so every therapeutic idea here has to operate on protein that exists.
-
-**Five candidates in §6, and the first three attack the same target — more BubR1 — from independent directions: supply the cofactor, inhibit the writer of the destabilising mark, or rescue the null allele. None requires a drug that binds BubR1, because none exists.** The starting hypotheses, each anchored to a published experiment in this gene or this biology: Raise the residual protein via NAD⁺/SIRT2, which controls BubR1 abundance through acetylation at K668 — and **K668 is deleted on the null allele but intact on the missense one**, so this genotype specifically has a substrate to stabilise, and one with two truncating alleles would not. Clear the damaged cells with senolytics, the founding experiment for which was run in the BubR1 progeroid mouse and rescued the very tissues this child is symptomatic in. Exploit aneuploid cells' proteotoxic stress, where chloroquine and 17-AAG have published selectivity.
-
-**Two of the three were independently confirmed by a model that had no mechanism input.** TxGNN zero-shot on the MVA node — which carries 214 phenotype edges, five genes and *no drug edges* — put hydroxychloroquine and chloroquine at the 2.8th percentile of 1,801 drugs and dasatinib at 3.8%.
-
-**Four findings that were not expected, and that are the substance of this submission:**
-
-1. **BubR1 is undrugged, and the checkpoint's pharmacology points the wrong way.** *BUB1B* has 464 edges in PrimeKG and **zero drug edges**; so do BUB1, BUB3, CEP57 and TRIP13. OptimusKG, four times denser around BUB1B and built from 65 independent sources, reproduces the gap exactly. Meanwhile AURKB, PLK1, TTK and CENPE *are* druggable — the contraindicated set. One of the AURKB ligands is **reversine**, which laboratories use to *induce* aneuploidy. A pipeline reasoning "find the pathway, find drugs against it" returns the contraindication list as its answer with a clean subgraph attached.
-
-2. **The model's top recommendations are contraindicated.** Paclitaxel ranks 7 of 1,801 on *indications*, vinblastine 17, eribulin 19. The graph knows MVA is a cancer-predisposition syndrome and retrieves sarcoma chemotherapy; it does not know the checkpoint is already hypomorphic, because that fact lives in the variant and not in the disease node.
-
-3. **Nutrient and cofactor interventions are structurally invisible to knowledge graphs.** PrimeKG contains BUB1B–SIRT2 and BUB1B–CBP/p300 — the entire mechanism H1 rests on — and still cannot surface it. Nicotinamide riboside *is* a node in OptimusKG and is still unreachable, because it does not bind SIRT2; it raises the NAD⁺ SIRT2 consumes, and no edge type exists for that. This is a limit of the schema, not the data, and no amount of graph size or retraining fixes it.
-
-4. **Explanations need auditing before they are called rationales.** Run on raw GraphMask importance, every top path for every drug went through CYP3A4 with near-identical scores for chemically unrelated drugs. That is a metabolism lookup presented as a mechanism.
-
-**What we actually recommend** is not a treatment. It is five experiments in patient-derived cells, in §8, any one of which can refute this report within weeks: blot for BubR1, count micronuclei, then dose with nicotinamide riboside reading the K668 acetyl mark with SIRT2 knockdown as the control. Not a trial — a blot, a chromosome spread, and a knockdown.
+> **The genotype is confirmed, not proposed.** The Track 1 submission scored **100.0/100, F-max 1.000, full match at rank 1** against the clinically confirmed answer key.
 
 ---
 
-## 1. The lesion, stated precisely
+## 1. Summary
 
-Track 1 called biallelic *BUB1B* — `c.2210T>G p.Leu737Ter` (null) in trans with `c.3006T>G p.Asn1002Lys` (missense) — and the submission scored a **full match at rank 1, 100.0/100, F-max 1.000** against the clinically confirmed answer key. This is the genotype, not a hypothesis about it. See [`track1-variant-report.md`](track1-variant-report.md).
+**The lesion.** Biallelic *BUB1B*: `p.Leu737Ter`, a nonsense allele losing the entire kinase domain to nonsense-mediated decay, in trans with `p.Asn1002Lys`, a kinase-domain missense seen once in 1,461,878 gnomAD alleles. Not a null genotype — a **hypomorph with residual, partly-working BubR1**. Complete BubR1 loss is embryonic lethal, so every idea here operates on protein that exists.
 
-That matters for everything that follows. A repurposing argument built on a mis-called variant is worthless no matter how good the pharmacology is, and the single most common failure mode in this kind of work is reasoning confidently downstream of an unverified genotype. Here the genotype is verified.
+**The organising claim.** Six candidates, and the first three reach one target — *more BubR1* — from independent directions: **supply the cofactor**, **inhibit the writer of the destabilising mark**, or **rescue the null allele**. None requires a drug that binds BubR1, because none exists.
 
-*BUB1B* encodes **BubR1**, 1050 aa (UniProt O60566): BUB1 N-terminal domain 62–226, protein kinase domain 766–1050, catalytic proton acceptor D882.
+**Validated premise, shared by candidates 1, 2 and 6.** Sustained high BubR1 expression in mice preserves genomic integrity, reduces tumorigenesis even against oncogenic Ras, extends lifespan, and does so by *correcting mitotic checkpoint impairment and microtubule–kinetochore attachment defects* — the exact two defects this genotype produces ([Baker, *Nat Cell Biol* 2013](https://www.nature.com/articles/ncb2643)).
 
-- The **null allele** stops the product after residue 736 — 30 residues short of the kinase domain, which is lost entirely — with the premature termination codon 746 nt upstream of the final exon–exon junction (c.2957/c.2958), so nonsense-mediated decay is predicted. This allele contributes nothing.
-- The **missense allele** produces full-length protein carrying N1002K inside the kinase domain.
+**Four findings that are the substance of this submission:**
 
-The genotype is therefore **not a null**: it is a hypomorph carrying roughly half-dose, partly-impaired BubR1. That distinction is the whole basis of what follows. Complete BubR1 loss is embryonic lethal; every therapeutic hypothesis worth having here operates on residual protein that exists.
+1. **BubR1 is undrugged, and the checkpoint's pharmacology points the wrong way.** *BUB1B* has 464 edges in PrimeKG and **zero drug edges**; so do BUB1, BUB3, CEP57, TRIP13. OptimusKG — four times denser, 65 sources — reproduces the gap exactly. Meanwhile AURKB, PLK1, TTK and CENPE *are* druggable: the contraindicated set. One AURKB ligand in the graph is **reversine**, used in laboratories to *induce* aneuploidy.
+2. **The model's top recommendations are contraindicated.** TxGNN ranks paclitaxel 7th of 1,801 on *indications*, vinblastine 17th, eribulin 19th — microtubule poisons for a child whose checkpoint is already at half dose. The graph knows MVA is a cancer-predisposition syndrome and retrieves sarcoma chemotherapy; it cannot know the checkpoint is broken, because that lives in the variant.
+3. **Two distinct blind spots, and only one is about size.** A **schema gap**: nicotinamide riboside does not bind SIRT2, it raises the NAD⁺ SIRT2 consumes, and no graph has an edge type for "increases availability of a cofactor" — so substrate-pool interventions are invisible at any scale. And a **semantics gap**: CREBBP and EP300 are *already* in PrimeKG as BUB1B interactors, and the graph still cannot say that *inhibiting* them should raise BubR1. Link prediction answers "is there a relationship", never "which direction helps my patient".
+4. **A standard secondary-findings filter asserts negatives it has not earned.** Filtering ClinVar to `Pathogenic|Likely_pathogenic` dropped **137 non-reference calls** on this genome, twelve reviewed by expert panel. It hid Factor V Leiden, and it let us write "no fluoropyrimidine toxicity risk allele" when the child carries an expert-panel `drug_response` *DPYD* variant.
 
-## 2. What breaks downstream
+**What we recommend is not a treatment.** It is six experiments in patient cells (§7), any of which can refute this report within weeks. Not a trial — a blot, a chromosome spread, and a knockdown.
 
-BubR1 is the pseudokinase core of the **mitotic checkpoint complex** (BubR1–Bub3–Cdc20–Mad2), which restrains APC/C-Cdc20 until every kinetochore is correctly attached. It also recruits PP2A-B56 to kinetochores through its KARD motif, stabilising kinetochore–microtubule attachments.
+## 2. The lesion, and what breaks
 
-Reduced BubR1 dose therefore produces a **weakened spindle assembly checkpoint** → premature anaphase onset → chromosome missegregation → **constitutional mosaic aneuploidy** and chromosomal instability, which in turn drives the tumour predisposition (rhabdomyosarcoma, Wilms).
+*BUB1B* encodes **BubR1**, 1050 aa (UniProt O60566): BUB1 N-terminal domain 62–226, protein kinase domain **766–1050**, catalytic proton acceptor D882.
 
-The second consequence is less obvious and matters more for repurposing. BubR1-hypomorphic mice (`BubR1^H/H`) are **progeroid**: growth retardation, reduced lifespan, sarcopenia, cataracts, loss of subcutaneous fat. The overlap with this proband's phenotype — short stature, skeletal muscle atrophy, failure to thrive — is direct, and it means an established mouse model exists in which interventions have already been run *on this gene*.
+- **`p.Leu737Ter`** stops the product after residue 736 — **30 residues short of the kinase domain**, which is lost entirely. The PTC sits at c.2209–2211 with the final exon–exon junction at c.2957/c.2958, so it is **746 nt upstream** and far past the 50–55 nt rule: NMD predicted, allele contributes nothing.
+- **`p.Asn1002Lys`** is full length, inside the kinase domain, 120 residues C-terminal to the active site. AlphaMissense 0.923, MVP 0.852 — though REVEL is 0.472, and that disagreement is reported rather than averaged away.
 
-## 3. Three therapeutic hypotheses, each with a published anchor
+BubR1 is the pseudokinase core of the mitotic checkpoint complex, restraining APC/C-Cdc20 until every kinetochore is attached. Reduced dose → checkpoint leaks → missegregation → **constitutional mosaic aneuploidy** and the tumour predisposition.
 
-### H1 — Raise the residual BubR1 protein: NAD⁺ precursors
+The second consequence matters more for treatment: `BubR1^H/H` mice are **progeroid** — growth retardation, sarcopenia, loss of subcutaneous fat. That is this proband's phenotype, and it means interventions have already been run in this gene's model.
 
-BubR1 abundance is set by acetylation of **lysine 668**, written by CBP and erased by the NAD⁺-dependent deacetylase **SIRT2**. The age-related decline in BubR1 is a decline in NAD⁺ and hence in SIRT2's ability to keep K668 deacetylated. In `BubR1^H/H` mice, SIRT2 transgenic overexpression raised median lifespan by 58% (122% in males) and maximal lifespan by 21%; **treatment with the NAD⁺ precursor NMN stabilised BubR1 in vivo** ([North et al., *EMBO J* 2014](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4194088/)).
+**The load-bearing fact, stated explicitly because candidates 1 and 2 both rest on it.** BubR1 abundance is set by acetylation at **lysine 668**: CBP acetylates it, which **primes BubR1 for ubiquitination and proteasomal degradation**; the NAD⁺-dependent deacetylase **SIRT2 deacetylates K668 and thereby stabilises** the protein ([North et al., *EMBO J* 2014](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4194088/)). Acetylation at a second site, **K250, is protective** — but it is written by **PCAF, not CBP**, and occurs during **prometaphase**, whereas the K668 route operates in **interphase**. The two are separable, which matters in §5.
 
-Why this is allele-aware and not generic longevity hand-waving: **K668 lies in the null allele's deleted region but is intact on the missense allele.** The p.Asn1002Lys protein is full-length and retains the regulatory lysine, so a SIRT2/NAD⁺ intervention has a substrate to act on — it would stabilise exactly the one partially-functional copy this child has. A patient homozygous for truncating alleles would get nothing from this; this genotype is the one where it could work.
+## 3. A prediction, recorded before the model was run
 
-Repurposing candidates: nicotinamide riboside, nicotinamide mononucleotide (both available as supplements with human safety data), and nicotinamide itself.
+A hypomorphic checkpoint **is** the lesion, so agents that weaken it further — MPS1/TTK, Aurora B, PLK1, KIF11 inhibitors — are hazards, not candidates. Full list and clinical consequences in §6.
 
-**Where it could fail.** Boosting a checkpoint protein in a child who has already had a malignancy cuts both ways — more BubR1 means better segregation fidelity, but SIRT2 has context-dependent tumour-suppressor and oncogenic roles. Mouse lifespan is not human healthspan. And no NAD⁺ precursor has been tested in MVA.
+Recorded here because it is falsifiable: TxGNN emits contraindication probabilities as well as indications, so those agents should surface on the contraindication side. §4.3 reports what actually happened.
 
-### H2 — Remove the cells the lesion has already damaged: senolytics
+## 4. Knowledge-graph layer
 
-The foundational senolytics experiment was done **in this mouse**. Clearing p16^Ink4a-positive senescent cells from `BubR1` progeroid mice delayed onset of age-related pathology specifically in **adipose tissue, skeletal muscle and eye**, and late-life clearance attenuated disorders that had already established ([Baker et al., *Nature* 479:232–236, 2011](https://www.nature.com/articles/nature10600)).
+The hypotheses in §5 are a **literature prior**, reached by mechanism and written down before any model ran. The graph layer was run independently, so agreement means something.
 
-Adipose and skeletal muscle are precisely the tissues where this proband is symptomatic — low muscle mass, failure to thrive, short stature.
+### 4.1 A genuine zero-shot case, and a correction that changes the answer
 
-Repurposing candidates: **dasatinib + quercetin** (dasatinib is already approved in paediatric CML, so paediatric pharmacokinetics and safety exist), navitoclax (limited by thrombocytopenia).
+PrimeKG's `mosaic variegated aneuploidy syndrome` node (28004) carries 214 phenotype edges, 10 disease-protein edges — **BUB1, BUB1B, BUB3, CEP57, TRIP13** — 6 disease-disease edges, and **zero drug edges**. All 7,957 drug labels are 0. Pretrained TxGNN, `full_graph` split 1, CPU, ~3 s per relation.
 
-**Where it could fail.** `BubR1^H/H` mice are a progeroid model and MVA1 in a child is not progeria; the senescent-cell burden in a young patient may be far lower than in an aged mouse. Senolytics have never been given to a child for this indication. Dasatinib in a cancer-predisposition syndrome needs oncology input, not a hackathon.
+**The correction.** TxGNN scores all 7,957 DrugBank nodes, most of them PDB fragments of degree 2 — and on a disease with no drug edges it scores exactly those highest, so the raw ranking nominates *Casimiroin* and unnamed crystallographic fragments for a child (Spearman ρ = **−0.51** against degree). TxGNN's own `Ranked List` is the **1,801 drugs carrying indication or contraindication edges**; within it the artefact vanishes (ρ = **+0.054**). Reported because it is the kind of error that produces a confident, publishable, meaningless answer.
 
-### H3 — Exploit the aneuploid cells' own stress: AMPK activation and HSP90 inhibition
+### 4.2 Two hypotheses independently confirmed
 
-Aneuploid cells carry proteotoxic and energy stress that euploid cells do not. Screening trisomic mouse embryonic fibroblasts identified three compounds that selectively impair aneuploid-cell proliferation: **AICAR** (energy-stress inducer / AMPK activator), **17-AAG** (HSP90 inhibitor), and chloroquine (autophagy inhibitor). AICAR and 17-AAG showed real antiproliferative activity in aneuploid cell lines and were stronger in combination ([Tang, Williams, Siegel & Amon, *Cell* 144:499–512, 2011](https://www.cell.com/fulltext/S0092-8674(11)00056-0)).
+Percentile within the 1,801, indication direction: **hydroxychloroquine 50th (2.8%)**, **chloroquine 51st (2.8%)**, **dasatinib 69th (3.8%)**. Chloroquine is one of three compounds from Amon's aneuploidy-selective screen; dasatinib is the approved half of the senolytic pair whose founding experiment used the BubR1 mouse. Neither was fitted after the fact.
 
-This hypothesis is aimed at the **tumour**, not the child — and that distinction is the point. In MVA1 the malignant clone is far more aneuploid than the constitutional background, so a genuinely aneuploidy-selective agent has a therapeutic window that a general cytotoxic does not.
+**H1 cannot be evaluated here at all** — nicotinamide riboside, NMN and NADH carry no indication edges in PrimeKG, because they are supplements. The best-supported hypothesis in this report is invisible to the model.
 
-Repurposing candidates: **chloroquine and hydroxychloroquine**, and AMPK activators.
+### 4.3 Where the model and the mechanism disagree
 
-**17-AAG is deliberately excluded, and §7 explains why.** HSP90 inhibition delocalises BubR1 from kinetochores, so in this patient it attacks the protein every other hypothesis is trying to preserve. That is a correction to an earlier draft of this report, not an omission.
+The §3 prediction **failed**. Paclitaxel ranks **7 of 1,801 on indications** (0.4%), vinblastine 17, eribulin 19, vincristine 87, docetaxel 98. The contraindication ranking is led by methoxsalen, mycophenolate and tacrolimus — immunosuppressant and photosensitiser signal, nothing to do with mitosis.
 
-**Where it could fail.** The constitutional cells are aneuploid too, so "selective" is a matter of degree, not kind. AICAR itself is not a practical oral drug; metformin is a much weaker AMPK activator and the substitution is an assumption, not a result.
+The graph knows MVA is a cancer-predisposition syndrome and retrieves sarcoma chemotherapy. It cannot know the checkpoint is already hypomorphic, because that fact lives in the variant, not the disease node. **The mechanism is right and the model is wrong**, and this is the most clinically consequential line in the report.
 
-## 4. A prediction, stated before the model was run
+### 4.4 Explanations are hub artefacts until audited
 
-A hypomorphic spindle assembly checkpoint **is** the lesion, so agents that weaken it further — MPS1/TTK, Aurora B, PLK1, KIF11 inhibitors — are hazards rather than candidates. The full contraindication list and its clinical consequences are in §7.
-
-It is recorded here, before §5, because it is a falsifiable prediction about the knowledge-graph model: TxGNN emits contraindication probabilities as well as indications, so those agents should surface on the contraindication side. §5.5 reports what actually happened.
-
-## 5. Knowledge-graph layer — TxGNN zero-shot
-
-The three hypotheses above are a **literature prior**, reached by mechanism and written down before any model was run. The graph layer was then run independently, so agreement between the two means something.
-
-### 5.1 MVA really is a zero-shot case
-
-In PrimeKG the node `mosaic variegated aneuploidy syndrome` (index 28004, a MONDO_grouped node over MONDO 13582 / 9759 / 54736 / 141) carries:
-
-- 214 `disease_phenotype_positive` edges
-- 10 `disease_protein` edges — **BUB1, BUB1B, BUB3, CEP57, TRIP13**
-- 6 `disease_disease` edges — *chromosomal anomaly*, *neoplastic syndrome*, *polymalformative genetic syndrome with increased risk of developing cancer*
-- **zero drug edges of any kind**
-
-Every one of the 7,957 drug labels is 0. There is nothing to memorise, so the ranking is genuine zero-shot inference. Pretrained TxGNN (`full_graph` split 1, n_hid 512, prototype module on) run on CPU; both `indication` and `contraindication` in about 3 seconds each once the graph is loaded.
-
-### 5.2 A correction that changes the answer
-
-TxGNN scores all 7,957 DrugBank nodes in PrimeKG. Most of those are PDB ligands and experimental fragments with a node degree of 2 — and on a disease with no drug edges the model scores **exactly those highest**, because it has learned almost nothing about them. Ranked on the raw 7,957, the top recommendations for this child are *Casimiroin*, *Dithioerythritol* and a run of unnamed crystallographic fragments, and the score correlates *negatively* with degree (Spearman ρ = −0.51).
-
-TxGNN's own `Ranked List` is restricted to the **1,801 drugs that carry indication or contraindication edges** somewhere in PrimeKG. That is the only set a therapeutic recommendation can honestly be drawn from. Within it the degree artefact disappears: ρ = **+0.054** for indication, +0.115 for contraindication. The ranking is not a popularity prior.
-
-Reported because it is the kind of error that produces a confident, publishable, meaningless answer.
-
-### 5.3 What the model returns
-
-Top of the indication ranking for MVA:
-
-| Rank | Drug | Score |
-|---|---|---|
-| 1 | Nifurtimox | +2.56 |
-| 2 | Trifarotene | +2.03 |
-| 3 | Methotrexate | +1.72 |
-| 4 | Formestane | +1.45 |
-| 5 | Imatinib | +1.25 |
-| 6 | Fluorouracil | +1.25 |
-| 7 | **Paclitaxel** | +1.14 |
-
-Read the graph neighbourhood and this is unsurprising: MVA's disease-disease edges say *neoplastic syndrome* and *cancer-predisposition syndrome*, so the model retrieves antineoplastics. It is answering "what treats a childhood cancer syndrome", not "what corrects a spindle assembly checkpoint hypomorph".
-
-### 5.4 The prior probes — stated before the run, scored after
-
-Percentile within the 1,801 clinically annotated drugs, indication direction:
-
-| Hypothesis | Drug | Rank | Percentile |
-|---|---|---|---|
-| **H3** aneuploidy-selective | **Hydroxychloroquine** | 50 | **2.8%** |
-| **H3** | **Chloroquine** | 51 | **2.8%** |
-| **H2** senolytic | **Dasatinib** | 69 | **3.8%** |
-| H1 NAD⁺ | Niacin | 218 | 12.1% |
-| H1 | Nicotinamide | 569 | 31.6% |
-| H3 | Metformin | 1543 | 85.7% |
-
-**Two independent convergences.** Chloroquine is one of the three compounds Amon's screen identified as aneuploidy-selective, and the graph puts chloroquine and its hydroxy analogue in the top 3% — reached from a completely different direction, with no aneuploidy-biology input. Dasatinib is the approved half of the dasatinib+quercetin senolytic pair whose founding experiment was run in the BubR1 mouse, and the graph puts it in the top 4%. Neither was fitted after the fact.
-
-**H1 cannot be evaluated here, and that is a coverage finding rather than a refutation.** Nicotinamide riboside, nicotinamide mononucleotide and NADH are absent from PrimeKG's clinically annotated drug set entirely — they carry no indication edges, because they are supplements. The single best-supported, most allele-specific hypothesis in this report is invisible to the knowledge graph. Any KG-only repurposing pipeline would have missed it.
-
-Metformin at 85.7% is a fair miss: it was always a weak substitution for AICAR, which is not in PrimeKG at all.
-
-### 5.5 Where the model and the mechanism disagree — and who is right
-
-The contraindication prediction stated in §4 **failed**, and failed informatively.
-
-| Drug | Indication rank | Percentile |
-|---|---|---|
-| Paclitaxel | 7 | 0.4% |
-| Vinblastine | 17 | 0.9% |
-| Eribulin | 19 | 1.1% |
-| Vincristine | 87 | 4.8% |
-| Docetaxel | 98 | 5.4% |
-
-Every microtubule-targeting agent sits near the **top of the indications**, not the contraindications. The contraindication ranking meanwhile is led by methoxsalen, mycophenolate and tacrolimus — immunosuppressant and photosensitiser signal, unrelated to mitosis.
-
-The graph knows MVA is a cancer-predisposition syndrome and retrieves sarcoma chemotherapy. It does not know that the spindle assembly checkpoint in this child is *already* hypomorphic, because that fact lives in the variant, not in the disease node. The mechanism is right and the model is wrong, and the disagreement is the most clinically consequential statement in this report: a knowledge-graph repurposing pipeline run on this case without mechanism reasoning would rank checkpoint-dependent chemotherapeutics as the leading recommendations.
-
-### 5.6 Explanations — hub artefacts, and what survives removing them
-
-`03_txgnn_explain.py` reconstructs graph-backed rationales from the released GraphMask gates: a 7,695,474-row edge table with per-layer importance for the indication task. TxGNN's shipped `paths.csv` covers a curated demo set and has no MVA node, so paths are found by bidirectional beam search, two hops from the disease and two from the drug, joined at the meeting node and scored as the length-normalised product of edge importances.
-
-**Run on raw gate importance the result is an artefact, and an instructive one.** Every top path, for every drug, was:
+Reconstructing paths from the released GraphMask gates (7,695,474 edges; TxGNN's shipped `paths.csv` has no MVA node), raw gate importance gives, for **every** drug:
 
 ```
 MVA <- Colon cancer -> Pimecrolimus <- CYP3A4 -> <drug>
 ```
 
-scoring 0.5159 for dasatinib, 0.5152 for hydroxychloroquine, 0.5123 for chloroquine, 0.5074 for paclitaxel. Four chemically unrelated drugs, four near-identical scores, one shared hepatic enzyme. The drug-independence is the tell: this is a statement about metabolism, not about why any of them might help. Presented unchecked, a CYP3A4 lookup becomes a "graph-backed medical rationale".
+scoring 0.5159 for dasatinib, 0.5152 for hydroxychloroquine, 0.5074 for paclitaxel. Four unrelated drugs, near-identical scores, one hepatic enzyme — the drug-independence is the tell. Presented unaudited, a CYP3A4 lookup becomes a "graph-backed medical rationale".
 
-Three corrections: `drug_effect` edges excluded, since a side effect is not a therapeutic rationale; intermediate nodes down-weighted by 1/log₁₀(degree); and 658 ADME hub proteins (CYP, ABC, SLC, UGT, ALB and relatives) removed outright, because degree down-weighting alone did not stop CYP3A4 winning on gate value. Beam width matters and was itself a trap — at 3,000 the filters left only paclitaxel with any path, which looked like a dramatic finding and was an artefact of the search. At 12,000 every candidate has paths. The result below is the beam-12,000 one.
+Excluding `drug_effect` edges, down-weighting by degree and removing 658 ADME hubs leaves thin but honest paths — dasatinib via EPHA2/KIT into Bloom syndrome, another chromosomal-instability cancer-predisposition syndrome. **Beam width was itself a trap**: at 3,000 the filters left only paclitaxel with any path, which looked like a finding and was an artefact of the search; at 12,000 every candidate has paths.
 
-What survives is honest but thin:
+### 4.5 Why nothing reaches BubR1 — and the two blind spots
 
-```
-Dasatinib   MVA <-[disease_disease]- chromosomal anomaly -> Prader-Willi syndrome
-                <-[disease_protein]- EPHA2 -[drug_protein]-> Dasatinib
-Dasatinib   MVA -[disease_disease]-> cancer-predisposition syndrome <- Bloom syndrome
-                <-[disease_protein]- KIT -[drug_protein]-> Dasatinib
-Paclitaxel  MVA <-[disease_protein]- TRIP13 -> germ cell tumor
-                -[disease_disease]-> testicular teratoma <-[off-label use]- Paclitaxel
-```
+| Gene | PrimeKG edges | Drug edges | OptimusKG edges | Drug edges |
+|---|---|---|---|---|
+| BUB1B | 464 | **0** | **1,975** | **0** |
+| BUB1 / BUB3 / CEP57 / TRIP13 | 426–516 | **0** | 790–1,585 | **0** |
+| AURKB | 762 | 10 — incl. **reversine** | 1,663 | 4 |
+| PLK1 / TTK / CENPE | 288–962 | 12 / 6 / 2 | 1,212–1,911 | 4 / 3 / 0 |
 
-Dasatinib's routes go through its real kinase targets (EPHA2, KIT, STAT5B) but into unrelated syndromes; the Bloom syndrome path is the only one with biological texture, Bloom being another chromosomal-instability cancer-predisposition syndrome. Paclitaxel's route passes through an actual MVA gene, and says *an MVA gene is implicated in a cancer, and this drug is used off-label in that cancer.* None of it is about checkpoint dose. Nothing routes through BubR1.
+`MVA → BUB1B → drug` cannot exist, because its last edge does not. A graph four times denser from 65 independent sources reproduces the gap exactly: **BubR1 is undrugged**, and that is a fact about pharmacology, not about PrimeKG.
 
-Two honest caveats about the reconstruction itself. The search is undirected, so some recovered paths traverse `contraindication` edges while supporting an indication prediction — those edges do carry non-zero GraphMask importance for the indication task, but any rationale shown to a clinician must mark their polarity, and this reconstruction currently does not. And path scores are not calibrated probabilities; they order paths, nothing more.
+**Schema gap.** OptimusKG *does* carry nicotinamide riboside and acadesine as nodes — and neither is reachable from the MVA genes, because nicotinamide riboside does not bind SIRT2; it raises the NAD⁺ SIRT2 consumes. No graph has an edge type for "increases availability of a cofactor this enzyme requires". **Substrate-pool interventions are invisible at any scale**, and that applies to every nutrient and metabolic repurposing candidate.
 
-### 5.7 Why no explanation reaches BubR1 — and the near miss that matters
+**Semantics gap.** CREBBP and EP300 are *already* BUB1B interactors in PrimeKG. The edge exists; what cannot be encoded is that **inhibiting** them should raise BubR1. Not missing data — missing meaning.
 
-Counting edges in PrimeKG directly:
+**And a directional mismatch in the drugs themselves.** Every intervention this genotype needs is an *increase*. Of the proteins adjacent to the lesion, SIRT2's only ligand is **cambinol, an inhibitor**; NAMPT's only ligand is **daporinad, an inhibitor**; and all **44** HSP90 ligands destabilise clients. This is a well-known problem for loss-of-function disease generally — the standard motivation for gene therapy, ASOs and readthrough — and it is quantified here against a specific graph for a specific patient. The one exception is the best new candidate in this report: **inhibiting the writer raises the substrate.**
 
-| Gene | Total edges | Drug edges |
-|---|---|---|
-| BUB1B | 464 | **0** |
-| BUB1 | 492 | **0** |
-| BUB3 | 468 | **0** |
-| CEP57 | 426 | **0** |
-| TRIP13 | 516 | **0** |
-| CDC20 | 500 | **0** |
-| MAD2L1 | 580 | **0** |
-| AURKB | 762 | 10 — AT9283, Enzastaurin, **Reversine** … |
-| PLK1 | 962 | 12 |
-| TTK | 288 | 6 — BOS172722 … |
-| CENPE | 404 | 2 — GSK-923295 |
+## 5. Candidates
 
-**Every gene the MVA node connects to has zero drug edges.** The path `MVA → BUB1B → drug` does not exist because its last edge does not exist. That is a property of the graph, not a failure of the model, and it explains the hub detour completely.
-
-The sharper half: the checkpoint proteins that *are* druggable in PrimeKG — AURKB, PLK1, TTK, CENPE — are precisely the ones that must not be inhibited in a child whose checkpoint is already hypomorphic. One of the AURKB ligands, **reversine**, is a laboratory tool used to *induce* aneuploidy. A pipeline reasoning "find the disease's pathway, find drugs against it" would nominate the contraindicated class with high confidence and a clean subgraph behind it.
-
-**And now the finding that changes how this should be read.** BUB1B's 95 protein interactors in PrimeKG include **SIRT2**, **CREBBP** and **EP300** — alongside HDAC1–5 and KAT2A/KAT2B.
-
-That is the entire acetylation-control axis hypothesis H1 rests on: CBP/p300 writes the acetyl mark, SIRT2 erases it, and BubR1 abundance follows. **PrimeKG encodes the mechanism.** What it does not encode is any drug edge from the NAD⁺ precursors to SIRT2 or its pathway, because nicotinamide riboside and NMN are supplements with no indication records. The graph holds every link but the last one, and TxGNN cannot surface the best-supported hypothesis in this report while sitting one edge away from it.
-
-The lesson is not that knowledge graphs are the wrong tool. It is that ranking 1,801 drugs by a link predictor asks the graph a question it cannot answer here, while walking outward from the disease's own genes asks one it can.
-
-### 5.8 Mechanism-anchored reachability
-
-So `05_mechanism_anchored.py` asks the narrower question directly: starting from BUB1B, BUB1, BUB3, CEP57 and TRIP13, which drugs are reachable through a single protein–protein interaction? Every hit carries the interactor it came through, so the claim is inspectable — *this drug targets a protein that physically interacts with a protein the disease disrupts* — and candidates whose target is itself a checkpoint protein are flagged rather than dropped.
-
-526 interactors, **592 distinct reachable drugs**, 939 gene–interactor–drug rows. Three groups stand out:
-
-- **Flagged contraindicated by construction** — fostamatinib (BUB1B–AURKB, BUB1–PLK1), enzastaurin (BUB1B–AURKB), wortmannin (BUB1–PLK1). The flag fires exactly where the mechanism says it should, which is a check on the method as much as on the drugs.
-- **The acetylation axis** — HDAC inhibitors (vorinostat, romidepsin, panobinostat, belinostat, mocetinostat, pracinostat) are all reachable through BUB1B–HDAC1/2/3/4. Mechanistically adjacent and worth follow-up, but **the direction of effect is unresolved**: SIRT2 is a class III sirtuin and is not inhibited by these class I/II agents, and the published acetylation sites on BubR1 do not all act in the same direction. Listed as a question, not a recommendation.
-- **NADH**, reachable via BUB1B–NDUFA2, BUB1–ALDH1B1 and BUB3–DLD — redox metabolism rather than the SIRT2 axis, so weak corroboration at best.
-
-This is a reachability set, not a ranking, and its interpretation is bounded by that. But it recovers the mechanism the drug-level model could not, from the same graph.
-
-### 5.9 OptimusKG — does a bigger graph close either gap?
-
-OptimusKG (Zitnik lab, April 2026) is the newer graph: 190,531 nodes and 21,813,816 edges over 65 sources grounded in 18 ontologies, against PrimeKG's 129k / 4.05M. `04_optimuskg_coverage.py` asks the only two questions worth asking of it here. Both are answerable by counting, without retraining anything.
-
-*Access note: the Harvard Dataverse endpoint returns 403 to the default `python-requests` User-Agent while serving the identical URL to curl. Nothing is restricted — the UA string is on a block list — and the script patches it rather than the installed package.*
-
-**Gap 1 — BUB1B's missing drug edges: not closed, and that is the finding.**
-
-| Gene | PrimeKG edges | OptimusKG edges | OptimusKG drug edges |
-|---|---|---|---|
-| BUB1B | 464 | **1,975** | **0** |
-| BUB1 | 492 | 1,585 | **0** |
-| BUB3 | 468 | 809 | **0** |
-| CEP57 | 426 | 790 | **0** |
-| TRIP13 | 516 | 1,287 | **0** |
-| AURKB | 762 | 1,663 | 4 — enzastaurin, fostamatinib, hesperidin, **reversine** |
-| PLK1 | 962 | 1,911 | 4 — wortmannin, fostamatinib … |
-| TTK | 288 | 1,212 | 3 |
-
-A graph four times denser around BUB1B, assembled from 65 independent sources, still has **no drug edge on it** — and still has the contraindicated checkpoint proteins as the druggable ones, reversine included. This is no longer a PrimeKG idiosyncrasy that a better graph might fix. **BubR1 is undrugged, and the pharmacology of the spindle checkpoint points the wrong way for this patient.** Any repurposing approach here has to reach the protein indirectly — which is exactly what hypotheses H1 and H2 do, and exactly what a target-centric pipeline cannot.
-
-**Gap 2 — the NAD⁺ precursors: closed, and more besides.**
-
-| Compound | PrimeKG | OptimusKG |
-|---|---|---|
-| Nicotinamide riboside | absent | **CHEMBL438497** |
-| Acadesine (AICAR) | absent | **CHEMBL1551724** |
-| Tanespimycin (17-AAG) | absent | CHEMBL109480 |
-| Navitoclax, fisetin, quercetin | absent | present |
-| Nicotinamide mononucleotide, NADH | absent | absent |
-
-OptimusKG carries the chemical space PrimeKG could not evaluate — including **acadesine, the actual compound from Amon's aneuploidy screen**, for which metformin was a weak substitute in the PrimeKG run. Retraining TxGNN on OptimusKG would let H1 and H3 be scored properly rather than declared untestable. That is now an evidence-backed Scalability argument rather than an aspirational one.
-
-**And one sharp negative.** SIRT2 does have a drug edge in OptimusKG, to **cambinol** — a SIRT1/2 *inhibitor*, the opposite of what H1 needs. There is no SIRT2 activator anywhere in the graph. So H1 cannot be pursued as a direct-target intervention at all; it has to work at the substrate level, by raising NAD⁺ supply. The graph did not nominate that hypothesis, but it does constrain how the hypothesis can be executed — which is a fair description of what a knowledge graph is actually good for on a disease like this one.
-
-MVA maps to `MONDO_0000141` in OptimusKG, so a retrained model would have a disease node to query.
-
-**But retraining is not the upgrade worth buying.** `06_optimuskg_mechanism_anchored.py` runs §5.8's reachability question against OptimusKG instead — one pass over the edge table, no training — and the result reframes the whole gap.
-
-| | PrimeKG | OptimusKG |
-|---|---|---|
-| BUB1B protein interactors | 95 | 96 |
-| Drugs reachable from the five MVA genes | 592 | 459 |
-| Nicotinamide riboside reachable | node absent | **node present, still not reachable** |
-| Acadesine, chloroquine, metformin, dasatinib | not reachable | **not reachable** |
-| Tanespimycin (17-AAG) | node absent | **reachable** via CEP57–HSP90AA1 |
-| Quercetin | not reachable | **reachable** via HSP90AA1 and UBA1 |
-| Only drug reaching SIRT2 | none | **cambinol — an inhibitor** |
-
-Three things fall out.
-
-**The NAD⁺ gap is not about graph size.** Nicotinamide riboside, nicotinamide and niacin are all *nodes* in OptimusKG, and none of them is reachable from the MVA genes, because none carries a drug–target edge into the SIRT2 neighbourhood. The only molecule with an edge to SIRT2 in either graph is cambinol, an inhibitor, pointing the wrong way.
-
-The reason is structural and general: **an intervention that acts on a substrate pool rather than a protein target is invisible to a target-centric knowledge graph.** Nicotinamide riboside does not bind SIRT2 — it raises the NAD⁺ that SIRT2 consumes. There is no edge type in either graph for "increases the availability of a cofactor this enzyme requires". Making the graph five times larger does not help, and neither would retraining on it. This is a coverage limit of the *schema*, not of the data, and it will apply to every nutrient, cofactor and metabolic intervention anyone tries to repurpose this way.
-
-**H3 does gain real support.** Tanespimycin becomes reachable through **CEP57–HSP90AA1**, which is a genuine mechanistic route rather than a hub detour: 17-AAG is an HSP90 inhibitor, HSP90 interacts with an MVA gene product, and proteotoxic stress is the published basis of the hypothesis. Quercetin arrives by the same HSP90 route. Chloroquine, acadesine and metformin remain unreachable — their targets are autophagy and AMPK machinery, which are not protein interactors of the checkpoint.
-
-**The contraindication flag reproduces across two independent graphs.** Reversine, enzastaurin, fostamatinib, hesperidin and wortmannin all fire, targeting AURKB, PLK1 and TTK, along with unnamed ChEMBL PLK1 and TTK inhibitors. That is the same warning derived twice from separately assembled resources, which is about as much corroboration as this kind of analysis can offer.
-
-Note also that the *smaller* number of reachable drugs in the larger graph — 459 against 592 — is a point in OptimusKG's favour, not against it: its drug–target annotations are more conservative, and the PrimeKG excess is largely promiscuous edges.
-
-### 5.10 If BubR1 is undrugged, what next to it is? — and why they nearly all point the wrong way
-
-"BubR1 is undrugged" is true, and it is not the same as "nothing is druggable". `07_alternative_targets.py` asks what ligands exist for the proteins immediately adjacent to the lesion. The answer is a pattern rather than a hit list.
-
-| Protein | Role in this mechanism | Drug edges in OptimusKG | Direction available |
-|---|---|---|---|
-| **CREBBP** | writes the K668 acetyl mark | 1 (CHEMBL1236441) | **inhibitor — the right way** |
-| **EP300** | writes it too | **0** | — |
-| SIRT2 | erases it | 1 — **cambinol** | inhibitor — **wrong way** |
-| NAMPT | rate-limiting for NAD⁺ salvage | 1 — **daporinad (FK866)** | inhibitor — **wrong way** |
-| HSP90AA1 | chaperone for a fold-destabilised client | **44** — alvespimycin, CCT018159 … | inhibitors — **wrong way** |
-| NMNAT1, FZR1, SMG1, UPF1 | NAD⁺ synthesis, BubR1 degradation, NMD | **0 each** | — |
-
-**Every intervention this genotype needs is an increase.** More BubR1, more NAD⁺, more chaperone capacity, less nonsense-mediated decay. And essentially every ligand that exists against these proteins is an inhibitor: the only SIRT2 ligand suppresses the enzyme we want active, the only NAMPT ligand suppresses the pathway we want boosted, and all 44 HSP90 ligands destabilise clients when a folding-impaired client is exactly what we are trying to preserve.
-
-This is a deeper version of the coverage problem in §5.9. It is not only that the edges are missing — **the pharmacopoeia itself is built overwhelmingly of inhibitors, and hypomorphic loss-of-function disease needs the opposite.** That is a structural mismatch between drug discovery and this entire disease class, and it will not be fixed by a larger knowledge graph.
-
-#### 5.10.1 The exception, and it is the best new candidate here
-
-**Inhibiting the writer produces an increase in the substrate.** If acetylation at K668 destabilises BubR1, then a CBP/p300 inhibitor raises it — an inhibitor pointed the right way. Real agents exist: **A-485**, and **CCS1477 / inobrodib**, which is in clinical trials.
-
-Note what this exposes about the knowledge-graph layer. **CREBBP and EP300 are already BUB1B interactors in PrimeKG** — §5.7 found them and read them as corroboration for H1. The graph has the protein edge. What it cannot encode is *which direction of perturbation helps*, and that is the entire question. So unlike the NAD⁺ gap, this is not missing data. It is a **semantics gap**: link prediction answers "is there a relationship", never "would pushing this up or down help my patient".
-
-**Three reasons this is a hypothesis and not a recommendation.** Acetylation at a different BubR1 lysine, K250, has been reported to *stabilise* the protein by blocking APC/C-Cdh1 degradation, so inhibiting the writer could cut both ways — E3 in §8, which reads the K668 mark directly, is the experiment that resolves it. CBP/p300 inhibitors are strongly pleiotropic and are being developed as anticancer agents, which in a child is a serious toxicity question rather than a footnote. And OptimusKG lists exactly one CREBBP ligand and none for EP300, so the graph badly under-represents a class that clinically exists.
-
-#### 5.10.2 The allele nobody has been treating
-
-Every hypothesis so far props up the missense copy. But `p.Leu737Ter` is a **premature termination codon**, and PTC readthrough is a druggable mechanism with existing agents — ataluren, ELX-02, aminoglycosides. Restoring even a fraction of full-length protein from the null allele attacks the dose problem from the opposite side, and it is the only route here that could raise BubR1 above what the missense allele alone can give.
-
-The obvious objection is that nonsense-mediated decay destroys the transcript before a ribosome can read through it — which is why NMD inhibition combined with readthrough is an active strategy. **SMG1 and UPF1 both have zero drug edges**, and readthrough agents act on the ribosome rather than a named protein target, so they carry no drug-target edge at all. The graphs are blind to this route for exactly the reason they are blind to nicotinamide riboside.
-
-#### 5.10.3 What this changes
-
-The candidate table in §6 gains a fourth mechanistic route and, more importantly, a sharper framing. The question for this disease is not "which drug hits BubR1" — nothing does, in any graph, and the checkpoint proteins that *are* druggable are contraindicated. It is **"which existing inhibitor, pointed at the right protein, produces more BubR1"**. On current evidence that shortlist is: a CBP/p300 inhibitor, and PTC readthrough with NMD inhibition. Both are testable by E1 and E3 in §8 without changing the experimental plan at all.
-
-### 5.11 What is still to run
-
-DepMap for aneuploidy-selective genetic dependencies; ChEMBL and Open Targets for tractability on the reachable set; and a TxGNN retrained on OptimusKG, which §5.9 shows is now worth the compute rather than merely bigger.
-
-## 6. Candidates
-
-> Restating what §0 said, because this is the section that will be read out of context: **these are hypotheses for follow-up, not evidence that a medicine works.** None has been tested in anyone with MVA1. Each would need mechanism confirmation in a model system, then a clinician, before it meant anything for a patient. The child in this case has an oncology team; nothing here is a substitute for it.
-
-Feasibility is four separate factors on a 1–5 scale rather than one number, so a reader can disagree with a weight without discarding the analysis. **Specificity** is how tightly the candidate follows from *this* genotype rather than the disease category. **Evidence** is the strength and proximity of the published support. **Safety** is the paediatric record. **Access** is how readily it could actually be tried.
-
-The first three all aim at the same target — **more BubR1** — from three independent directions: supply the cofactor, inhibit the writer, or rescue the null allele. That is the organising idea of this report, and none of the three requires a drug that binds BubR1, because no such drug exists.
+Feasibility is four factors on a 1–5 scale rather than one number, so a reader can disagree with a weight without discarding the analysis. **Specificity** — how tightly it follows from *this* genotype. **Evidence** — strength and proximity of published support. **Safety** — the paediatric record. **Access** — how readily it could be tried.
 
 | # | Candidate | Mechanism | Spec. | Evid. | Safety | Access | Where it breaks |
 |---|---|---|---|---|---|---|---|
 | 1 | **Nicotinamide riboside / NMN** | Raise NAD⁺ → SIRT2 keeps K668 deacetylated → BubR1 stabilised. **K668 is deleted on the null allele but intact on p.Asn1002Lys**, so there is a substrate to act on | **5** | **4** | 4 | **5** | No human MVA data; mouse lifespan is not child healthspan; SIRT2 has context-dependent roles in cancer |
-| 2 | **CBP/p300 inhibitor** (A-485, CCS1477/inobrodib) | Inhibit the *writer* of the K668 mark and BubR1 should rise. The one case where an available inhibitor points the right way | **5** | 2 | **1** | 3 | **Direction unproven** — acetylation at K250 is reported to *stabilise* BubR1 via APC/C-Cdh1, so this could cut both ways. Strongly pleiotropic anticancer agents, no paediatric data |
+| 2 | **CBP/p300 inhibitor** (A-485, CCS1477/inobrodib) | Inhibit the *writer* of the K668 mark and BubR1 should rise. The one case where an available inhibitor points the right way | **5** | 2 | **1** | 3 | **The modality has never been tested for this** — no one has shown a CBP inhibitor raises BubR1, which is why evidence stays at 2. The K250 counter-argument does *not* apply (§2: PCAF, prometaphase), but these are pleiotropic anticancer agents with no paediatric data, and available inhibitors hit p300 as well as CBP |
 | 3 | **PTC readthrough** ± NMD inhibition | Attacks the *other* allele. `c.2210T>G` creates **TGA** — the most readthrough-permissive stop codon — so restoring even partial full-length protein raises total BubR1 above what the missense allele alone gives | 4 | **1** | see below | see below | NMD destroys the transcript before a ribosome reaches the PTC (gated by **E6a**); the +4 base is A, an intermediate context; and the agents differ so widely on access and safety that a single score for the row would be meaningless |
 | 4 | **Hydroxychloroquine** | Autophagy inhibition; chloroquine is one of three compounds identified as aneuploidy-selective. Aneuploid cells lean on autophagy to clear proteotoxic load | 3 | 3 | **5** | 4 | Constitutional cells are aneuploid too, so "selective" is degree not kind; retinal toxicity is dose-limiting |
 | 5 | **Dasatinib (+ quercetin)** | Senolytic clearance of p16^Ink4a-positive cells, which rescued skeletal muscle and adipose **in the BubR1 progeroid mouse** — the tissues this child is symptomatic in | 4 | **3** | 3 | 3 | BubR1^H/H mice are progeroid and a child is not; senescent burden may be low at this age; needs oncology sign-off given cancer predisposition |
@@ -361,12 +118,6 @@ Applying it moves two scores in opposite directions.
 - **Candidate 5 falls from 4 to 3.** The founding senolytics experiment cleared p16^Ink4a-positive cells with the **INK-ATTAC transgene** and a dimerizer — genetic ablation. Dasatinib and quercetin were never given to a `BubR1^H/H` mouse. The tissue rescue is real and it is in the right gene, but the step from "removing senescent cells helps" to "these two drugs will remove them here" is an inference, not a result.
 
 Neither is a criticism of the underlying work. It is a statement about how far each result travels toward *this* patient, which is what the column is supposed to measure.
-
-**Why the order.** Candidates 1–3 are ranked above the aneuploidy-stress and senolytic routes because they treat the lesion rather than its consequences, and each is allele-specific in a way that would not transfer to a different MVA1 patient: candidate 1 needs an intact K668 on a full-length allele, candidate 3 needs a premature termination codon. A patient with two truncating alleles gets nothing from 1 or 2; a patient with two missense alleles gets nothing from 3. That specificity is the point.
-
-Candidate 2 carries the worst safety score in the table and is still ranked second, because it is the only route where a **clinically existing drug class points the right way at the right protein**. Its position reflects mechanistic value, not readiness.
-
-Candidate 1 now leads on both specificity and evidence, which is unusual and worth saying plainly: it is the only entry here where the exact intervention class was administered in the exact gene's animal model and produced the exact molecular effect being sought, *and* where the mechanism depends on a residue that this child's particular pair of alleles happens to preserve.
 
 **Candidate 3's agents do not share an access profile, so they are scored separately.** Collapsing them into one number was hiding a factor-of-five spread.
 
@@ -390,163 +141,44 @@ It does not, however, kill the mechanism. The failure was in Duchenne muscular d
 
 What the withdrawal really changes is the order of operations: it makes the cheap in vitro readthrough assay (**E6**, §8) the gate, rather than something to run after deciding the candidate is promising. Nobody should pursue this clinically without first knowing the readthrough efficiency at *this* stop codon in *this* context.
 
-**Candidates 1 and 3 are also the two that could be investigated without exposing anyone to anything** — both are testable in patient-derived cells for BubR1 protein level and micronucleus rate before any clinical question arises. That is the next step this report actually recommends.
+**Candidates 1 and 3 are the two that could be investigated without exposing anyone to anything** — both testable in patient-derived cells for BubR1 level and micronucleus rate before any clinical question arises. That is what §7 recommends.
 
-### 6.1 A pharmacogenomic screen, because the genome was already sequenced
+### 5.1 Candidate 6 — epigenetic activation, and why it ranks last
 
-The *MT-RNR1* check above was one locus pair chosen because it bore on a candidate. Running it properly costs one more query, and the justification is not the repurposing hypotheses at all — **this child is receiving oncology care now**: cytotoxics, anaesthesia, antifungal and antibacterial cover through neutropenia. Every one of those has a CPIC-level guideline, and the genotype needed to apply it is already in the diagnostic VCF.
+The modality reached patients: **TUNE-401** is in Phase 1b (NZ/Hong Kong, HBV) and **EPI-321** completed first-in-human enrolment and dose escalation in July 2026 (FSHD, muscle — extrahepatic). Platform risk has fallen materially and the scores reflect it. *CRMA-1001 could not be confirmed in human testing and is not counted.*
 
-`08_pharmacogenomics.py` screens 17 loci across DPYD, TPMT, NUDT15, G6PD, CYP2C19, CYP3A5, SLCO1B1, F5 and F2, with **read depth checked at every position** — because a locus with no coverage produces no call, exactly like a homozygous-reference locus, and reporting the two identically is how a screen lies.
+**But every confirmed programme is a silencer, and three things do not transfer.**
 
-| Gene | Result | Depth | Bearing on this child |
-|---|---|---|---|
-| **F5 Leiden** (rs6025) | **heterozygous** C>T, AD 27,27 | 59× | **Actionable.** Central venous access plus chemotherapy is a strongly prothrombotic setting |
-| CYP2C19 | ***2/*17** diplotype (*2 het, *17 het, *3 ref) | 44–50× | Intermediate metaboliser. Informative, **not** actionable for voriconazole — that concern sits at the poor-metaboliser end, which this child is not |
-| CYP3A5 | ***3/*3** homozygous | 50× | Non-expressor. Common (~85% in Europeans); matters only if tacrolimus is ever used |
-| **DPYD** (*2A, *13, c.2846A>T, HapB3) | all reference | 42–53× | **No CPIC-actionable reduced-function allele.** Directly relevant: TxGNN ranked fluorouracil 6th |
-| DPYD ***6** (rs1801160, c.2194G>A) | **heterozygous**, AD 22,10 | 33× | Found only by the widened filter. ClinVar `drug_response`, *reviewed by expert panel*, terms include `fluorouracil_response_-_Toxicity`. **But CPIC assigns it normal function** and it is not among the four actionable alleles — so it is reported, not acted on |
-| TPMT (*2, *3B, *3C), NUDT15 *3 | all reference | 34–65× | No thiopurine risk allele |
-| G6PD (A− 202A, A 376G) | reference | 24–29× | No haemolysis risk with rasburicase for tumour lysis |
-| **MT-RNR1** m.1555A>G, m.1494C>T | reference | **4,497× / 4,152×** | No mitochondrial predisposition to aminoglycoside deafness |
-| F2 20210G>A, SLCO1B1 *5 | reference | 37–38× | — |
+1. **Silencing has a heritable mark; activation does not.** 5-methylcytosine is copied by DNMT1 at every replication. VP64/p300 activation has no self-propagating equivalent and dilutes as cells divide — and BubR1 matters *in dividing cells*, so durability is worst exactly where treatment is needed, while the clinical precedent comes from liver and muscle where a deposited mark stays put.
+2. **There is no repressive mark here to erase** — and our own data proves it: the missense allele **is transcribed**, because it produces the protein. Durable epigenetic activation works by demethylating a *silenced* promoter. This one is not silenced.
+3. **The extrahepatic proof point is AAV to muscle, not LNP.** "Extrahepatic LNP + activation" is the configuration this needs, and no programme demonstrates it. BubR1 is required in every dividing cell and this phenotype is systemic; tissue-restricted delivery is mismatched at the level of concept.
 
-**Named as not assessable rather than silently omitted:** CYP2D6 star alleles (structural variation and CYP2D7 gene conversion), UGT1A1*28 (a promoter TA repeat — and irinotecan is in the VIT regimen used for rhabdomyosarcoma, so this is a real gap, not a trivial one), and HLA-B typing. Short-read WGS cannot do these honestly without dedicated tools.
+**A hazard specific to this genotype.** Promoter-level activation is not allele-selective. `p.Leu737Ter` retains the **KEN box and Bub3-binding region** while losing the kinase domain, so a truncated species that still binds Bub3 and Cdc20 without functioning is a plausible **dominant negative** — and driving its transcription is the one way this could worsen what it treats. **E6a** already tests it.
 
-#### 6.1.1 The methodological finding: `drug_response` is invisible to a standard filter
+**On Factor V Leiden and LNPs.** Established: ionisable-lipid LNPs can trigger complement activation-related pseudoallergy; inflammation is prothrombotic; heterozygous FVL raises VTE risk ~3–8×. **Not** established: any documented LNP–FVL interaction, and this report does not invent one. Conclusion: vigilance and haematology input, not a categorical contraindication — and the child's **central venous access during chemotherapy** is a far larger, better-documented thrombotic exposure than a hypothetical LNP dose.
 
-Factor V Leiden **was in the Track 1 ClinVar output the whole time.** It was excluded because that scan filtered on `CLNSIG ~ Pathogenic|Likely_pathogenic`, and ClinVar classifies Factor V Leiden as:
+Ranked last because **the concept is better supported than several candidates above it and the execution is far worse.** Different axes. If durable extrahepatic activation is shown in humans, it moves up; the experiment that says whether it is worth revisiting is **E1**, because the degree of protein reduction sets how much upregulation would be needed.
 
-```
-ID=642   CLNSIG=drug_response   CLNREVSTAT=reviewed_by_expert_panel
-CLNDN=Thrombophilia_due_to_activated_protein_C_resistance | Budd-Chiari_syndrome |
-      Ischemic_stroke | Pregnancy_loss,_recurrent,_susceptibility_to,_1 | …
-```
+## 6. Contraindications
 
-Reviewed by expert panel — the highest ClinVar review status — and carrying thrombophilia and recurrent pregnancy loss as its disease terms, yet **not** matched by the Pathogenic/Likely_pathogenic filter that essentially every secondary-findings pipeline uses, this one included.
-
-So a standard clinical filter silently discards the entire `drug_response` and `risk_factor` classes. **On this genome that is 137 non-reference calls**, twelve of them reviewed by expert panel — in *F5*, *DPYD*, *CYP2C19*, *VKORC1*, *MTHFR*, *SCN1A* and others.
-
-It cost us two findings, not one. Factor V Leiden, and **DPYD\*6** — which matters precisely because the narrow panel had let us write "no fluoropyrimidine toxicity risk allele", a claim that was too strong. The corrected statement is narrower and survives scrutiny: no *CPIC-actionable* reduced-function allele, plus one expert-panel `drug_response` variant that CPIC assigns normal function.
-
-That is the real lesson. The filter did not merely hide a finding; it let us assert a clean negative we had not earned. It is reported here rather than quietly corrected because the failure generalises further than the fix does, and because a wrong negative is more dangerous in a clinical document than a missing positive.
-
-#### 6.1.2 A second explanation for the family's reproductive history — stated carefully
-
-The Track 1 report reads the parents' recurrent miscarriage as on-mechanism for a recessive chromosome-segregation disorder: carrier parents, aneuploid conceptuses. That reading stands.
-
-But Factor V Leiden is heterozygous in this child, so **at least one parent carries it**, and `Pregnancy_loss,_recurrent,_susceptibility_to,_1` is among its ClinVar disease terms. The two explanations are not mutually exclusive, and if the carrier parent is the mother, the second one is separately manageable in a way the first is not.
-
-**The honest strength of this claim is "worth testing", not "explains".** The association between Factor V Leiden and recurrent pregnancy loss is real but modest and contested, meta-analyses disagree, and major obstetric guidelines do not universally recommend thrombophilia screening for recurrent loss. Determining which parent carries the variant is a single cheap test, and it is the kind of question a family who donated a genome to strangers might reasonably want asked.
-
-It also arrived from a pharmacogenomic screen run for a completely different reason, which is the argument for running one at all.
-
-### 6.2 Transcriptional upregulation, and a delivery analysis
-
-*Added in review, at a reader's suggestion. Two corrections have to come first, because the suggestion arrived with premises this dataset cannot support.*
-
-**Correction 1 — parent of origin is unknown and unknowable here.** There are no parental samples in this challenge, phase was not established (§5 of the Track 1 report: largest observed template 1,272 bp against a 10,911 bp gap, 0 of 2 heterozygous steps bridged), and nothing in a singleton genome assigns an allele to a parent. Neither `p.Asn1002Lys` nor `p.Leu737Ter` can be called maternal or paternal. Even *trans* is an inference from the clinical diagnosis and the recessive mechanism, not a measurement. Attaching a parent to an allele would stack an unmeasured claim on top of an unproven one.
-
-**Correction 2 — there is no "allele preservation data" yet.** What exists is that the missense allele is full length, retains K668, and scores 0.923 on AlphaMissense. Whether the protein is actually present, and at what level, is exactly what **E1** and **E6a** are designed to measure and have not yet measured.
-
-With those fixed, the underlying idea is sound and is evaluated here on its merits.
-
-#### 6.2.1 Why upregulation is well motivated — and the strongest evidence in this report
-
-If the lesion is **dose**, then raising transcription of the intact allele is a direct attack on it. That is not speculative for this gene:
-
-Sustained high BubR1 expression in transgenic mice **preserves genomic integrity, reduces tumorigenesis even against oncogenic Ras, extends lifespan, and delays age-related deterioration and aneuploidy across tissues** — and it does so specifically by *correcting mitotic checkpoint impairment and microtubule–kinetochore attachment defects* ([Baker et al., Nat Cell Biol 2013](https://www.nature.com/articles/ncb2643)).
-
-Those are the exact two defects this child's genotype produces. This is the single strongest piece of evidence in the dossier, and it does not belong to CRISPRa alone — **it is the shared premise underneath candidates 1, 2 and 6.** More BubR1 is protective, in this gene, in vivo, with the mechanism named. What separates the three candidates is only how you get there.
-
-#### 6.2.2 The allele-specificity question, and a real hazard
-
-CRISPRa at the *BUB1B* promoter is **not allele-selective**. It would upregulate both.
-
-For the missense allele that is the therapeutic effect. For the nonsense allele, most of the extra transcript is destroyed by NMD and is simply wasted — inert, not harmful.
-
-**But not certainly inert.** NMD is efficient, not absolute. `p.Leu737Ter` truncates before the kinase domain while **retaining the N-terminal region — the KEN box and the Bub3-binding domain**. A truncated BubR1 that still binds Bub3 and Cdc20 but cannot function is a plausible **dominant negative**, and driving its transcription harder is the one way this intervention could actively worsen the phenotype it is meant to treat.
-
-This is testable before anything else: **E6a** already measures how much nonsense transcript survives NMD, and a western for a truncated species answers the rest. A candidate that has a specific, cheap way to be proven dangerous is better characterised than one that does not.
-
-#### 6.2.3 The clinical precedent is real — and it is the wrong half of the field
-
-An earlier draft of this section scored candidate 6 at 1 for both access and safety, on the basis that in vivo epigenetic editing was preclinical. **That calibration is out of date and the scores are raised to 2.** What the precedent does and does not establish is worth separating carefully, because the gap is the whole argument.
-
-| Programme | Status | What it does | Tissue |
-|---|---|---|---|
-| **TUNE-401** (Tune Therapeutics) | **Phase 1b**, New Zealand and Hong Kong | Epigenetic **silencer**, chronic hepatitis B | **Liver** |
-| **EPI-321** (Epicrispr) | **First-in-human enrolment and dose escalation complete**, July 2026 | Epigenetic **repressor** of DUX4, FSHD | **Muscle — extrahepatic** |
-| CRMA-1001 (nChroma) | **Not confirmed in humans.** Public sources describe hepatitis B research that has not entered human testing | Silencer | Liver |
-
-So: the modality is genuinely in patients, EPI-321 establishes that extrahepatic epigenetic modulation can complete dose escalation without severe genomic adverse events, and the platform risk has fallen materially. That is a real update and the report reflects it.
-
-**But every confirmed clinical programme is a silencer or repressor, and that is not a detail.**
-
-**1. Silencing has a heritable mark. Activation does not.** Epigenetic silencing deposits 5-methylcytosine, which DNMT1 copies onto the daughter strand at every replication. The edit propagates through cell division on its own. Transcriptional activation by VP64 or p300 has **no self-propagating equivalent** — the activating state dilutes as cells divide.
-
-Now notice which cells this disease lives in. BubR1 matters **in dividing cells**, because that is where a spindle assembly checkpoint operates. So the durability problem is worst in exactly the compartment that needs treating — while the clinical programmes are silencing in liver and muscle, tissues that are post-mitotic or slowly dividing, where a deposited mark stays put. The precedent is drawn from the easy end of the durability axis and this indication sits at the hard end.
-
-**2. There is no repressive mark here to remove.** Durable epigenetic activation works by erasing methylation from a silenced promoter. This one is not silenced — we know that from our own data, because the missense allele **is being transcribed**; it produces the p.Asn1002Lys protein. An unsilenced, actively transcribed promoter offers a demethylating editor nothing to act on. You are not de-repressing a switched-off gene, you are trying to super-activate an already-on one, which forces you back to a non-heritable activator domain and back to problem 1.
-
-**3. The delivery precedent is AAV to muscle, not extrahepatic LNP.** EPI-321 is the extrahepatic proof point and it is not an LNP result. TUNE-401 is LNP, and LNP-to-liver is the solved delivery problem, not the hard one. "Extrahepatic LNP + activation" is the specific configuration this candidate needs, and no programme above demonstrates it.
-
-#### 6.2.4 Delivery risk, and Factor V Leiden
-
-**The dominant problem remains tissue, not thrombosis.** BubR1 is required in every dividing cell and this phenotype is systemic — growth restriction, skeletal muscle, and a cancer predisposition that is not organ-restricted. FSHD is a muscle disease and hepatitis B is a liver disease; both are targets you can reach and stop. A whole-body dose deficit in a growing child is a different ask.
-
-**On Factor V Leiden — a real consideration at its true strength.**
-
-| | |
-|---|---|
-| Established | Ionisable-lipid LNPs can trigger complement activation-related pseudoallergy and acute inflammatory responses. Inflammation is prothrombotic. Heterozygous FVL raises VTE risk roughly 3–8 fold |
-| **Not** established | Any documented LNP–Factor V Leiden interaction. There is no evidence base for a specific synergy and this report does not invent one |
-| Conclusion | Vigilance and haematology input, **not** a categorical contraindication |
-
-Proportionality matters here. This child has, or will have, **central venous access during chemotherapy** — a far larger and better-documented thrombotic exposure than a hypothetical LNP dose. If Factor V Leiden changes management, it changes it for the line and the chemotherapy first. That is actionable today. Candidate 6 is not actionable at all.
-
-**Third hazard, specific to this patient.** A persistent transcriptional activator in a child with a **chromosomal-instability cancer-predisposition syndrome** carries off-target activation risk in precisely the background where unscheduled gene expression is least welcome. Transient delivery mitigates it and is in tension with a lifelong dose deficit — and, per §6.2.3, transience is the default for activation whether you want it or not.
-
-#### 6.2.5 Verdict
-
-**The user of this report is right about the direction of travel and the framing.** You no longer need a molecule that binds BubR1 — that is precisely this report's thesis, and candidates 1, 2, 3 and 6 are four routes to the same target, none of which touches the protein directly. Epigenetic editing reaching patients in 2025–26 makes candidate 6 more credible than it was, and the scores move accordingly.
-
-What it does not do is close the specific gap. The clinical precedent is **silencing**, in **slowly-dividing tissue**, for **liver or muscle**. This indication needs **activation**, in **dividing cells**, **systemically**, with **no repressive mark to erase** and a **plausible dominant-negative** if the truncated allele is upregulated too.
-
-It stays ranked last, and the reason is unchanged and worth repeating: **the concept is better supported than several candidates above it, and the execution is far worse.** Those are different axes. Candidates 1 and 2 can be tested in patient cells next week; candidate 6 needs a durable extrahepatic activator that no one has yet shown in humans. If that changes — and on this trajectory it may — candidate 6 moves up, and the experiment that would tell you it is worth revisiting is still **E1**: establish that the missense allele's protein is reduced and by how much, because that number sets how much upregulation would even be needed.
-
-## 7. Contraindications
-
-Stated as strongly as the candidates, because a repurposing analysis that cannot say what to avoid has not characterised its mechanism.
-
-A hypomorphic spindle assembly checkpoint **is** the lesion. Agents that weaken it further are hazards, not candidates:
+Stated as strongly as the candidates, because an analysis that cannot say what to avoid has not characterised its mechanism.
 
 - **MPS1/TTK inhibitors** — target checkpoint signalling directly
 - **Aurora B inhibitors** — impair kinetochore error correction
-- **PLK1 and KIF11/Eg5 inhibitors** — mitotic-arrest-dependent mechanisms that presuppose an intact checkpoint
+- **PLK1 and KIF11/Eg5 inhibitors** — mitotic-arrest-dependent mechanisms presupposing an intact checkpoint
+- **HSP90 inhibitors** — see below
 
-This is not hypothetical caution. In PrimeKG the *only* spindle-checkpoint proteins carrying drug edges are AURKB, PLK1, TTK and CENPE — this list — while BUB1B and every other MVA gene carry none. One of the AURKB ligands in the graph is **reversine**, a tool compound used in the laboratory to induce aneuploidy. A knowledge-graph pipeline reasoning "find the pathway, find drugs against it" produces the contraindication list as its answer, with a clean subgraph behind it.
+Not hypothetical: in PrimeKG the *only* checkpoint proteins carrying drug edges are AURKB, PLK1, TTK and CENPE — this list — while BUB1B and every other MVA gene carry none. One AURKB ligand is **reversine**, a tool compound used to *induce* aneuploidy. "Find the pathway, find drugs against it" returns the contraindication list with a clean subgraph attached.
 
-### HSP90 inhibitors belong here, not in §6 — a correction
+**HSP90 inhibitors moved here from the candidate list — a correction worth showing.** An earlier draft listed 17-AAG as a candidate on the strength of Amon's screen. HSP90 inhibition by 17-AAG causes **delocalisation of BUB1 and BUBR1 from kinetochores**, with CENP-H, CENP-I, CENP-E and HEC1. HSP90 with its co-chaperone SGT1 is required for kinetochore **assembly** — upstream of checkpoint signalling, not part of it — so this is a failure to build the structure, not a dampening of a signal. In a child at half BubR1 dose it attacks the protein every other hypothesis tries to preserve.
 
-An earlier draft of this report listed **17-AAG / tanespimycin** as candidate 4, on the strength of Amon's aneuploidy-selective screen. That was wrong for *this* patient, and the review that caught it is worth showing rather than quietly fixing.
+The tension was visible in our own data and we missed it: §4.5 found 44 HSP90 ligands, all inhibitors, while §5 was still proposing one. Two sections disagreeing is what a review pass is for. **Chloroquine survives** as the aneuploidy-stress candidate — same screen, but autophagy inhibition, no known kinetochore effect.
 
-HSP90 inhibition by 17-AAG causes **delocalisation of BUB1 and BUBR1 from kinetochores**, together with CENP-H, CENP-I, CENP-E and HEC1. The relevant detail is *where* in the pathway this acts: HSP90, with its co-chaperone SGT1, is required for kinetochore **assembly** — it is upstream of checkpoint signalling, not part of it. So the effect is not a partial dampening of a signal but a failure to build the structure that generates it, and it hits BubR1 alongside the centromeric and outer-kinetochore proteins it must be recruited by.
+*Stated at the strength the evidence supports*: this is cell-biology evidence of kinetochore delocalisation, not clinical outcome data in MVA patients, of which there is none. It is enough to remove HSP90 inhibitors from a candidate list for this genotype. It is not a claim that any patient has been harmed.
 
-In a child already carrying roughly half the normal BubR1 dose, that attacks the very protein every other hypothesis in this report is trying to preserve, at the step before BubR1 can act. It belongs with the checkpoint inhibitors above.
+Two further notes. In a chromosomal-instability syndrome, **radiosensitivity and genotoxic-chemotherapy tolerance are open questions** rather than assumptions. And any antitumour agent whose mechanism *requires* a functional checkpoint will underperform here on principle — worth knowing, because TxGNN ranks several in the top 1% of indications.
 
-**Stated at the strength the evidence supports**: this is cell-biology evidence of kinetochore delocalisation, not clinical outcome data in MVA patients, of which there is none. It is sufficient to remove HSP90 inhibitors from a candidate list for this genotype. It is not a claim that any patient has been harmed, and it should not be quoted as one.
-
-The tension was visible in our own data and we did not connect it at first: §5.10 found **44 HSP90 ligands, all inhibitors**, and noted they point the wrong way for a folding-impaired client — while §3 was still proposing one as a therapy. Two sections of the same report disagreeing is exactly what a review pass is for.
-
-What survives is narrower. **Chloroquine** remains candidate 4: it was in the same aneuploidy-selective screen, acts by autophagy inhibition rather than chaperone inhibition, and carries no known effect on kinetochore assembly. If an HSP90 inhibitor is ever used here it can only be tumour-directed and short-course, with the systemic cost to checkpoint function stated in advance — not offered as a repurposing candidate.
-
-Two clinical notes follow from the same mechanism. In a chromosomal-instability syndrome, **radiosensitivity and genotoxic-chemotherapy tolerance should be treated as open questions** rather than assumed. And any antitumour agent whose mechanism *requires* a functional checkpoint will underperform here on principle — which is worth knowing, because TxGNN ranks several of them in the top 1% of indications.
-
-## 8. What would settle this — proposed validation
-
-Every hypothesis above is falsifiable in patient-derived cells, before any clinical question arises and without exposing anyone to anything. Listing the experiments is the point: a repurposing report that cannot say how it would be proven wrong is a story.
-
-Assumed starting material: a patient fibroblast or lymphoblastoid line, and a parental or age-matched control.
+## 7. What would settle this
 
 **E1 — Is the missense allele actually hypomorphic?** *(tests the premise everything else rests on)*
 Western blot for BubR1 in patient versus control. The prediction is roughly half the protein of control, and specifically **not** absent — a null result here refutes the entire report, and an allele-specific expression assay on the transcript would say whether the shortfall is the NMD allele alone or the missense allele contributing less than a full copy.
@@ -557,7 +189,7 @@ Micronucleus frequency and chromosome spreads on patient versus control, with an
 **E3 — Do NAD⁺ precursors raise BubR1?** *(tests H1, the most specific hypothesis)*
 Dose-response of nicotinamide riboside on patient cells, reading BubR1 protein level (E1) and micronucleus rate (E2). Two things make this a sharp test rather than a hopeful one. The K668 acetylation state can be measured directly by immunoprecipitation with an acetyl-lysine antibody, so the *mechanism* is observable and not merely the outcome. And SIRT2 knockdown should abolish any effect — if BubR1 rises without SIRT2, the hypothesis is wrong even though the number moved.
 
-This is also the only route available: §5.9 found that SIRT2's sole drug edge in OptimusKG is **cambinol, an inhibitor**, and no SIRT2 activator exists in either graph. H1 has to work at the substrate level or not at all.
+This is also the only route available: §4.5 found that SIRT2's sole drug edge in OptimusKG is **cambinol, an inhibitor**, and no SIRT2 activator exists in either graph. H1 has to work at the substrate level or not at all.
 
 **E4 — Are the patient's cells selectively vulnerable to aneuploidy stress?** *(tests H3)*
 Viability of patient versus control cells across a hydroxychloroquine and an AMPK-activator dose range. The prediction is a therapeutic window — greater sensitivity in the patient line — and the honest expectation is that it is narrow, because the constitutional cells are aneuploid too. A tumour-derived line, if one exists from the rhabdomyosarcoma, is the comparison that matters: it should be far more sensitive than either.
@@ -589,9 +221,34 @@ Two things make this worth doing despite the ataluren withdrawal. The stop codon
 
 None of this requires a trial, an IND, or a decision about treating anyone.
 
+## 8. Pharmacogenomics, because the genome was already sequenced
+
+This child is receiving oncology care now — cytotoxics, anaesthesia, antifungal and antibacterial cover through neutropenia. Every one has a CPIC-level guideline and the genotype is already in the diagnostic VCF. `08_pharmacogenomics.py` screens 17 loci with **read depth checked at every position**, because a locus with no coverage produces no call exactly like a reference locus, and reporting the two identically is how a screen lies.
+
+| Gene | Result | Depth | Bearing on this child |
+|---|---|---|---|
+| **F5 Leiden** (rs6025) | **heterozygous** C>T, AD 27,27 | 59× | **Actionable.** Central venous access plus chemotherapy is a strongly prothrombotic setting |
+| CYP2C19 | ***2/*17** diplotype (*2 het, *17 het, *3 ref) | 44–50× | Intermediate metaboliser. Informative, **not** actionable for voriconazole — that concern sits at the poor-metaboliser end, which this child is not |
+| CYP3A5 | ***3/*3** homozygous | 50× | Non-expressor. Common (~85% in Europeans); matters only if tacrolimus is ever used |
+| **DPYD** (*2A, *13, c.2846A>T, HapB3) | all reference | 42–53× | **No CPIC-actionable reduced-function allele.** Directly relevant: TxGNN ranked fluorouracil 6th |
+| DPYD ***6** (rs1801160, c.2194G>A) | **heterozygous**, AD 22,10 | 33× | Found only by the widened filter. ClinVar `drug_response`, *reviewed by expert panel*, terms include `fluorouracil_response_-_Toxicity`. **But CPIC assigns it normal function** and it is not among the four actionable alleles — so it is reported, not acted on |
+| TPMT (*2, *3B, *3C), NUDT15 *3 | all reference | 34–65× | No thiopurine risk allele |
+| G6PD (A− 202A, A 376G) | reference | 24–29× | No haemolysis risk with rasburicase for tumour lysis |
+| **MT-RNR1** m.1555A>G, m.1494C>T | reference | **4,497× / 4,152×** | No mitochondrial predisposition to aminoglycoside deafness |
+| F2 20210G>A, SLCO1B1 *5 | reference | 37–38× | — |
+
+
+**Not assessable, named rather than omitted:** CYP2D6 star alleles (structural variation, CYP2D7 gene conversion), UGT1A1*28 (promoter TA repeat — and irinotecan is in the rhabdomyosarcoma VIT regimen, so a real gap), HLA-B typing.
+
+**The methodological finding.** Factor V Leiden was in the Track 1 ClinVar output all along, excluded because ClinVar files it as `CLNSIG=drug_response`, *reviewed by expert panel*, with `Thrombophilia due to activated protein C resistance` and `Pregnancy loss, recurrent` among its terms. A `Pathogenic|Likely_pathogenic` filter — what essentially every secondary-findings pipeline uses, this one included — dropped **137 non-reference calls**, twelve expert-panel reviewed.
+
+It cost two findings. Factor V Leiden, and **DPYD\*6**, which matters more: the narrow panel let us write "no fluoropyrimidine toxicity risk allele", and the child carries an expert-panel `drug_response` *DPYD* variant. CPIC assigns \*6 normal activity and states dose adaptation is not warranted, so the corrected claim survives — *no CPIC-actionable reduced-function allele* — but the original was not earned. **The filter did not merely hide a finding; it let us assert a clean negative we had not measured**, which is more dangerous in a clinical document than a missing positive.
+
+**A second explanation for the family's reproductive history, stated carefully.** Track 1 reads the parents' recurrent miscarriage as on-mechanism for a recessive segregation disorder — carrier parents, aneuploid conceptuses. That stands. But the child is heterozygous for Factor V Leiden, so **a parent carries it**, and recurrent pregnancy loss is among its ClinVar terms. Not mutually exclusive, and if the carrier is the mother the second is separately manageable. The FVL–pregnancy-loss association is real but modest and contested, and guidelines do not universally recommend screening — so this is **worth testing, not explaining**. Determining which parent carries it is one cheap test, and it is the kind of question a family who donated a genome might want asked.
+
 ## 9. From one genotype to a therapeutic hierarchy
 
-The diagnosis in Track 1 is usually treated as the endpoint. Here it is the thing that partitions the therapeutic space, and it does so **allele by allele** — which is the organising claim of this report and the reason a confirmed call mattered so much.
+The diagnosis is not the endpoint. It **partitions the therapeutic space allele by allele**, which is the organising claim of this report and why a confirmed call mattered.
 
 ```
   chr15:40209701 T>G                          chr15:40220612 T>G
@@ -631,19 +288,12 @@ The diagnosis in Track 1 is usually treated as the endpoint. Here it is the thin
 
 That is what "precision" should mean in a repurposing report and usually does not. The common failure is to name a disease and then propose drugs for the disease. Here the two alleles license different interventions, and the report can say which patient each one would fail in.
 
-**The hierarchy, in the order it should actually be attempted.**
 
-| | | Gate |
-|---|---|---|
-| **1** | Establish the premise — is BubR1 actually reduced, is the checkpoint actually failing | **E1, E2** |
-| **2** | Candidate 1 — NAD⁺ precursors. Best specificity, best evidence, best access, and the mechanism is directly observable | **E3**, reading the K668 mark with SIRT2 knockdown as control |
-| **3** | Candidate 3 — readthrough, but only after **E6a** says the nonsense transcript survives NMD at all. One PCR decides it |
-| **4** | Candidate 2 — CBP/p300 inhibition. Strongest mechanism-to-drug match in the report, worst safety profile. A cell-culture question long before a clinical one |
-| **5** | Candidates 4 and 5 — consequence-directed, and useful mainly if the lesion-directed routes fail |
+**The order to attempt it in.** (1) Establish the premise — **E1, E2**. (2) Candidate 1, gated by **E3** reading the K668 mark with SIRT2 knockdown as control. (3) Candidate 3, but only after **E6a** shows nonsense transcript survives NMD — one PCR decides it. (4) Candidate 2 — strongest mechanism-to-drug match, worst safety, a cell-culture question long before a clinical one. (5) Candidates 4 and 5, consequence-directed, useful mainly if the lesion-directed routes fail.
 
-Nothing above step 1 is a treatment decision, and steps 2–4 are all cell-culture experiments before they are anything else.
+Nothing above step 1 is a treatment decision, and steps 2–4 are cell-culture experiments before they are anything else.
 
-**What Track 1 contributed beyond the diagnosis.** The same WGS, already sequenced and already paid for, answered three further questions at no marginal cost: it excluded structural variants at the locus, it bounded mosaic aneuploidy from two independent modalities, and — §6 — it excluded the mitochondrial variants that would have made an aminoglycoside dangerous. A genome sequenced to find a diagnosis keeps paying out afterwards, and that is the most scalable finding here.
+**What Track 1 contributed beyond the diagnosis.** The same WGS, already sequenced and paid for, excluded structural variants at the locus, bounded mosaic aneuploidy from two independent modalities, and excluded the mitochondrial variants that would make an aminoglycoside dangerous. A genome sequenced to find a diagnosis keeps paying out — the most scalable finding here.
 
 ## 10. References
 

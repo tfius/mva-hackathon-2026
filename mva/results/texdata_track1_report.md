@@ -217,7 +217,7 @@ CYP2D6 star alleles (structural variation, CYP2D7 gene conversion) · UGT1A1\*28
 | 1 | 0.95 | primary | `chr15:40209701 T>G` **+** `chr15:40220612 T>G` — the compound-heterozygous pair |
 | 2 | 0.80 | primary | `chr15:40209701 T>G` alone |
 | 3 | 0.75 | primary | `chr15:40220612 T>G` alone |
-| 4 | 0.25 | secondary | `chr22:20996720 C>G` — *LZTR1* `p.Tyr748Ter`, ClinVar P/LP, SpliceAI 0.92. Heterozygous LZTR1 loss of function predisposes to schwannomatosis: actionable, and unrelated to the primary phenotype |
+| 4 | 0.25 | secondary | `chr22:20996720 C>G` — *LZTR1* `p.Tyr748Ter`, ClinVar P/LP, SpliceAI 0.92. **Incidental, and explicitly *not* an imaging indication** — see below |
 | 5 | 0.10 | primary | `chr3:10046723 AG>A` **+** `chr3:10046725 TAAG>T` — *FANCD2*, the chromosomal-instability differential and Exomiser's rank-3 gene |
 | 6 | 0.08 | secondary | `chr1:145927447 C>T` — *RBM8A* 5′UTR, ClinVar P/LP low-penetrance. TAR syndrome carrier |
 | 7 | 0.06 | secondary | `chr4:67753920 C>T` — *GNRHR* `p.Arg139His`, ClinVar Pathogenic. Recessive carrier state, no second allele found |

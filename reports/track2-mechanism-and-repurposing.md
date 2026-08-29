@@ -180,6 +180,14 @@ The reason for keeping it in the table is unchanged and worth stating plainly: *
 
 ## 6. Contraindications
 
+> ### ⚠ This list is about *elective additions*. It is not an argument against protocol chemotherapy.
+>
+> **Vincristine is a backbone agent of every standard rhabdomyosarcoma regimen — VAC, VIT and IVA.** It appears below as a microtubule-targeting agent on mechanistic grounds, and that must not be read as a reason to withhold or de-escalate curative-intent therapy in a child who has had a rhabdomyosarcoma.
+>
+> There is **no evidence supporting deviation from COG or EpSSG protocol chemotherapy in MVA1.** The entire therapeutic literature is two case reports pointing in opposite directions: one describing reduced-intensity chemotherapy for rhabdomyosarcoma in PCS-MVA, and one HSCT case in which reduced-intensity conditioning produced "no significant toxicity ... which would be expected in patients with chromosomal instability syndromes".
+>
+> This section is a mechanistic hypothesis about drugs someone might *add*. Decisions about protocol therapy belong to the treating oncology team, and nothing here informs them.
+
 Stated as strongly as the candidates, because an analysis that cannot say what to avoid has not characterised its mechanism.
 
 - **MPS1/TTK inhibitors** — target checkpoint signalling directly
@@ -195,7 +203,11 @@ The tension was visible in our own data and we missed it: §4.5 found 44 HSP90 l
 
 *Stated at the strength the evidence supports*: this is cell-biology evidence of kinetochore delocalisation, not clinical outcome data in MVA patients, of which there is none. It is enough to remove HSP90 inhibitors from a candidate list for this genotype. It is not a claim that any patient has been harmed.
 
-Two further notes. In a chromosomal-instability syndrome, **radiosensitivity and genotoxic-chemotherapy tolerance are open questions** rather than assumptions. And any antitumour agent whose mechanism *requires* a functional checkpoint will underperform here on principle — worth knowing, because TxGNN ranks several in the top 1% of indications.
+**On radiation, two claims that must not be conflated.** The AACR Childhood Cancer Predisposition Workshop's 2024 genomic-instability update advises that **radiation exposure should be avoided** in MVA — that is about *diagnostic imaging* and cumulative carcinogenic risk in a cancer-predisposed child, not a statement about radiotherapy tolerance.
+
+**Radiosensitivity in MVA1 is undocumented, and should not be assumed by analogy.** No published clinical or cellular radiosensitivity data exist for BUB1B-mutant patients. The syndromes with documented radiosensitivity — A-T, NBS, Fanconi, LIG4 — are **DNA double-strand-break repair** disorders. MVA1 is a **spindle assembly checkpoint** disorder; the shared label "chromosomal instability syndrome" does not transfer the phenotype. Notably, the same 2024 CCPW paper recommends therapy modification explicitly for A-T, NBS, Bloom, DC/TBD and RTS — **and says nothing at all for MVA.** Silence in a paper that addresses this for six sibling disorders is itself informative.
+
+One further note. And any antitumour agent whose mechanism *requires* a functional checkpoint will underperform here on principle — worth knowing, because TxGNN ranks several in the top 1% of indications.
 
 ## 7. What would settle this
 
@@ -246,8 +258,8 @@ This child is receiving oncology care now — cytotoxics, anaesthesia, antifunga
 
 | Gene | Result | Depth | Bearing on this child |
 |---|---|---|---|
-| **F5 Leiden** (rs6025) | **heterozygous** C>T, AD 27,27 | 59× | **Actionable.** Central venous access plus chemotherapy is a strongly prothrombotic setting |
-| CYP2C19 | ***2/*17** diplotype (*2 het, *17 het, *3 ref) | 44–50× | Intermediate metaboliser. Informative, **not** actionable for voriconazole — that concern sits at the poor-metaboliser end, which this child is not |
+| **F5 Leiden** (rs6025) | **heterozygous** C>T, AD 27,27 | 59× | **Risk-stratifying, not a treatment trigger.** ASH/ISTH 2026 puts the base recommendation for paediatric solid tumours at *no prophylaxis* (very low certainty) while naming CVAD use and known thrombophilia as factors that may shift the balance. One input for a haematologist, not an indication |
+| CYP2C19 | ***2/*17** diplotype (*2 het, *17 het, *3 ref) | 44–50× | Intermediate metaboliser — standard dosing with TDM, not actionable. Note CPIC flags **both** ends for voriconazole: poor metabolisers overshoot, and \*17 ultrarapid metabolisers **undershoot into treatment failure**. An earlier draft gave only half the picture |
 | CYP3A5 | ***3/*3** homozygous | 50× | Non-expressor. Common (~85% in Europeans); matters only if tacrolimus is ever used |
 | **DPYD** (*2A, *13, c.2846A>T, HapB3) | all reference | 42–53× | **No CPIC-actionable reduced-function allele.** Directly relevant: TxGNN ranked fluorouracil 6th |
 | DPYD ***6** (rs1801160, c.2194G>A) | **heterozygous**, AD 22,10 | 33× | Found only by the widened filter. ClinVar `drug_response`, *reviewed by expert panel*, terms include `fluorouracil_response_-_Toxicity`. **But CPIC assigns it normal function** and it is not among the four actionable alleles — so it is reported, not acted on |
@@ -265,7 +277,28 @@ It cost two findings. Factor V Leiden, and **DPYD\*6**, which matters more: the 
 
 **A second explanation for the family's reproductive history, stated carefully.** Track 1 reads the parents' recurrent miscarriage as on-mechanism for a recessive segregation disorder — carrier parents, aneuploid conceptuses. That stands. But the child is heterozygous for Factor V Leiden, so **a parent carries it**, and recurrent pregnancy loss is among its ClinVar terms. Not mutually exclusive, and if the carrier is the mother the second is separately manageable. The FVL–pregnancy-loss association is real but modest and contested, and guidelines do not universally recommend screening — so this is **worth testing, not explaining**. Determining which parent carries it is one cheap test, and it is the kind of question a family who donated a genome might want asked.
 
-## 9. From one genotype to a therapeutic hierarchy
+## 9. What is actionable now, with no new science
+
+Everything above is a hypothesis. This section is not — it is what published guidance already supports for a child with this diagnosis, and the dossier previously contained none of it.
+
+**Cancer surveillance has a published guideline and it is specific.** The AACR Childhood Cancer Predisposition Workshop's 2024 genomic-instability update covers MVA explicitly: **renal ultrasound every 3 months from birth until age 7** for all MVA conditions including genetically unsolved ones, **radiation exposure avoided**, and **regular clinical assessment including review of systems** to detect rhabdomyosarcoma and other malignancies. Prevention column: **HPV vaccination**.
+
+What makes MVA different from generic cancer-predisposition surveillance is as important as what it shares:
+- **No whole-body MRI.** Recommended in Li-Fraumeni, constitutional MMRD and others; *not* in MVA. There is no validated rhabdomyosarcoma surveillance modality — the guideline falls back on clinical review of systems.
+- **No routine bloodwork**, despite MDS/AML/ALL being in the MVA1 spectrum.
+- Ultrasound is chosen partly because it needs **no sedation** — a real consideration in a child facing repeated imaging.
+- Risk cannot be quantified: the guideline says the rarity of the syndrome prevents accurate risk assessment. The largest series available reports malignancy in **12 of 31** MVA1 cases.
+
+*Cite the 2024 CCPW/SIOPE recommendation (q3m to age 7), not the "3–4 monthly to age 5" figure that circulates in secondary reviews — that is the older generic >5%-risk framework, not MVA-specific.* One documented disagreement: a 2022 single-centre review additionally advises 3-monthly fundoscopy and blood counts; CCPW endorses only the renal ultrasound. Opinion versus consensus silence, not a settled question.
+
+**Gaps in this dossier that require no new science:**
+- **UGT1A1\*28 is answerable today.** Both reports flag it as unassessable from short-read WGS with irinotecan in the VIT regimen. A targeted clinical PGx assay — fragment analysis of the promoter TA repeat — resolves it from a blood draw. Same for CYP2D6 (CNV-aware assay) and HLA-B typing.
+- **Ophthalmology and neurology follow-up.** MVA1 series report ocular anomalies ~19%, seizures ~45%, Dandy-Walker ~26%. Neither report mentions eyes, seizures or neurodevelopment.
+- **Late effects and fertility.** Alkylator exposure carries gonadotoxicity and second-malignancy risk — the latter of particular weight in a cancer-predisposition syndrome.
+- **Nephrocalcinosis should not be filed as closed.** §2 of the Track 1 report argues prematurity is the parsimonious explanation, and that stands. But renal dysfunction is reported in ~13% of MVA1, and this dossier simultaneously uses the renal finding to argue against aminoglycosides — it cannot be both live evidence and a closed question. Baseline and serial renal function belongs in the plan regardless of aetiology, with implications for cisplatin, ifosfamide and methotrexate dosing.
+- **Natural history.** Neither report says anything about prognosis. A genomic dossier handed to a family without that context reads as more optimistic than the literature supports; that conversation belongs to the clinical team, and this document should say so rather than be silent.
+
+## 10. From one genotype to a therapeutic hierarchy
 
 The diagnosis is not the endpoint. It **partitions the therapeutic space allele by allele**, which is the organising claim of this report and why a confirmed call mattered.
 
@@ -314,7 +347,7 @@ Nothing above step 1 is a treatment decision, and steps 2–4 are cell-culture e
 
 **What Track 1 contributed beyond the diagnosis.** The same WGS, already sequenced and paid for, excluded structural variants at the locus, bounded mosaic aneuploidy from two independent modalities, and excluded the mitochondrial variants that would make an aminoglycoside dangerous. A genome sequenced to find a diagnosis keeps paying out — the most scalable finding here.
 
-## 10. References
+## 11. References
 
 - North BJ, Rosenberg MA, Jeganathan KB, et al. SIRT2 induces the checkpoint kinase BubR1 to increase lifespan. *EMBO J* 33(13):1438–1453, 2014. [PMC4194088](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4194088/)
 - Baker DJ, Wijshake T, Tchkonia T, et al. Clearance of p16Ink4a-positive senescent cells delays ageing-associated disorders. *Nature* 479:232–236, 2011. [doi:10.1038/nature10600](https://www.nature.com/articles/nature10600)

@@ -271,7 +271,7 @@ Also detected and deliberately **not** submitted: *FLG* `p.Arg501Ter` (common, s
 | Provider | **Anthropic** |
 | Interface | **Claude Code** (agentic CLI), OAuth session — not the raw API |
 | Model | **Claude Opus 5** |
-| Plan | **Claude Max** subscription (Stripe billing, extra usage enabled) |
+| Plan | **Claude Max** subscription |
 | Data-handling setting | ⚠️ **See note below — the submitter must confirm this.** |
 
 **What it did.** Claude wrote and executed the entire analysis: VCF normalisation, the genome-wide ClinVar cross-reference, the exhaustive locus analysis that found allele B, the mosaic-aneuploidy and coverage analyses, the four-lane realignment, the phasing attempt, structural-variant intersection, the TxGNN and knowledge-graph work, the pharmacogenomic screen, and both reports. **Every quantitative claim here was produced by code in the linked repository and is reproducible from it** — no figure in this document was asserted by a language model without a script behind it.
@@ -295,9 +295,20 @@ These are not assistants; their outputs are cited as data.
 | **TxGNN** | relational GNN link predictor, pretrained on PrimeKG | Zero-shot indication/contraindication ranking | Degree artefact identified and corrected (ρ −0.51 → +0.054); its top recommendations judged **wrong** on mechanism |
 | **TxGNN GraphMask** | graph XAI | Explanation paths | Raw output shown to be **hub artefact**; audited before use |
 
-### Knowledge graphs and reference data
+### Knowledge graphs
 
-PrimeKG (129k nodes / 4.05M edges) · OptimusKG (190,531 / 21,813,816) · ClinVar GRCh38 (August 2026) · gnomAD v4 (API and Exomiser 2512 bundle) · Ensembl VEP 116 · UniProt O60566 · HPO.
+Not reference lookups — these are the substrate the Track 2 analysis runs on, and several of its central findings are statements *about* them.
+
+| Graph | Scale | Role here |
+|---|---|---|
+| **PrimeKG** (Chandak, Huang & Zitnik, *Sci Data* 2023) | 129,375 nodes / 4,050,249 edges. [DOI 10.7910/DVN/IXA7BM](https://doi.org/10.7910/DVN/IXA7BM) | TxGNN's training substrate, and the graph in which *BUB1B* has 464 edges and **zero drug edges** — finding 1. Also the source of the CYP3A4 hub paths that the explanation audit rejected, and of the BUB1B–SIRT2 and BUB1B–CREBBP/EP300 edges behind the semantics-gap argument |
+| **OptimusKG** (Zitnik Lab, 2026) | 190,531 nodes / 21,813,816 edges / 145 property keys, from 65 resources grounded in 18 ontologies via BioCypher and the Biolink Model. [DOI 10.7910/DVN/IYNGEV](https://doi.org/10.7910/DVN/IYNGEV) | **Independent replication.** Four times denser around BUB1B and still zero drug edges, which is what turns "PrimeKG lacks this" into "BubR1 is undrugged". Also the coverage test that separated the schema gap from a size gap: it *has* the nicotinamide riboside and acadesine nodes PrimeKG lacks, and still cannot reach them from the MVA genes |
+
+Neither graph was modified. Both were queried as distributed; the analysis scripts are in `mva/track2/`.
+
+### Reference data
+
+ClinVar GRCh38 (August 2026) · gnomAD v4 (REST API, and the Exomiser 2512 bundle) · Ensembl VEP 116 offline cache and REST · Exomiser 2512 hg38 + phenotype bundles · UniProt O60566 · Human Phenotype Ontology · GRCh38 `GCA_000001405.15_no_alt_analysis_set`.
 
 ### Conventional software
 

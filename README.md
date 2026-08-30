@@ -87,6 +87,32 @@ The challenge **sequence data** stays outside this repository, under `/mnt/data/
 
 **This repository is nonetheless patient-derived, and says so rather than blurring it.** The reports contain variant coordinates, sex, gestational age, birth weight, a malignancy and a pharmacogenomic profile. The hackathon's terms provide for exactly this — submissions, code and reports are published CC BY 4.0 and the research output *is* the deliverable — but the honest framing is "the raw data stays private and the derived findings are published, as the terms require", not "nothing patient-derived leaves this machine".
 
+## AI and machine learning
+
+*Disclosed per the hackathon rules as updated 28 August 2026, and extended past the minimum: several models produced **evidence** here rather than assisting with it, and a reader should be able to see which conclusion rests on which.*
+
+**Assistant:** Anthropic **Claude Opus 5** via **Claude Code** (agentic CLI, OAuth), **Claude Max** plan. It wrote and ran the whole pipeline and drafted the reports — every quantitative claim is produced by code in this repository and reproducible from it. Independent review was also AI-driven: three agents reviewed the dossier cold and found a hard factual error, a safety-level misreading risk, a missing surveillance guideline, a reversed finding and an ACMG miscalculation. Those corrections are documented in the reports and [`journals/`](journals/) rather than silently applied. *Data-handling setting is a per-account privacy preference and is recorded in the reports by the submitter.* No challenge data was pasted into a chat interface — the analysis ran locally against files on disk.
+
+**Models whose output is cited as evidence:**
+
+| Model | Type | Role | How it is treated |
+|---|---|---|---|
+| **AlphaMissense** | deep learning | 0.923 on `p.Asn1002Lys` | a primary pathogenicity argument (CC BY-NC-SA, non-commercial terms) |
+| **REVEL** | ensemble ML | 0.472, same variant | reported as **disagreeing**; in ClinGen's indeterminate band, so PP3 is not claimed |
+| **MVP** | deep learning | 0.852 | supporting only |
+| **SpliceAI** | deep learning | via Exomiser | **not run standalone** — the splice negative is scoped accordingly |
+| **Exomiser** HiPhive + ACMG engine | semantic similarity; rule automation | *BUB1B* 1st of 363 from HPO alone | independence **qualified** (it reads ClinVar); ACMG output **corrected twice** |
+| **TxGNN** + GraphMask | relational GNN; graph XAI | zero-shot repurposing and explanations | degree artefact corrected (ρ −0.51 → +0.054); top recommendations judged **wrong** on mechanism; raw explanation paths shown to be hub artefacts |
+
+**Knowledge graphs** — the substrate of the Track 2 analysis, and the subject of several of its findings:
+
+| Graph | Scale | Role |
+|---|---|---|
+| **PrimeKG** | 129,375 nodes / 4,050,249 edges | TxGNN's training substrate; the graph in which *BUB1B* has 464 edges and **zero drug edges** |
+| **OptimusKG** | 190,531 nodes / 21,813,816 edges, 65 resources, 18 ontologies | **independent replication** — four times denser, same gap, which is what turns "PrimeKG lacks this" into "BubR1 is undrugged"; and the test separating a schema gap from a size gap |
+
+Neither graph was modified; both were queried as distributed. Scripts in [`mva/track2/`](mva/track2/).
+
 ## Licences
 
 Code and reports CC BY 4.0, matching the hackathon terms. AlphaMissense is CC BY-NC-SA 4.0 and used under its non-commercial terms. ClinVar, gnomAD, Ensembl, UniProt, PrimeKG, OptimusKG, TxGNN and Exomiser under their respective licences.

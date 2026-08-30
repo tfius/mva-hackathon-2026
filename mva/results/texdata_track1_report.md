@@ -260,19 +260,56 @@ They earn in exactly one scenario — a **single-variant** key — and cost noth
 
 Also detected and deliberately **not** submitted: *FLG* `p.Arg501Ter` (common, semi-dominant ichthyosis vulgaris), *HK1* recessive carrier state, and a *PRSS1* call at VAF 0.15 in the PRSS1/TRB paralogous region that is more likely a mapping artefact than a real heterozygote.
 
-## AI assistance disclosure
+## Methods, software and AI disclosure
 
-*Required by the submission rules as updated 28 August 2026.*
+*Disclosure required by the rules as updated 28 August 2026. Extended beyond the minimum, because "an LLM was used" spans a wide range and several machine-learning models produced **evidence** in this dossier rather than merely assisting with it. A panel weighing scientific rigour should be able to see which conclusion rests on which model.*
 
-- **Provider / tool:** Anthropic — Claude, used via Claude Code (agentic CLI), model Claude Opus 5.
-- **Plan / tier:** ⚠️ **TO BE COMPLETED BY THE SUBMITTER** — only the account holder knows the subscription tier and API terms in force.
-- **Data-handling setting:** ⚠️ **TO BE COMPLETED BY THE SUBMITTER.**
+### AI assistant
 
-**What the assistant actually did**, since "used an LLM" spans a wide range and the panel should be able to weigh it: Claude wrote and ran the entire analysis pipeline — normalisation, the ClinVar cross-reference, the locus deep-dive that found allele B, the mosaic-aneuploidy and coverage analyses, the realignment, the TxGNN and knowledge-graph work, the pharmacogenomic screen — and drafted both reports. Every quantitative claim in this document was produced by code in the linked repository and is reproducible from it.
+| | |
+|---|---|
+| Provider | **Anthropic** |
+| Interface | **Claude Code** (agentic CLI), OAuth session — not the raw API |
+| Model | **Claude Opus 5** |
+| Plan | **Claude Max** subscription (Stripe billing, extra usage enabled) |
+| Data-handling setting | ⚠️ **See note below — the submitter must confirm this.** |
 
-**Independent review was also AI-driven**, and is disclosed because it changed the conclusions: three separate agent instances reviewed the dossier cold — clinical management, adversarial refutation, and experimental feasibility. They found a hard factual error, a safety-level misreading risk, a missing published surveillance guideline, a reversed finding and an ACMG miscalculation. Those corrections are documented in the reports and in `journals/` rather than silently applied.
+**What it did.** Claude wrote and executed the entire analysis: VCF normalisation, the genome-wide ClinVar cross-reference, the exhaustive locus analysis that found allele B, the mosaic-aneuploidy and coverage analyses, the four-lane realignment, the phasing attempt, structural-variant intersection, the TxGNN and knowledge-graph work, the pharmacogenomic screen, and both reports. **Every quantitative claim here was produced by code in the linked repository and is reproducible from it** — no figure in this document was asserted by a language model without a script behind it.
 
-**Human oversight:** direction, scope, judgement calls and the decision to submit were the submitter's.
+**Independent review was also AI-driven, and is disclosed because it changed the conclusions.** Three separate agent instances reviewed the dossier cold — clinical management, adversarial refutation, experimental feasibility. They found a hard factual error (`K668 is deleted on the null allele` — false, since 668 < 737), a safety-level misreading risk (vincristine is standard rhabdomyosarcoma therapy and appeared in our contraindication list), a published surveillance guideline the dossier lacked, a reversed *LZTR1* finding, and an ACMG miscalculation. Corrections are documented in the reports and in `journals/`, not silently applied.
+
+**Human oversight.** Direction, scope, judgement calls and the decision to submit were the submitter's.
+
+### Machine-learning models used as evidence
+
+These are not assistants; their outputs are cited as data.
+
+| Model | Type | Where it is load-bearing | How it is treated |
+|---|---|---|---|
+| **AlphaMissense** | deep learning (DeepMind) | `p.Asn1002Lys` = **0.923** — a primary pathogenicity argument | CC BY-NC-SA 4.0, used under non-commercial terms |
+| **REVEL** | ensemble ML | **0.472** on the same variant | Reported as **disagreeing**, not averaged away; and it sits in ClinGen's indeterminate band (0.290–0.644), which is why PP3 is not claimed |
+| **MVP** | deep learning | 0.852 on the same variant | Supporting only |
+| **SpliceAI** | deep learning | Exomiser pathogenicity source; nothing surfaced at the locus | **Not run standalone** — stated as a limitation, so the splice negative is scoped to canonical ±20 bp windows |
+| **Exomiser HiPhive** | semantic similarity over HPO/MP/ZFIN + PPI | Ranked *BUB1B* 1st of 363 from HPO terms alone | Its independence is qualified: Exomiser reads ClinVar, and its own `PP5_Strong` output proves it |
+| **Exomiser ACMG engine** | rule-based automation | Classified both alleles | **Corrected twice** — BP1 misapplied to allele B, PVS1 applied to a ClinVar-benign *FANCD2* allele |
+| **TxGNN** | relational GNN link predictor, pretrained on PrimeKG | Zero-shot indication/contraindication ranking | Degree artefact identified and corrected (ρ −0.51 → +0.054); its top recommendations judged **wrong** on mechanism |
+| **TxGNN GraphMask** | graph XAI | Explanation paths | Raw output shown to be **hub artefact**; audited before use |
+
+### Knowledge graphs and reference data
+
+PrimeKG (129k nodes / 4.05M edges) · OptimusKG (190,531 / 21,813,816) · ClinVar GRCh38 (August 2026) · gnomAD v4 (API and Exomiser 2512 bundle) · Ensembl VEP 116 · UniProt O60566 · HPO.
+
+### Conventional software
+
+bwa-mem2 · bcftools 1.24 / htslib 1.23.1 · samtools · mosdepth · delly 2.6.0 · Exomiser 15.1.0 with the 2512 hg38 and phenotype bundles · Python 3.11 · GRCh38 `GCA_000001405.15_no_alt_analysis_set`.
+
+### ⚠️ Note on the data-handling setting
+
+This field is a **per-account privacy setting the submitter controls**, not something determinable from the analysis environment, and it is deliberately left for them to confirm rather than guessed — a fabricated value in a compliance statement would be worse than a blank.
+
+For a Claude Max subscription it is the *"help improve Claude"* / model-training preference in **claude.ai → Settings → Privacy**. The submitter should record which state it is in, e.g. *"Anthropic, Claude Max subscription, model-training preference OFF"*.
+
+Note also that **no challenge data was pasted into a chat interface**. The analysis ran locally against files on disk; the assistant issued shell and file operations, and what passed through the model was code, command output and summary statistics.
 
 ## 7. Reproducibility and compliance
 

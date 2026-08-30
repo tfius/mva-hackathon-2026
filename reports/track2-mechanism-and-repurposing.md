@@ -357,6 +357,20 @@ Nothing above step 1 is a treatment decision, and steps 2–4 are cell-culture e
 
 **What Track 1 contributed beyond the diagnosis.** The same WGS, already sequenced and paid for, excluded structural variants at the locus, bounded mosaic aneuploidy from two independent modalities, and excluded the mitochondrial variants that would make an aminoglycoside dangerous. A genome sequenced to find a diagnosis keeps paying out — the most scalable finding here.
 
+## AI assistance disclosure
+
+*Required by the submission rules as updated 28 August 2026.*
+
+- **Provider / tool:** Anthropic — Claude, used via Claude Code (agentic CLI), model Claude Opus 5.
+- **Plan / tier:** ⚠️ **TO BE COMPLETED BY THE SUBMITTER** — only the account holder knows the subscription tier and API terms in force.
+- **Data-handling setting:** ⚠️ **TO BE COMPLETED BY THE SUBMITTER.**
+
+**What the assistant actually did**, since "used an LLM" spans a wide range and the panel should be able to weigh it: Claude wrote and ran the entire analysis pipeline — normalisation, the ClinVar cross-reference, the locus deep-dive that found allele B, the mosaic-aneuploidy and coverage analyses, the realignment, the TxGNN and knowledge-graph work, the pharmacogenomic screen — and drafted both reports. Every quantitative claim in this document was produced by code in the linked repository and is reproducible from it.
+
+**Independent review was also AI-driven**, and is disclosed because it changed the conclusions: three separate agent instances reviewed the dossier cold — clinical management, adversarial refutation, and experimental feasibility. They found a hard factual error, a safety-level misreading risk, a missing published surveillance guideline, a reversed finding and an ACMG miscalculation. Those corrections are documented in the reports and in `journals/` rather than silently applied.
+
+**Human oversight:** direction, scope, judgement calls and the decision to submit were the submitter's.
+
 ## 11. References
 
 *The first block was load-bearing and uncited until independent review.*

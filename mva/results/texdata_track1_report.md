@@ -260,6 +260,20 @@ They earn in exactly one scenario — a **single-variant** key — and cost noth
 
 Also detected and deliberately **not** submitted: *FLG* `p.Arg501Ter` (common, semi-dominant ichthyosis vulgaris), *HK1* recessive carrier state, and a *PRSS1* call at VAF 0.15 in the PRSS1/TRB paralogous region that is more likely a mapping artefact than a real heterozygote.
 
+## AI assistance disclosure
+
+*Required by the submission rules as updated 28 August 2026.*
+
+- **Provider / tool:** Anthropic — Claude, used via Claude Code (agentic CLI), model Claude Opus 5.
+- **Plan / tier:** ⚠️ **TO BE COMPLETED BY THE SUBMITTER** — only the account holder knows the subscription tier and API terms in force.
+- **Data-handling setting:** ⚠️ **TO BE COMPLETED BY THE SUBMITTER.**
+
+**What the assistant actually did**, since "used an LLM" spans a wide range and the panel should be able to weigh it: Claude wrote and ran the entire analysis pipeline — normalisation, the ClinVar cross-reference, the locus deep-dive that found allele B, the mosaic-aneuploidy and coverage analyses, the realignment, the TxGNN and knowledge-graph work, the pharmacogenomic screen — and drafted both reports. Every quantitative claim in this document was produced by code in the linked repository and is reproducible from it.
+
+**Independent review was also AI-driven**, and is disclosed because it changed the conclusions: three separate agent instances reviewed the dossier cold — clinical management, adversarial refutation, and experimental feasibility. They found a hard factual error, a safety-level misreading risk, a missing published surveillance guideline, a reversed finding and an ACMG miscalculation. Those corrections are documented in the reports and in `journals/` rather than silently applied.
+
+**Human oversight:** direction, scope, judgement calls and the decision to submit were the submitter's.
+
 ## 7. Reproducibility and compliance
 
 Pipeline `mva/track1/00`–`04`, panels and Ensembl helpers in `mva/src/mva/`. Environment: bcftools 1.24 / htslib 1.23.1, Python 3.11, Ensembl VEP 116 (REST for locus work, offline cache for the genome-wide pass), ClinVar GRCh38 (August 2026), AlphaMissense hg38, Exomiser 15.1.0 + 2512 data.

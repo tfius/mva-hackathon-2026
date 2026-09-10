@@ -38,6 +38,8 @@ Full analysis, candidate table, contraindications and validation plan in [`repor
 
 **Two distinct blind spots, and only one is about size.** A *schema* gap — nicotinamide riboside does not bind SIRT2, it raises the NAD⁺ SIRT2 consumes, and no graph encodes "increases availability of a cofactor", so substrate-pool interventions are invisible at any scale. And a *semantics* gap — CREBBP and EP300 are already in PrimeKG as BUB1B interactors, and the graph still cannot say that *inhibiting* them should raise BubR1.
 
+**A pathogenicity score does not find the second allele, and the score that looks like a second opinion is not one.** The full AlphaGenome Atlas was queried against this genome — 3.98 million called SNVs, plus every possible change across *BUB1B*. Allele B ranks **306th of 3.98 million** on the Atlas variant-impact score, and that score is **60 % AlphaMissense re-entered as a feature**, which the Atlas's own SHAP release makes measurable rather than arguable. Against all 2,382 ClinVar SNVs in *BUB1B* the classified sets separate completely — benign ≤ 23.78, pathogenic ≥ 27.12 — and **allele B falls in the gap**, which is what a hypomorph should do. What the Atlas did add is a splice negative calibrated against the known splice-pathogenic variants of the same gene, and 35 named deep-intronic positions for the next family with a missing second allele. [`reports/track1-alphagenome-atlas.md`](reports/track1-alphagenome-atlas.md).
+
 **A standard secondary-findings filter asserts negatives it has not earned.** Filtering ClinVar to `Pathogenic|Likely_pathogenic` dropped **137 non-reference calls** on this genome, twelve reviewed by expert panel. It hid Factor V Leiden, and it let us write "no fluoropyrimidine toxicity risk allele" when the child carries an expert-panel `drug_response` *DPYD* variant.
 
 **No mosaic aneuploidy is detectable in blood, and that is consistent with the diagnosis.** Bounded below f ≈ 0.054 by B-allele frequency and f ≈ 0.097 by read depth. *Variegated* aneuploidy puts a different random chromosome in each cell, so a 30% aneuploid population across 22 autosomes leaves each chromosome below any per-chromosome test. Both naive versions of that analysis produced false positives on the GC-rich chromosomes; the filters are the result.
@@ -61,19 +63,23 @@ mva/
   track1/       00 reference · 01 normalise · 02 ClinVar · 03 locus deep-dive
                 04 mosaic aneuploidy (BAF) · 05 realign · 06 coverage+SV
                 07 phasing attempt · 08 aneuploidy from depth · 09 SV panel intersect
+                10-17 AlphaGenome Atlas: allele lookup · VCF scan · ClinVar benchmark
+                      BUB1B saturation map · figures · base editing · incidental
+                      findings · SHAP double-counting audit
                 exomiser/  unbiased HPO-only run
   track2/       01 TxGNN zero-shot · 02 degree-controlled ranking · 03 GraphMask paths
                 04 OptimusKG coverage · 05 mechanism-anchored reachability
                 06 same on OptimusKG · 07 alternative targets · 08 pharmacogenomics
   results/      submission CSV, both reports, calendar
-reports/        Track 1 and Track 2 submissions, pitch script
+reports/        Track 1 and Track 2 submissions, AlphaGenome companion, pitch script
+  figures/      BUB1B calibration and saturation-map figures
 journals/       daily working log, including what went wrong
 external/       third-party checkouts (not committed)
 ```
 
 ## Reproducing
 
-Everything runs from the challenge VCF and FASTQs plus public reference data. `mva/env/download_refs.sh` and `download_refs2.sh` fetch GRCh38, ClinVar, AlphaMissense, Exomiser 15.1.0 with the 2512 hg38 bundle, and the Ensembl VEP 116 cache.
+Everything runs from the challenge VCF and FASTQs plus public reference data. `mva/env/download_refs.sh` and `download_refs2.sh` fetch GRCh38, ClinVar, AlphaMissense, Exomiser 15.1.0 with the 2512 hg38 bundle, and the Ensembl VEP 116 cache. The AlphaGenome Atlas tables are a separate ~393 GB download from `deepmind.google.com/science/alphagenome/downloads`; point `ATLAS_DIR` at them.
 
 Three workarounds worth knowing: pandas 2 removed `DataFrame.append`, which TxGNN needs (pin 1.5.3); Harvard Dataverse returns 403 to the default `python-requests` User-Agent while serving curl the identical URL; and PyTorch 1.10's executable-stack flag blocks loading on Linux 6+.
 
@@ -100,7 +106,9 @@ The challenge **sequence data** stays outside this repository, under `/mnt/data/
 | **AlphaMissense** | deep learning | 0.923 on `p.Asn1002Lys` | a primary pathogenicity argument (CC BY-NC-SA, non-commercial terms) |
 | **REVEL** | ensemble ML | 0.472, same variant | reported as **disagreeing**; in ClinGen's indeterminate band, so PP3 is not claimed |
 | **MVP** | deep learning | 0.852 | supporting only |
-| **SpliceAI** | deep learning | via Exomiser | **not run standalone** — the splice negative is scoped accordingly |
+| **SpliceAI** | deep learning | via Exomiser | **not run standalone**; the standalone splice check is AlphaGenome's |
+| **AlphaGenome Atlas** splicing | deep learning, precomputed | 0.087 / 0.048 on the two alleles, against 2.54–3.40 for the known splice-pathogenic records in the same gene; genome-wide scan clean | the **splice negative**, SNVs only (non-commercial terms) |
+| **AlphaGenome Atlas** AVI | linear ensemble incl. AlphaMissense | PHRED 33.8 / 25.6; allele B ranks 306th of 4 M calls | **given no weight** — its own SHAP makes allele B's score 60 % AlphaMissense, so citing both would double count; a score does not find allele B, the recessive pairing does |
 | **Exomiser** HiPhive + ACMG engine | semantic similarity; rule automation | *BUB1B* 1st of 363 from HPO alone | independence **qualified** (it reads ClinVar); ACMG output **corrected twice** |
 | **TxGNN** + GraphMask | relational GNN; graph XAI | zero-shot repurposing and explanations | degree artefact corrected (ρ −0.51 → +0.054); top recommendations judged **wrong** on mechanism; raw explanation paths shown to be hub artefacts |
 
@@ -115,7 +123,7 @@ Neither graph was modified; both were queried as distributed. Scripts in [`mva/t
 
 ## Licences
 
-Code and reports CC BY 4.0, matching the hackathon terms. AlphaMissense is CC BY-NC-SA 4.0 and used under its non-commercial terms. ClinVar, gnomAD, Ensembl, UniProt, PrimeKG, OptimusKG, TxGNN and Exomiser under their respective licences.
+Code and reports CC BY 4.0, matching the hackathon terms. AlphaMissense is CC BY-NC-SA 4.0 and used under its non-commercial terms. AlphaGenome Atlas AVI scores are permissively licensed; the Atlas splicing and feature-importance sets are non-commercial only and used under those terms. ClinVar, gnomAD, Ensembl, UniProt, PrimeKG, OptimusKG, TxGNN and Exomiser under their respective licences.
 
 ## Acknowledgement
 

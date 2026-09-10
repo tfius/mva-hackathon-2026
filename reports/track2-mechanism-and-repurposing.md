@@ -159,6 +159,17 @@ What the withdrawal really changes is the order of operations: it makes the chea
 
 *A genomic edit defeats the durability problem.* §4 and the epigenetic route founder on the same thing: BubR1 matters **in dividing cells**, and an activating epigenetic mark has no self-propagating equivalent of 5-methylcytosine, so it dilutes with every division. A corrected DNA sequence is copied by replication itself. **The objection that sinks epigenetic activation does not apply to genomic correction**, and that is the strongest argument in this candidate's favour.
 
+*But base editing is not therefore useless here — it just cannot do what was proposed.* Reverting the nonsense allele is out of reach; **destroying the stop codon is not.** Codon 737 on the patient's allele is `TGA`, and two adenine-base-editor targets convert it to a sense codon (`15_atlas_base_editing.py`, enumerating every SpCas9-family guide that places the target base in an editing window, then scoring each bystander edit against the AlphaGenome Atlas):
+
+| Edit | Patient allele | Wild-type allele | Best guide | Bystanders in the 4–8 window |
+|---|---|---|---|---|
+| `chr15:40209700` A>G, − strand | `TGA` Ter → **`CGA` Arg** | `TTA` Leu → `CTA` Leu, **silent** | `TTCACTCTGGTAGGGACTTC` + `AG` PAM | **none** |
+| `chr15:40209702` A>G, + strand | `TGA` Ter → **`TGG` Trp** | `TTA` Leu → `TTG` Leu, **silent** | `GTGAAGTGCCTCTGCAGAGT` + `TG` PAM | one — `p.Ser738Gly`, AVI 15.9 |
+
+Three consequences. **The guide need not discriminate between the alleles**, because the same edit on the functional copy is synonymous — which is fortunate, since the mutation sits at protospacer position 3, the PAM-distal end where discrimination is least achievable. **The products are the ones candidate 3 would produce anyway**: `p.Leu737Arg` and `p.Leu737Trp` are two of the three residues UGA read-through inserts, so experiment **E6b** and any functional data on those substitutions gate both routes. And genomic read-through has one decisive advantage over the pharmacological version — **once the stop codon is gone the transcript is no longer an NMD target**, so it is not gated by **E6a** at all.
+
+Against that: **no wild-type SpCas9 guide exists** for either edit, so both need SpCas9-NG or SpRY, whose relaxed PAM recognition comes with higher off-target rates. **No genome-wide off-target search was run** — the bystander analysis covers the editing window only, and the off-target search is the analysis that would decide whether any of these guides is usable. `p.Leu737Arg` and `p.Leu737Trp` are of unknown function, and **the Atlas cannot score either**, because both are two-nucleotide changes from the reference and the Atlas holds single changes only. This narrows "genomic correction" from an unspecified procedure to two named edits with their bystander cost attached. It does not make either of them ready for anyone.
+
 **But the proposed edit targets the wrong allele, and this genotype settles which is right.**
 
 Write the two alleles as contributions to total BubR1, with *x* the residual activity of the hypomorph (0 < *x* < 1):

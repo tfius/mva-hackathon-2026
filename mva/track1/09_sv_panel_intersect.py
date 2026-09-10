@@ -19,6 +19,7 @@ many the caller found overall.
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 from collections import Counter, defaultdict
@@ -44,7 +45,9 @@ def overlaps(chrom, start, end, regions):
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--bcf", default="/mnt/data/mva-hackathon-2026/work/align/delly.bcf")
-    ap.add_argument("--bed", default="/home/tex/repos/ligands/mva/src/mva/panel_regions.bed")
+    ap.add_argument("--bed", default=os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "..", "src", "mva", "panel_regions.bed"))
     ap.add_argument("--min-pe", type=int, default=3,
                     help="minimum paired-end support to report")
     ap.add_argument("--out", default="/mnt/data/mva-hackathon-2026/work/align/"
